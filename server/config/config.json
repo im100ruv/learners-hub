@@ -1,0 +1,5 @@
+{
+	"appName" : "learners-hub",
+	"hostingPort" : 8000,
+	"db" : ""
+}
