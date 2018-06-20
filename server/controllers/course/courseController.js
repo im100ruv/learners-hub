@@ -9,6 +9,15 @@ function getCoursesList(request, response) {
     });
 }
 
+function getCategoriesList(request, response) {
+    query.getAllCategories()
+    .then(res => {
+        response.send(res);
+    }).catch(err => {
+        response.send(err);
+    });
+}
+
 function getCoursesByCategory(request, response) {
     query.getCategoryCourses(request.params.category)
     .then(res => {
@@ -56,6 +65,7 @@ function deleteCourse(request, response) {
 
 module.exports = {
   getCoursesList: getCoursesList,
+  getCategoriesList: getCategoriesList,
   getCoursesByCategory: getCoursesByCategory,
   getCourse: getCourse,
   addCourse: addCourse,

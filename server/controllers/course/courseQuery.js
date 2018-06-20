@@ -12,6 +12,26 @@ function getAllCourses() {
     });
 }
 
+
+
+function getAllCategories() {
+    return new Promise((resolve, reject) => {
+        course.find({},{_id:0, categories:1}).exec((err, res) => {
+            if(err) {
+                reject(err);
+            } else {
+                res = res.reduce((acc, obj)=>{
+                    obj.categories.forEach(category => {
+                        acc.push(category)
+                    });
+                    return acc
+                },[])
+                resolve(res);
+            }
+        });
+    });
+}
+
 function getCategoryCourses(category) {
     return new Promise((resolve, reject) => {
         course.find({categories: category}).exec((err, res) => {
@@ -76,6 +96,7 @@ function deleteCourseFromList(key) {
 
 module.exports = {
   getAllCourses : getAllCourses,
+  getAllCategories: getAllCategories,
   getCategoryCourses: getCategoryCourses,
   getACourse: getACourse,
   addCourseToList : addCourseToList,
