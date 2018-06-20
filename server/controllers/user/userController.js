@@ -9,8 +9,35 @@ function getUsersList(request, response) {
     });
 }
 
+function getUser(request, response) {
+    query.getAUser(request.params.id)
+    .then(res => {
+        response.send(res);
+    }).catch(err => {
+        response.send(err);
+    });
+}
+
 function addUser(request, response) {
     query.addUserToList(request.body)
+    .then(res => {
+        response.json(res);
+    }).catch(err => {
+        response.send(err);
+    });
+}
+
+function updateUser(request, response) {
+    query.updateUserInList(request.params.id, request.body)
+    .then(res => {
+        response.send(res);
+    }).catch(err => {
+        response.send(err);
+    });
+}
+
+function deleteUser(request, response) {
+    query.deleteUserFromList(request.params.id)
     .then(res => {
         response.send(res);
     }).catch(err => {
@@ -20,5 +47,8 @@ function addUser(request, response) {
 
 module.exports = {
     getUsersList: getUsersList,
-    addUser: addUser
+    getUser: getUser,
+    addUser: addUser,
+    updateUser: updateUser,
+    deleteUser: deleteUser
 };
