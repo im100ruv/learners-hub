@@ -12,6 +12,18 @@ function getAllUsers() {
     });
 }
 
+function getAUser(id) {
+    return new Promise((resolve, reject) => {
+        user.findOne({id: id}).exec((err, res) => {
+            if(err) {
+                reject(err);
+            } else {
+                resolve(res);
+            }
+        });
+    });
+}
+
 function addUserToList(data) {
     return new Promise((resolve, reject) => {
         const userObj = new user(data);
@@ -25,7 +37,35 @@ function addUserToList(data) {
     });
 }
 
+function updateUserInList(id, data) {
+    return new Promise((resolve, reject) => {
+        // const userObj = new user(data);
+        user.update({id: id}, data).exec((err, res) => {
+            if(err) {
+                reject(err);
+            } else {
+                resolve(res);
+            }
+        });
+    });
+}
+
+function deleteUserFromList(id) {
+    return new Promise((resolve, reject) => {
+        user.remove({id: id}).exec((err, res) => {
+            if(err) {
+                reject(err);
+            } else {
+                resolve(res);
+            }
+        });
+    });
+}
+
 module.exports = {
     getAllUsers : getAllUsers,
-    addUserToList : addUserToList
+    getAUser: getAUser,
+    addUserToList : addUserToList,
+    updateUserInList: updateUserInList,
+    deleteUserFromList: deleteUserFromList
 };

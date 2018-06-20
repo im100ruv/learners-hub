@@ -9,6 +9,15 @@ function getCoursesList(request, response) {
     });
 }
 
+function getCourse(request, response) {
+    query.getACourse(request.params.key)
+    .then(res => {
+        response.send(res);
+    }).catch(err => {
+        response.send(err);
+    });
+}
+
 function addCourse(request, response) {
     query.addCourseToList(request.body)
     .then(res => {
@@ -18,7 +27,28 @@ function addCourse(request, response) {
     });
 }
 
+function updateCourse(request, response) {
+    query.updateCourseInList(request.params.key, request.body)
+    .then(res => {
+        response.send(res);
+    }).catch(err => {
+        response.send(err);
+    });
+}
+
+function deleteCourse(request, response) {
+    query.deleteCourseFromList(request.params.key)
+    .then(res => {
+        response.send(res);
+    }).catch(err => {
+        response.send(err);
+    });
+}
+
 module.exports = {
   getCoursesList: getCoursesList,
-  addCourse: addCourse
+  getCourse: getCourse,
+  addCourse: addCourse,
+  updateCourse: updateCourse,
+  deleteCourse: deleteCourse
 };
