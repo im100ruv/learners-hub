@@ -12,6 +12,18 @@ function getAllCourses() {
     });
 }
 
+function getCategoryCourses(category) {
+    return new Promise((resolve, reject) => {
+        course.find({categories: category}).exec((err, res) => {
+            if(err) {
+                reject(err);
+            } else {
+                resolve(res);
+            }
+        });
+    });
+}
+
 function getACourse(key) {
     return new Promise((resolve, reject) => {
         course.findOne({key: key}).exec((err, res) => {
@@ -64,6 +76,7 @@ function deleteCourseFromList(key) {
 
 module.exports = {
   getAllCourses : getAllCourses,
+  getCategoryCourses: getCategoryCourses,
   getACourse: getACourse,
   addCourseToList : addCourseToList,
   updateCourseInList: updateCourseInList,

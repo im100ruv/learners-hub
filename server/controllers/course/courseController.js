@@ -9,6 +9,15 @@ function getCoursesList(request, response) {
     });
 }
 
+function getCoursesByCategory(request, response) {
+    query.getCategoryCourses(request.params.category)
+    .then(res => {
+        response.send(res);
+    }).catch(err => {
+        response.send(err);
+    });
+}
+
 function getCourse(request, response) {
     query.getACourse(request.params.key)
     .then(res => {
@@ -47,6 +56,7 @@ function deleteCourse(request, response) {
 
 module.exports = {
   getCoursesList: getCoursesList,
+  getCoursesByCategory: getCoursesByCategory,
   getCourse: getCourse,
   addCourse: addCourse,
   updateCourse: updateCourse,

@@ -11,6 +11,7 @@ function setup(app){
     app.delete('/users/:id', userControllers.deleteUser);
 
     app.get('/courses', courseControllers.getCoursesList);
+    app.get('/courses/:category', courseControllers.getCoursesByCategory);
     app.get('/courses/:key', courseControllers.getCourse);
     app.post('/courses', courseControllers.addCourse);
     app.put('/courses/:key', courseControllers.updateCourse);

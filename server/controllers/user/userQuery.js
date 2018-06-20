@@ -2,7 +2,8 @@ const user = require('./../../models/user');
 
 function getAllUsers() {
     return new Promise((resolve, reject) => {
-        user.find().exec((err, res) => {
+        user.find({}, {_id:0, id:1, name:1, email:1, mobile:1, user_type:1})
+        .exec((err, res) => {
             if(err) {
                 reject(err);
             } else {
@@ -14,7 +15,8 @@ function getAllUsers() {
 
 function getAUser(id) {
     return new Promise((resolve, reject) => {
-        user.findOne({id: id}).exec((err, res) => {
+        user.findOne({id: id}, {_id:0, id:1, name:1, email:1, mobile:1, user_type:1})
+        .exec((err, res) => {
             if(err) {
                 reject(err);
             } else {
