@@ -3,24 +3,29 @@ const courseControllers = require('./controllers/course/courseController')
 
 function setup(app){
     app.get('/', rootRoute);
+    app.get('/api/', apiRoute);
 
-    app.get('/users', userControllers.getUsersList);
-    app.get('/users/:id', userControllers.getUser);
-    app.post('/users', userControllers.addUser);
-    app.put('/users/:id', userControllers.updateUser);
-    app.delete('/users/:id', userControllers.deleteUser);
+    app.get('/api/users', userControllers.getUsersList);
+    app.get('/api/users/:id', userControllers.getUser);
+    app.post('/api/users', userControllers.addUser);
+    app.put('/api/users/:id', userControllers.updateUser);
+    app.delete('/api/users/:id', userControllers.deleteUser);
 
-    app.get('/courses', courseControllers.getCoursesList);
-    app.get('/courses/categories', courseControllers.getCategoriesList);
-    app.get('/courses/:category', courseControllers.getCoursesByCategory);
-    app.get('/courses/:key', courseControllers.getCourse);
-    app.post('/courses', courseControllers.addCourse);
-    app.put('/courses/:key', courseControllers.updateCourse);
-    app.delete('/courses/:key', courseControllers.deleteCourse);
+    app.get('/api/courses', courseControllers.getCoursesList);
+    app.get('/api/courses/categories', courseControllers.getCategoriesList);
+    app.get('/api/courses/:category', courseControllers.getCoursesByCategory);
+    app.get('/api/courses/:key', courseControllers.getCourse);
+    app.post('/api/courses', courseControllers.addCourse);
+    app.put('/api/courses/:key', courseControllers.updateCourse);
+    app.delete('/api/courses/:key', courseControllers.deleteCourse);
 };
 
 function rootRoute(req, res) {
-    res.send({message: 'hello'})
+    res.send("Welcome to home page")
+}
+
+function apiRoute(req, res) {
+    res.send({message: 'You are accessing the API for LearnersHub. Please request for specific resource to get corresponding responses.'})
 }
 
 module.exports = {
