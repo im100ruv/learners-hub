@@ -1,0 +1,30 @@
+#cour_icon{ 
+    width:160px;
+    height:160px;
+    margin-left:10px;
+    margin-top:10px;
+  }
+  .container{
+    width:fit-content;
+    margin:auto;
+    height:fit-content;
+  }
+  #subject{
+    padding: 10px 10px;
+    margin: 10px 10px;
+    border:2px solid yellow;
+    background-color: whitesmoke;
+    opacity:0.9;
+    border-radius: 25px;
+    display:flex;
+  }  
+.tag{
+    margin: 0px 5px;
+    padding: 5px 5px;
+    color:rgb(158, 21, 21);
+}
+.categories{
+    display:flex;
+    position:relative;
+    left:50px;
+}  
