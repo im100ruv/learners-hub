@@ -5,16 +5,17 @@
     margin-top:10px;
   }
   .container{
-    width:fit-content;
-    margin:auto;
+    
+    width:70%;
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:45px;
     height:fit-content;
   }
   #subject{
     padding: 10px 10px;
-    margin: 10px 10px;
-    border:2px solid yellow;
-    background-color: whitesmoke;
-    opacity:0.9;
+    margin: 13px 10px;
+    opacity:0.8;
     border-radius: 25px;
     display:flex;
   }  
@@ -27,4 +28,7 @@
     display:flex;
     position:relative;
     left:50px;
+}
+body{
+    /* background : linear-gradient(to right, rgba(255,0,0,0), rgb(212, 126, 126)); */
 }  

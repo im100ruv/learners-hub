@@ -15,8 +15,20 @@ class Child extends Component {
         super(props);
     }
 
+    heading_style = {
+                fontSize : '25px',
+                fontFamily:'roboto',
+                color: 'black',
+                fontWeight:'bold'
+            }
+
+    level_style = {
+        fontSize : '17px',
+        fontStyle: '',
+        color: 'brown' 
+    }
   render() {
-      let scope = this;
+    let scope = this;
           
     return(
         this.props.elements.map((element,index)=>{
@@ -27,13 +39,12 @@ class Child extends Component {
                 <img id="cour_icon" src={element.banner_image}/>
                 <List>
                     <ListItem button>
-                        <ListItemText inset primary={<Typography style={{ fontSize : '25px', fontFamily:'roboto', color: 'black', fontWeight:'bold' }}>{`${element.title}`}</Typography>} />
+                        <ListItemText className="trial" inset primary={<Typography style={this.heading_style}>{`${element.title}`}</Typography>} />
                     </ListItem>
         
                     <ListItem>
-                        <ListItemText inset primary={<Typography style={{ fontSize : '17px', fontStyle: '', color: 'brown' }}>{`Level : ${element.level}`}</Typography>} />
+                        <ListItemText inset primary={<Typography style={this.level_style}>{`Level : ${element.level}`}</Typography>} />
                     </ListItem>
-
                     <ListItem>
                         {
                             <div className="categories">{
@@ -43,9 +54,8 @@ class Child extends Component {
                             }</div>
                         }
                     </ListItem>
-                </List>
+                </List>   
             </Paper>
-
             )
     })
     );
