@@ -46,10 +46,7 @@ class Dashboard extends Component {
               </Typography>
             </Toolbar>
           </AppBar>
-          <Drawer
-            variant="permanent"
-            className="dashboard-drawer"
-          >
+          < Drawer variant = "permanent" className = "dashboard-drawer">
             <List>
               <ListItem button>
                 <ListItemIcon>
@@ -64,18 +61,20 @@ class Dashboard extends Component {
                 <ListItemText primary="Courses Enrolled" />
               </ListItem>
             </List>
-            <Divider />
+            <Divider/>
             <List>
             <ListItem button>
                 <ListItemIcon>
-                  <SettingIcon />
+                  <SettingIcon/>
                 </ListItemIcon>
-                <ListItemText primary="Setting" />
+                <ListItemText primary="Setting"/>
               </ListItem>
             </List>
           </Drawer>
           <main style={this.theme.content}>
-            <Typography>{'You think water moves fast? You should see ice.You think water moves fast? You should see ice.You think water moves fast? You should see ice.You think water moves fast? You should see ice.You think water moves fast? You should see ice.You think water moves fast?'}</Typography>
+            <Typography>
+              {'You think water moves fast? You should see ice.You think water moves fast? You should see ice.You think water moves fast? You should see ice.You think water moves fast? You should see ice.You think water moves fast? You should see ice.You think water moves fast?'}
+            </Typography>
           </main>
         </div>
       </div>
