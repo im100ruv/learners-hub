@@ -26,10 +26,12 @@ class Dashboard extends Component {
     },
     content: {
       flexGrow: 1,
-      padding: '5px',
+      padding: '10px',
       minWidth: 0,
-     height: 'calc(100vh - 85px)',
-     marginTop: '65px'
+      height: 'calc(100vh - 85px)',
+      marginTop: '65px',
+      overflowWrap: 'break-word',
+      overflowY: 'auto'
     }
   }
 
@@ -73,7 +75,7 @@ class Dashboard extends Component {
             </List>
           </Drawer>
           <main style={this.theme.content}>
-            <Typography noWrap>{'You think water moves fast? You should see ice.'}</Typography>
+            <Typography>{'You think water moves fast? You should see ice.You think water moves fast? You should see ice.You think water moves fast? You should see ice.You think water moves fast? You should see ice.You think water moves fast? You should see ice.You think water moves fast?'}</Typography>
           </main>
         </div>
       </div>
