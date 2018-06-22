@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
+import Snackbar from '@material-ui/core/SnackbarContent';
 import Course from './course';
 import './course.css';
 
@@ -12,14 +11,22 @@ class courseList extends Component {
       }
   }
 
-  heading_style = { position:'relative',
-                    left:'10%',
-                    fontSize : '38px',
-                    fontWeight: 'bold',
-                    color: 'Yellow'
-   }
+  heading_style = {
+                    minWidth:'fit-content',
+                    color:'white',
+                    fontSize:'38px',
+                    fontWeight:'bold',
+                    fontFamily:'TimesNewRoman',
+                    height:'1.5em',
+                    margin:'auto'
+  }
 
-  componentDidMount(){
+  content_style = {
+    width:'70%',
+    margin: '45px auto 0px auto'
+  }
+
+ componentDidMount(){
     fetch('http://localhost:8000/api/courses')
     .then(res => { return res.json() })
     .then(result =>
@@ -34,8 +41,8 @@ class courseList extends Component {
   {
     let scope = this;
     return (
-      <div className="container">
-           <Typography style={this.heading_style} variant="display1" color="primary">List of Courses provided by LearnersHub </Typography>
+      <div style={this.content_style}>
+           <Snackbar style={this.heading_style} message={'List Of Courses Delivered By LearnersHub' } ></Snackbar>
            <br/>
            <Course elements={scope.state.array_course}/>
       </div>
