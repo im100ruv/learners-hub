@@ -9,17 +9,49 @@
   padding: 1em 15em
 }
 
-.div-section {
+.about-course {
+  padding-top: 1em;
+  margin-bottom: 1em;
 }
 
 .instructor-detail {
   display: grid;
+  grid-template-columns: 1fr 5fr;
   margin-top: 1em;
   padding-top: 1em;
   border-top: 1px solid #d1cece;
-  grid-template-columns: 1fr 5fr;
 }
 
 .instructor-bio {
   font-size: 0.85em;
+}
+
+.info-table {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  grid-template-rows: 1fr 1fr 1fr auto auto;
+  grid-row-gap: 1em;
+  margin-top: 1em;
+  padding-top: 1em;
+  padding-left: 1em;
+  border-top: 1px solid #d1cece;
+}
+
+.section-title {
+  font-size: 1.5em;
+  margin-top: 3em;
+}
+
+.section-faq {
+  margin-top: 1em;
+  padding-top: 1em;
+  padding-left: 1em;
+  border-top: 1px solid #d1cece;
+}
+
+.section-syllabus {
+  margin-top: 1em;
+  padding-top: 1em;
+  padding-left: 1em;
+  border-top: 1px solid #d1cece;
 }

@@ -30,10 +30,11 @@ function MediaControlCard(props) {
           <CardMedia
             className={classes.cover}
             image="https://d15cw65ipctsrr.cloudfront.net/c8/084f10bb0011e5b7f4377491ebab0b/AAD-banner.jpg"
-            title="Live from space album cover"
           />
           <CardContent className={classes.content}>
-            <Typography variant="headline">{props.title}</Typography>
+            <Typography variant="headline">{props.title}
+              {props.new_release ? <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTW7IGs4zt9OMD-ll0CCPaDh6VAZtOc0qGnZS_3IphN_zOdWQy" alt="new course" width="50px" height="40px" /> : ""}
+            </Typography>
             <Typography variant="subheading" color="textSecondary">
               {props.subtitle}
             </Typography>
