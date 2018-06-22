@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
-import List from './components/courseList/courseList';
+import List_Courses from './components/courseList/courseList';
 import './App.css';
 
 class App extends Component {
   render() {
-    return (
+    return(
       <div className="app">
-        <List/>
+        <List_Courses/>
       </div>
     );
   }
 }
-
 export default App;

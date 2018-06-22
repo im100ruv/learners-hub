@@ -5,19 +5,24 @@ import Course from './course';
 import './course.css';
 
 class courseList extends Component {
-  
   constructor(props){
       super(props);
-      //setState Here
       this.state = {
         array_course: []
       }
   }
 
+  heading_style = { position:'relative',
+                    left:'10%',
+                    fontSize : '38px',
+                    fontWeight: 'bold',
+                    color: 'Yellow'
+   }
+
   componentDidMount(){
     fetch('http://localhost:8000/api/courses')
-    .then((res) => { return res.json() })
-    .then((result) =>
+    .then(res => { return res.json() })
+    .then(result =>
      {
         this.setState({
           array_course : result
@@ -30,7 +35,7 @@ class courseList extends Component {
     let scope = this;
     return (
       <div className="container">
-           <Typography style={{ position:'relative',left:'10%',fontSize : '38px', fontWeight: 'bold', color: 'Yellow' }} variant="display1" color="primary">List of Courses provided by LearnersHub </Typography>
+           <Typography style={this.heading_style} variant="display1" color="primary">List of Courses provided by LearnersHub </Typography>
            <br/>
            <Course elements={scope.state.array_course}/>
       </div>

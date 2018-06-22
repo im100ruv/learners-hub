@@ -1,13 +1,11 @@
 import React, { Component } from 'react'; 
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import StarIcon from '@material-ui/icons/Star';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
 import './course.css';
-
  
 class Child extends Component {
 
@@ -27,21 +25,19 @@ class Child extends Component {
         fontStyle: '',
         color: 'brown' 
     }
+
   render() {
     let scope = this;
           
     return(
         this.props.elements.map((element,index)=>{
-
             return (
-
             <Paper key={index} id="subject">
-                <img id="cour_icon" src={element.banner_image}/>
+                <Button ><img id="cour_icon" src={element.banner_image}/></Button>
                 <List>
                     <ListItem button>
                         <ListItemText className="trial" inset primary={<Typography style={this.heading_style}>{`${element.title}`}</Typography>} />
                     </ListItem>
-        
                     <ListItem>
                         <ListItemText inset primary={<Typography style={this.level_style}>{`Level : ${element.level}`}</Typography>} />
                     </ListItem>
@@ -57,8 +53,8 @@ class Child extends Component {
                 </List>   
             </Paper>
             )
-    })
+        })
     );
-}
+    }
 }
 export default Child;

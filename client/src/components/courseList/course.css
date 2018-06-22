@@ -15,7 +15,7 @@
   #subject{
     padding: 10px 10px;
     margin: 13px 10px;
-    opacity:0.8;
+    opacity:0.9;
     border-radius: 25px;
     display:flex;
   }  
@@ -30,5 +30,5 @@
     left:50px;
 }
 body{
-    /* background : linear-gradient(to right, rgba(255,0,0,0), rgb(212, 126, 126)); */
-}  
+    background : linear-gradient(to right, rgba(255,0,0,0), rgb(20, 5, 5));
+}
