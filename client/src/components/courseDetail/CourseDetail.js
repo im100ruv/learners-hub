@@ -1,5 +1,8 @@
 import React from 'react';
-import CircularProgress from '../CircularProgress';
+import './CourseDetail.css'
+import CircularProgress from '../materialUIComponents/CircularProgress';
+import BannerCard from './BannerCard';
+import Avatar from '../materialUIComponents/Avatar'
 
 export default class CourseDetail extends React.Component {
   state = {
@@ -56,15 +59,23 @@ export default class CourseDetail extends React.Component {
   }
 
   render() {
-    // let years
-    // if (this.state.years) {
-    //   years = ["hi"]
-    // } else {
-    //   years = <CircularProgress />
-    // }
     return this.state.key ? (
       <React.Fragment>
-        {"this.state"}
+        <BannerCard
+          title={this.state.title}
+          subtitle={this.state.subtitle}
+        />
+        <div className="course-body">
+          <b> About this course: </b>{this.state.summary}
+          <div className="instructor-detail">
+            <div><Avatar/></div>
+            <div>
+              <b>Taught by: </b> {this.state.instructors[0].name}
+              <p className="div-section instructor-bio">{this.state.instructors[0].bio}</p>
+            </div>
+          </div>
+          {/* <div className="div-section"></div> */}
+        </div>
       </React.Fragment>
     ) : (<CircularProgress />)
   }
