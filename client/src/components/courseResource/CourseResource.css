@@ -1,0 +1,22 @@
+.MuiCardContent-root-44{
+  text-align: center
+}
+
+.course-body {
+  font-family: 'OpenSans', Arial, sans-serif;
+  font-size: 1em;
+  color: rgba(0, 0, 0, 0.7);
+  padding: 1em 15em
+}
+
+.section-title {
+  font-size: 1.5em;
+  margin-top: 1em;
+}
+
+.resource-list {
+  margin-top: 1em;
+  padding-top: 1em;
+  padding-left: 1em;
+  border-top: 1px solid #d1cece;
+}
