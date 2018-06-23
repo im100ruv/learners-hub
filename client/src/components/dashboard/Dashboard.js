@@ -11,9 +11,35 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ProfileIcon from '@material-ui/icons/AccountCircle';
 import CoursesIcon from '@material-ui/icons/LibraryBooks';
+import addCourseIcon from '@material-ui/icons/LibraryAdd';
 import SettingIcon from '@material-ui/icons/Settings';
 
 class Dashboard extends Component {
+  learnerMenu = [
+    {
+      name: 'Profile',
+      icon: ProfileIcon
+    },
+    {
+      name: 'Course Enrolled',
+      icon: CoursesIcon
+    }
+  ];
+
+  authorMenu = [
+    {
+      name: 'Add Course',
+      icon: addCourseIcon
+    },
+    {
+      name: 'Profile',
+      icon: ProfileIcon
+    },
+    {
+      name: 'Course List',
+      icon: CoursesIcon
+    }
+  ];
 
   theme = {
     root: {
@@ -33,9 +59,33 @@ class Dashboard extends Component {
       overflowWrap: 'break-word',
       overflowY: 'auto'
     }
+  };
+
+  constructor() {
+    super();
+    this.state = {
+      menuArr: this.learnerMenu
+    };
+  }
+
+  menuList(arr) {
+    let list = arr.map((element, index) => {
+      let uniqueKey = index.toString();
+      let ListIcon = element.icon;
+      return(
+        <ListItem button key={uniqueKey}>
+          <ListItemIcon>
+            <ListIcon />
+          </ListItemIcon>
+          <ListItemText primary={element.name} />
+        </ListItem>
+      );
+    });
+    return list;
   }
 
   render() {
+    let listRender = this.menuList(this.state.menuArr);
     return (
       <div className="dashboard">
         <div style={this.theme.root}>
@@ -48,18 +98,7 @@ class Dashboard extends Component {
           </AppBar>
           < Drawer variant = "permanent" className = "dashboard-drawer">
             <List>
-              <ListItem button>
-                <ListItemIcon>
-                  <ProfileIcon />
-                </ListItemIcon>
-                <ListItemText primary="Profile" />
-              </ListItem>
-              <ListItem button>
-                <ListItemIcon>
-                  <CoursesIcon />
-                </ListItemIcon>
-                <ListItemText primary="Courses Enrolled" />
-              </ListItem>
+              {listRender}
             </List>
             <Divider/>
             <List>
@@ -72,16 +111,13 @@ class Dashboard extends Component {
             </List>
           </Drawer>
           <main style={this.theme.content}>
-            <Typography>
-              {'You think water moves fast? You should see ice.You think water moves fast? You should see ice.You think water moves fast? You should see ice.You think water moves fast? You should see ice.You think water moves fast? You should see ice.You think water moves fast?'}
-            </Typography>
+            
           </main>
         </div>
       </div>
-      
     );
   }
 }
-  
+
 export default Dashboard;
   
