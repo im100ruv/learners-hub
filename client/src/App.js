@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ListCourses from './components/courseList/courseList';
+import ListCourses from './components/courseList/CourseList';
 import './App.css';
 
 class App extends Component {

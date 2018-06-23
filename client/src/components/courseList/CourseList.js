@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Snackbar from '@material-ui/core/SnackbarContent';
-import Course from './course';
-import './course.css';
+import Course from './Course';
+import './Course.css';
 
 class courseList extends Component {
   constructor(props){
