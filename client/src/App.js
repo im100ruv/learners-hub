@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import ListCourses from './components/courseList/CourseList';
 import './App.css';
-import CreateCourse from './components/createCourse/CreateCourse'
+import CourseDetail from './components/courseDetail/CourseDetail'
+import CourseResource from './components/courseResource/CourseResource'
 
 class App extends Component {
   render() {
     return(
       <div className="app">
-        <ListCourses/>
+        {/* <CourseDetail courseKey={"LC0006"} /> */}
+        <CourseResource courseKey={"LC0006"} />
       </div>
     );
   }
