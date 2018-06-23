@@ -49,7 +49,10 @@ export default class CourseDetail extends React.Component {
             Course Materials
           </div>
           <div className="resource-list">
-            1. <a href="#intro" target="blank">Introduction</a>
+            1. <a href="https://www.youtube.com/watch?v=roDz8mMvbIg&list=PLknSwrodgQ72X4sKpzf5vT8kY80HKcUSe" target="blank">Introduction</a>
+            <p>This is an introduction video for the course.</p>
+            2. <a href="https://www.youtube.com/watch?v=bmuOlpfUVYw&index=2&list=PLknSwrodgQ72X4sKpzf5vT8kY80HKcUSe" target="blank">Installation</a>
+            <p>This is a video for installing the softwares.</p>
           </div>
         </div>
       </React.Fragment>
