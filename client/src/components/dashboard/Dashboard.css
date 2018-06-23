@@ -1,0 +1,14 @@
+.dashborad {
+    position: relative;
+}
+.dashborad-appbar {
+    z-index: 2;
+}
+.dashboard-drawer {
+    width: 20%;
+    margin-top: 65px;
+}
+.dashboard-drawer>div {
+    width: 100%;
+    position: relative;
+}

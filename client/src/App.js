@@ -1,16 +1,20 @@
 import React, { Component } from 'react';
-import ListCourses from './components/courseList/CourseList';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import './App.css';
-import CourseDetail from './components/courseDetail/CourseDetail'
-import CourseResource from './components/courseResource/CourseResource'
+import Header from './components/header/Header';
+import DashBoard from './components/dashboard/Dashboard';
 
 class App extends Component {
   render() {
-    return(
-      <div className="app">
-        {/* <CourseDetail courseKey={"LC0006"} /> */}
-        <CourseResource courseKey={"LC0006"} />
-      </div>
+    return (
+      <React.Fragment>
+        <CssBaseline />
+        <div className="app">
+          <div><Header/></div>
+          <div><DashBoard/></div>
+        </div>
+      </React.Fragment>
+      
     );
   }
 }
