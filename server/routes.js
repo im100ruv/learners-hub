@@ -11,9 +11,10 @@ function setup(app){
     app.put('/api/users/:id', userControllers.updateUser);
     app.delete('/api/users/:id', userControllers.deleteUser);
 
+    // use http://localhost:8000/api/courses to get all courses
+    // use http://localhost:8000/api/courses?category=Python to get courses by category(eg: Python)
     app.get('/api/courses', courseControllers.getCoursesList);
     app.get('/api/courses/categories', courseControllers.getCategoriesList);
-    app.get('/api/courses/:category', courseControllers.getCoursesByCategory);
     app.get('/api/courses/:key', courseControllers.getCourse);
     app.post('/api/courses', courseControllers.addCourse);
     app.put('/api/courses/:key', courseControllers.updateCourse);
