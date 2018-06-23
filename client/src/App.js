@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
+import ListCourses from './components/courseList/CourseList';
 import './App.css';
 import CreateCourse from './components/createCourse/CreateCourse'
 
 class App extends Component {
   render() {
-    return (
+    return(
       <div className="app">
-        <CreateCourse/>
+        <ListCourses/>
       </div>
     );
   }
 }
-
 export default App;
