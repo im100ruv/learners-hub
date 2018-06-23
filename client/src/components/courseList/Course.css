@@ -1,0 +1,11 @@
+#subject{
+    transform: scale(1);
+    transition: all ease-in-out 0.6s;
+}  
+  #subject:hover{
+    transform: scale(1.05);
+    transition: all ease-in-out 0.6s;
+}
+body{
+    background : linear-gradient(to right, rgba(255,0,0,0), rgb(211, 212, 100));
+}

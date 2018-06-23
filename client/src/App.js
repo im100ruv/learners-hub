@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+import ListCourses from './components/courseList/CourseList';
 import './App.css';
 import CourseDetail from './components/courseDetail/CourseDetail'
 import CourseResource from './components/courseResource/CourseResource'
 
 class App extends Component {
   render() {
-    return (
+    return(
       <div className="app">
         {/* <CourseDetail courseKey={"LC0006"} /> */}
         <CourseResource courseKey={"LC0006"} />
@@ -13,5 +14,4 @@ class App extends Component {
     );
   }
 }
-
 export default App;
