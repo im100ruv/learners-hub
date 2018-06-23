@@ -1,0 +1,26 @@
+.uploadCourse{
+    text-align: center;
+    width: 100%;
+    font-size: 1.2em;
+    font-weight: 700;
+    text-decoration-line: underline;
+    color: rgb(18, 18, 190);
+    margin-bottom: 0;
+}
+.CreateCourse-discBorder-4>div {
+    border: 2px inset;
+    
+}
+
+.CreateCourse-discBorder-4>label {
+    
+   padding-left: 3px;
+}
+#uploadCourse{
+    cursor: pointer;
+}
+.uploadButton{
+    width: 100%;
+    justify-content: flex-end;
+    display: flex;;
+}

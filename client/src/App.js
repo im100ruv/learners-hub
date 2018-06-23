@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ListCourses from './components/courseList/CourseList';
 import './App.css';
+import CreateCourse from './components/createCourse/CreateCourse'
 
 class App extends Component {
   render() {
