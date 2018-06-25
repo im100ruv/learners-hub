@@ -7,24 +7,27 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
-import ima from '../../assets/images/landing.jpg';
+import teacher_image from '../../assets/images/teacher.jpg';
+import certificate_image from '../../assets/images/certified.jpg';
+import success_image from '../../assets/images/success.jpg';
+import exam_image from '../../assets/images/exams.jpg'
 
 const tutorialSteps = [
   {
-    label: 'How to be happy :)',
-    imgPath: ima,
+    label: <Typography style={{fontFamily:'TimesNewRoman',fontWeight:'italic', fontSize:'1.8em'}}>Get Guidance from the best Teaching Staff in Online classes. . . </Typography>,
+    imgPath: teacher_image,
   },
   {
-    label: '1. Work with something that you like, like…',
-    imgPath: ima,
+    label: <Typography style={{fontFamily:'TimesNewRoman',fontWeight:'italic', fontSize:'1.8em'}}>Gain knowledge and get certified by our institute. . . </Typography>,
+    imgPath: certificate_image,
   },
   {
-    label: '2. Keep your friends close to you and hangout with them',
-    imgPath: ima,
+    label: <Typography style={{fontFamily:'TimesNewRoman',fontWeight:'italic', fontSize:'1.8em'}}>Participate in online Test Series and sharpen your skills</Typography>,
+    imgPath: exam_image,
   },
   {
-    label: '3. Travel everytime that you have a chance',
-    imgPath: ima,
+    label: <Typography style={{fontFamily:'TimesNewRoman',fontWeight:'italic', fontSize:'1.8em'}}>Join Us Now, This is the path to your success !!</Typography>,
+    imgPath: success_image,
   }
 ];
 
@@ -37,8 +40,8 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     height: 50,
-    paddingLeft: theme.spacing.unit * 4,
-    marginBottom: 20,
+    paddingLeft: theme.spacing.unit * 3,
+    marginBottom: 5,
     backgroundColor: theme.palette.background.default,
   },
   img: {
