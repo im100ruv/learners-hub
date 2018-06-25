@@ -1,0 +1,20 @@
+body{
+    background-image: url('../../assets/images/landing.jpg');
+    background-size: cover;
+}
+.icon{
+    opacity:0.7;
+    display:inline;
+    font-size: 25px;
+    padding: 10px 10px;
+}
+.icon:hover{
+  opacity:0.95;
+  cursor:pointer;  
+}
+.top_icons{
+    margin-top:1em;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
