@@ -11,8 +11,14 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ProfileIcon from '@material-ui/icons/AccountCircle';
 import CoursesIcon from '@material-ui/icons/LibraryBooks';
-import addCourseIcon from '@material-ui/icons/LibraryAdd';
+import AddCourseIcon from '@material-ui/icons/LibraryAdd';
+import CourseListIcon from "@material-ui/icons/ViewList";
+import UploadCourse from "@material-ui/icons/FileUpload";
 import SettingIcon from '@material-ui/icons/Settings';
+import CourseList from '../courseList/CourseList';
+import CourseDetail from '../courseDetail/CourseDetail';
+import CourseResource from '../courseResource/CourseResource';
+import CreateCourse from '../createCourse/CreateCourse';
 
 class Dashboard extends Component {
   learnerMenu = [
@@ -23,13 +29,23 @@ class Dashboard extends Component {
     {
       name: 'Course Enrolled',
       icon: CoursesIcon
+    },
+    {
+      name: 'View All Courses',
+      icon: CourseListIcon,
+      value: "course-list"
+    },
+    {
+      name: 'upload A Course',
+      icon: UploadCourse,
+      value: "add-course"
     }
   ];
 
   authorMenu = [
     {
       name: 'Add Course',
-      icon: addCourseIcon
+      icon: AddCourseIcon
     },
     {
       name: 'Profile',
@@ -64,28 +80,48 @@ class Dashboard extends Component {
   constructor() {
     super();
     this.state = {
-      menuArr: this.learnerMenu
+      menuArr: this.learnerMenu,
+      mainComp: "course-list",
+      courseKey: ""
     };
   }
 
-  menuList(arr) {
+  menuList = arr => {
+    let scope = this;
     let list = arr.map((element, index) => {
       let uniqueKey = index.toString();
       let ListIcon = element.icon;
-      return(
+      return (
         <ListItem button key={uniqueKey}>
           <ListItemIcon>
             <ListIcon />
           </ListItemIcon>
-          <ListItemText primary={element.name} />
+          <ListItemText primary={element.name} onClick={scope.setMainComp.bind(scope, element.value)} />
         </ListItem>
       );
     });
     return list;
   }
 
+  setMainComp = (compName, key) => {
+    this.setState({
+      mainComp: compName,
+      courseKey: key
+    })
+  }
+
   render() {
     let listRender = this.menuList(this.state.menuArr);
+    let mainRender;
+    if (this.state.mainComp === "course-list") {
+      mainRender = <CourseList setMainComp={this.setMainComp} />
+    } else if (this.state.mainComp === "course-detail") {
+      mainRender = <CourseDetail courseKey={this.state.courseKey} setMainComp={this.setMainComp} />
+    } else if (this.state.mainComp === "course-resource") {
+      mainRender = <CourseResource courseKey={this.state.courseKey} />
+    } else if (this.state.mainComp === "add-course") {
+      mainRender = <CreateCourse />
+    }
     return (
       <div className="dashboard">
         <div style={this.theme.root}>
@@ -96,22 +132,22 @@ class Dashboard extends Component {
               </Typography>
             </Toolbar>
           </AppBar>
-          < Drawer variant = "permanent" className = "dashboard-drawer">
+          < Drawer variant="permanent" className="dashboard-drawer">
             <List>
               {listRender}
             </List>
-            <Divider/>
+            <Divider />
             <List>
-            <ListItem button>
+              <ListItem button>
                 <ListItemIcon>
-                  <SettingIcon/>
+                  <SettingIcon />
                 </ListItemIcon>
-                <ListItemText primary="Setting"/>
+                <ListItemText primary="Setting" />
               </ListItem>
             </List>
           </Drawer>
           <main style={this.theme.content}>
-            
+            {mainRender}
           </main>
         </div>
       </div>
@@ -120,4 +156,3 @@ class Dashboard extends Component {
 }
 
 export default Dashboard;
-  

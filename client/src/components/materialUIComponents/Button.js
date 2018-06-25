@@ -16,7 +16,7 @@ function ContainedButtons(props) {
   const { classes } = props;
   return (
     <div>
-      <Button variant="contained" href="#" color="primary" className={classes.button}>
+      <Button variant="contained" color="primary" className={classes.button} onClick={props.setMainComp.bind(this, "course-resource", props.courseKey)}>
         Start Course
       </Button>
     </div>
