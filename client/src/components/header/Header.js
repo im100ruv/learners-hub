@@ -10,11 +10,11 @@ import Autosuggest from 'react-autosuggest';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
-import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import CourseCategoryIcon from '@material-ui/icons/Apps';
 import SearchIcon from '@material-ui/icons/Search';
 import logo from '../../assets/images/logo.svg'
+import LoginSignup from '../login-signup/LoginSignup';
 
 class Header extends Component {
     state = {
@@ -190,9 +190,7 @@ class Header extends Component {
                                 onChange: this.handleChange,
                             }}
                         />
-                        <Button variant="contained" color="primary" className="ContainedButtons">
-                            Login
-                        </Button>
+                        <LoginSignup />
                     </Toolbar>
                 </AppBar>
             </div>
