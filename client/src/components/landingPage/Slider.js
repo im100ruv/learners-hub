@@ -12,7 +12,7 @@ import certificate_image from '../../assets/images/certified.jpg';
 import success_image from '../../assets/images/success.jpg';
 import exam_image from '../../assets/images/exams.jpg'
 
-const tutorialSteps = [
+const IMG = [
   {
     label: <Typography style={{fontFamily:'TimesNewRoman',fontWeight:'italic', fontSize:'1.8em'}}>Get Guidance from the best Teaching Staff in Online classes. . . </Typography>,
     imgPath: teacher_image,
@@ -37,6 +37,7 @@ const styles = theme => ({
     maxWidth:1000
   },
   header: {
+    opacity:0.9,
     display: 'flex',
     alignItems: 'center',
     height: 50,
@@ -45,7 +46,7 @@ const styles = theme => ({
     backgroundColor: theme.palette.background.default,
   },
   img: {
-    height: 450,
+    height: 470,
     maxWidth: 1400,
     overflow: 'hidden',
     width: '100%',
@@ -73,17 +74,17 @@ class TextMobileStepper extends React.Component {
     const { classes, theme } = this.props;
     const { activeStep } = this.state;
 
-    const maxSteps = tutorialSteps.length;
+    const maxSteps = IMG.length;
 
     return (
       <div className={classes.root}>
         <Paper square elevation={0} className={classes.header}>
-          <Typography>{tutorialSteps[activeStep].label}</Typography>
+          <Typography>{IMG[activeStep].label}</Typography>
         </Paper>
         <img
           className={classes.img}
-          src={tutorialSteps[activeStep].imgPath}
-          alt={tutorialSteps[activeStep].label}
+          src={IMG[activeStep].imgPath}
+          alt={IMG[activeStep].label}
         />
         <MobileStepper
           steps={maxSteps}
@@ -107,10 +108,8 @@ class TextMobileStepper extends React.Component {
     );
   }
 }
-
 // TextMobileStepper.propTypes = {
 //   classes: PropTypes.object.isRequired,
 //   theme: PropTypes.object.isRequired,
 // };
-
 export default withStyles(styles, { withTheme: true })(TextMobileStepper);
