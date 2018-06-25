@@ -7,10 +7,7 @@ import AddCircle from "@material-ui/icons/AddCircle";
 import Delete from "@material-ui/icons/Delete";
 import Button from "@material-ui/core/Button";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import red from "@material-ui/core/colors/red";
 import "./CreateCourse.css";
-
-const primary = red[500]; // #F44336
 
 const styles = theme => ({
   container: {
@@ -55,102 +52,156 @@ const diffLevel = [
     label: "Advance"
   }
 ];
-const categories = [
-  {
-    value: "Java",
-    label: "Java"
-  },
-  {
-    value: "React JS",
-    label: "React JS"
-  },
-  {
-    value: "MongoDB",
-    label: "MongoDB"
-  }
-];
 
 class CreateCourse extends React.Component {
   state = {
-    courseName: "",
-    courseCategory:"",
-    courseURL:"",
-    courseDuration:"",
-    diffecultyLevel:"Beginner",
-    summary:"",
-    
+    key: "LC0008",
+    title: "",
+    subtitle:"",
+    banner_image:"",
+    categories: "",
+    syllabus:"",
+    required_knowledge:"",
+    expected_learning:"",
+    expected_duration: "",
+    level: "Beginner",
+    summary: "",
+    new_release:false,
+    full_course_available:true,
+    expected_duration_unit:"months",
+    file: []
   };
   handleChange = stateName => event => {
     event.preventDefault();
     this.setState({
-      [stateName]: event.target.value.trim(),
+      [stateName]: event.target.value.trim()
     });
     return;
   };
-  setData=()=>{
-    console.log(this.state);
-  }
+  setData = () => {
+    this.setState(
+      {
+        categories: this.state.categories.split(",").map(category => {
+          return category.trim();
+        })
+      },
+      () => {
+        console.log(this.state);
+        fetch("http://localhost:8000/api/courses", {
+          method: "post",
+          body: JSON.stringify(this.state),
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }).then(function(response) {
+          console.log("data send into database");
+        });
+      }
+    );
+  };
   render() {
     const { classes } = this.props;
-
     return (
-      <form className={classes.container} noValidate autoComplete="off">
+      <form className={classes.container} autoComplete="off">
         <p className="uploadCourse">UPLOAD NEW COURSE</p>
         <TextField
-          id="courseName"
+          id="title"
           label="Name of Course"
           className={classes.textField}
           margin="normal"
-          onChange={this.handleChange('courseName')}
+          onChange={this.handleChange("title")}
+        />
+        <TextField
+          id="subtitle"
+          label="Subtitle of Course"
+          className={classes.textField}
+          margin="normal"
+          onChange={this.handleChange("subtitle")}
         />
         <input
           accept="image/*"
           className={classes.input}
-          id="flat-button-file"
+          id="banner-image-file"
           multiple
           type="file"
+          onChange={this.handleChange("banner_image")}
         />
         <TextField
-          id="uploadCourse"
-          label="Upload course file"
+          id="banner-image"
+          label="Upload banner image for this course"
           className={classes.textField}
           margin="normal"
+          disabled
+          value={this.state.banner_image}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <label htmlFor="flat-button-file">
+                <label htmlFor="banner-image-file">
                   <AddCircle />
                 </label>
               </InputAdornment>
             )
           }}
         />
-
-        {/* <label htmlFor="flat-button-file">
-        <Button component="span" className={classes.button}>
-          Upload
-        </Button>
-      </label> */}
+       
         <TextField
-          id="courseURL"
-          label="Course URL"
+          id="syllabus"
+          label="Syllabus"
           className={classes.textField}
           margin="normal"
-          onChange={this.handleChange('courseURL')}
+          multiline
+          onChange={this.handleChange("syllabus")}
         />
-
+         <input
+          accept="image/*"
+          className={classes.input}
+          id="course-file"
+          multiple
+          type="file"
+          onChange={this.handleChange("file")}
+        />
+        <TextField
+          id="uploadCourse"
+          label="Upload course file"
+          className={classes.textField}
+          margin="normal"
+          disabled
+          value={this.state.file}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <label htmlFor="course-file">
+                  <AddCircle />
+                </label>
+              </InputAdornment>
+            )
+          }}
+        />
+        <TextField
+          id="required-knowledge"
+          label="Required knowledge for this course"
+          className={classes.textField}
+          margin="normal"
+          multiline
+          onChange={this.handleChange("required_knowledge")}
+        />
+         <TextField
+          id="expected-learning"
+          label="Expected learning"
+          placeholder="What will user get after completing this course?"
+          className={classes.textField}
+          margin="normal"
+          multiline
+          onChange={this.handleChange("expected_learning")}
+        />
         <TextField
           id="categories"
           label="Categories"
           className={classes.textField}
-          value={this.state.categories}
-          
           placeholder="Enter comma seperated course category"
           margin="normal"
-          onChange={this.handleChange('courseCategory')}
-        >
-          
-        </TextField>
+          onChange={this.handleChange("categories")}
+        />
         <TextField
           id="number"
           label="Course Duration in months"
@@ -160,7 +211,7 @@ class CreateCourse extends React.Component {
             shrink: true
           }}
           margin="normal"
-          onChange={this.handleChange('courseDuration')}
+          onChange={this.handleChange("expected_duration")}
         />
         <TextField
           id="diffecultyLevel"
@@ -174,7 +225,7 @@ class CreateCourse extends React.Component {
             }
           }}
           margin="normal"
-          onChange={this.handleChange('diffecultyLevel')}
+          onChange={this.handleChange("level")}
         >
           {diffLevel.map(option => (
             <option key={option.value} value={option.value}>
@@ -189,7 +240,7 @@ class CreateCourse extends React.Component {
           rows="7"
           className={[classes.textField, classes.discBorder]}
           margin="normal"
-          onChange={this.handleChange('summary')}
+          onChange={this.handleChange("summary")}
         />
         <div className="uploadButton">
           <Button
