@@ -7,10 +7,7 @@ import AddCircle from "@material-ui/icons/AddCircle";
 import Delete from "@material-ui/icons/Delete";
 import Button from "@material-ui/core/Button";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import red from "@material-ui/core/colors/red";
 import "./CreateCourse.css";
-
-const primary = red[500]; // #F44336
 
 const styles = theme => ({
   container: {
@@ -53,20 +50,6 @@ const diffLevel = [
   {
     value: "Advance",
     label: "Advance"
-  }
-];
-const categories = [
-  {
-    value: "Java",
-    label: "Java"
-  },
-  {
-    value: "React JS",
-    label: "React JS"
-  },
-  {
-    value: "MongoDB",
-    label: "MongoDB"
   }
 ];
 
