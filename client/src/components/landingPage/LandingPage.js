@@ -12,10 +12,10 @@ class Landing extends Component {
   constructor(props){
         super(props);
         this.state = {
-          Featured : [{Name:"JAVA", About:"Learn Java Learn Java Learn",Logo:"java_card"},
-                      {Name:"Algorithm", About:"Learn Algoruthm Learn Algoruthm",Logo:"algorithm_card" },
-                      {Name:"Python", About:"Learn Python Learn Python Learn",Logo:"python_card"},
-                      {Name:"React", About:"Learn React Learn Learn React",Logo:"react_card"}]
+          Featured : [{Name:"Java", About:"Java is a class bases, object oriented . .",Logo:"java_card"},
+                      {Name:"Algorithm", About:"An algorithm is a step by step. . .",Logo:"algorithm_card" },
+                      {Name:"Python", About:"Python is an object oriented . . .",Logo:"python_card"},
+                      {Name:"React", About:"It is a JavaScript library for user . .",Logo:"react_card"}]
           }
     }
 
