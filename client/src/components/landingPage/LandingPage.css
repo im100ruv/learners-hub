@@ -1,7 +1,12 @@
-body{
+.background{
     background-image: url('../../assets/images/landing.jpg');
     background-size: cover;
     background-attachment: fixed;
+    position: absolute;
+    height:180vh;
+    left:0;
+    right:0;
+    filter:blur(4px);
 }
 .icon{
     opacity:0.7;
@@ -22,6 +27,7 @@ body{
 }
 .slider_images{
     padding: 0.8em 1.5em;
+    position:relative;
 }
 .landing_content{
  display:flex;   
@@ -36,4 +42,7 @@ body{
 .footer_logo{
     width:7em;
     height:7em;
+}
+.footer_content,.header_content{
+    position:relative;
 }
