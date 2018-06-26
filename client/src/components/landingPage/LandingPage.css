@@ -26,3 +26,10 @@ body{
 .landing_content{
  display:flex;   
 }
+.cards{
+ margin:1em 5em;
+}
+.card{
+    display:flex;
+    justify-content: space-between;
+}
