@@ -120,7 +120,7 @@ class Dashboard extends Component {
     } else if (this.state.mainComp === "course-resource") {
       mainRender = <CourseResource courseKey={this.state.courseKey} />
     } else if (this.state.mainComp === "add-course") {
-      mainRender = <CreateCourse />
+      mainRender = <CreateCourse setMainComp={this.setMainComp}/>
     }
     return (
       <div className="dashboard">

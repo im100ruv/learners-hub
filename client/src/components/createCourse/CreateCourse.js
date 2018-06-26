@@ -84,6 +84,7 @@ class CreateCourse extends React.Component {
     return;
   };
   setData = () => {
+    let scope=this;
     this.setState(
       {
         categories: this.state.categories.split(",").map(category => {
@@ -91,7 +92,6 @@ class CreateCourse extends React.Component {
         })
       },
       () => {
-        console.log(this.state);
         fetch("http://localhost:8000/api/courses", {
           method: "post",
           body: JSON.stringify(this.state),
@@ -100,6 +100,7 @@ class CreateCourse extends React.Component {
           }
         }).then(function(response) {
           alert('Course uploaded successfully.');
+          scope.props.setMainComp("course-list","");
         });
       }
     );
@@ -142,7 +143,7 @@ class CreateCourse extends React.Component {
             endAdornment: (
               <InputAdornment position="end">
                 <label htmlFor="banner-image-file">
-                  <AddCircle />
+                  <AddCircle className={"add-icon"} />
                 </label>
               </InputAdornment>
             )
@@ -176,7 +177,7 @@ class CreateCourse extends React.Component {
             endAdornment: (
               <InputAdornment position="end">
                 <label htmlFor="course-file">
-                  <AddCircle />
+                  <AddCircle className={"add-icon"}/>
                 </label>
               </InputAdornment>
             )
@@ -252,6 +253,7 @@ class CreateCourse extends React.Component {
             variant="contained"
             color="secondary"
             className={classes.button}
+            onClick={this.props.setMainComp.bind(this,"course-list","")}
           >
             Cancel
             <Delete />
