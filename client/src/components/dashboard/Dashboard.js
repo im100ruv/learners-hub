@@ -36,7 +36,7 @@ class Dashboard extends Component {
       value: "course-list"
     },
     {
-      name: 'upload A Course',
+      name: 'Create A Course',
       icon: UploadCourse,
       value: "add-course"
     }
