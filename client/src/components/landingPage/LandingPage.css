@@ -33,3 +33,7 @@ body{
     display:flex;
     justify-content: space-between;
 }
+.footer_logo{
+    width:7em;
+    height:7em;
+}

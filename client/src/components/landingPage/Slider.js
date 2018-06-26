@@ -40,14 +40,12 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     height: 50,
-    paddingLeft: theme.spacing.unit * 3,
+    paddingLeft: '1.5em',
     marginBottom: 5,
-    backgroundColor: theme.palette.background.default,
   },
   img: {
     height: 470,
     maxWidth: 1400,
-    overflow: 'hidden',
     width: '100%',
   },
 });
@@ -56,6 +54,7 @@ class TextMobileStepper extends React.Component {
   state = {
     activeStep: 0,
   };
+  
 
   handleNext = () => {
     this.setState(prevState => ({

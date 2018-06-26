@@ -5,7 +5,7 @@ import Slider from './Slider.js';
 import Header from '../../components/header/Header';
 import Cards from './Cards.js';
 import Typography from '@material-ui/core/Typography';
-import java_card from '../../assets/images/java.png';
+import Footer from './Footer';
 
 class Landing extends Component {
 
@@ -49,6 +49,7 @@ class Landing extends Component {
             <div className="cards">
               <div className="card"><Cards feature={this.state.Featured} /></div>
             </div>
+            <Footer/>
       </div>
     )
   }
