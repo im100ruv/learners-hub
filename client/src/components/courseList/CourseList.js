@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Snackbar from '@material-ui/core/SnackbarContent';
 import Course from './Course';
 import './Course.css';
+import CircularProgress from '../materialUIComponents/CircularProgress';
 
 class CourseList extends Component {
   constructor(props) {
@@ -38,13 +39,13 @@ class CourseList extends Component {
 
   render() {
     let scope = this;
-    return (
+    return this.state.array_course.length > 0 ?(
       <div style={this.content_style}>
         <Snackbar style={this.heading_style} message={'List Of Courses Delivered By LearnersHub'} ></Snackbar>
         <br />
         <Course elements={scope.state.array_course} setMainComp={this.props.setMainComp} />
       </div>
-    );
+    ) : (<CircularProgress />);
   }
 }
 export default CourseList;

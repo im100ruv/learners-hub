@@ -12,3 +12,10 @@
     width: 100%;
     position: relative;
 }
+
+.loading-icon {
+    display: flex;
+    justify-content: center;
+    height: 70vh;
+    align-items: center;
+}
