@@ -14,7 +14,7 @@ const styles = theme => ({
     display: "flex",
     flexWrap: "wrap",
     margin: "auto",
-    width: "40%",
+    width: "50%",
     border: "1px ridge",
     backgroundColor: "#e4f1e566",
     marginTop: "1em"
@@ -69,7 +69,12 @@ class CreateCourse extends React.Component {
     new_release:false,
     full_course_available:true,
     expected_duration_unit:"months",
-    file: []
+    file: [],
+    instructors:[{
+      bio:"As an avid programmer and learner, Himanshu mukat began teaching and found his passion. He enjoys the best of both worlds as he works as a Course Developer at Udacity. After earning a degree in computer science, he made the smart decision and moved into the world of HTML, CSS, and JavaScript. For over seven years he worked for an international nonprofit doing everything from frontend web development, to backend programming, to database and server management. Before graduating from the University of Florida’s Web Design and Online Communications Master’s program with a degree in Mass Communication, he had already been asked by the University to come on board as a faculty member. Even with the planning, building and development of courses, he still tries to make time to take in the beauty of the California countryside.",
+      image:"https://yt3.ggpht.com/a-/ACSszfHJCef_uTyAEgv2HjWg7zV8Vks0hLJ4KAx8NA=s900-mo-c-c0xffffffff-rj-k-no",
+      name:"Himanshu Mukat",
+    }]
   };
   handleChange = stateName => event => {
     event.preventDefault();
@@ -79,6 +84,7 @@ class CreateCourse extends React.Component {
     return;
   };
   setData = () => {
+    let scope=this;
     this.setState(
       {
         categories: this.state.categories.split(",").map(category => {
@@ -86,7 +92,6 @@ class CreateCourse extends React.Component {
         })
       },
       () => {
-        console.log(this.state);
         fetch("http://localhost:8000/api/courses", {
           method: "post",
           body: JSON.stringify(this.state),
@@ -94,7 +99,8 @@ class CreateCourse extends React.Component {
             "Content-Type": "application/json"
           }
         }).then(function(response) {
-          console.log("data send into database");
+          alert('Course uploaded successfully.');
+          scope.props.setMainComp("course-list","");
         });
       }
     );
@@ -137,7 +143,7 @@ class CreateCourse extends React.Component {
             endAdornment: (
               <InputAdornment position="end">
                 <label htmlFor="banner-image-file">
-                  <AddCircle />
+                  <AddCircle className={"add-icon"} />
                 </label>
               </InputAdornment>
             )
@@ -171,7 +177,7 @@ class CreateCourse extends React.Component {
             endAdornment: (
               <InputAdornment position="end">
                 <label htmlFor="course-file">
-                  <AddCircle />
+                  <AddCircle className={"add-icon"}/>
                 </label>
               </InputAdornment>
             )
@@ -238,7 +244,7 @@ class CreateCourse extends React.Component {
           label="summary of course"
           multiline
           rows="7"
-          className={[classes.textField, classes.discBorder]}
+          className="summary-text"
           margin="normal"
           onChange={this.handleChange("summary")}
         />
@@ -247,6 +253,7 @@ class CreateCourse extends React.Component {
             variant="contained"
             color="secondary"
             className={classes.button}
+            onClick={this.props.setMainComp.bind(this,"course-list","")}
           >
             Cancel
             <Delete />
@@ -260,6 +267,7 @@ class CreateCourse extends React.Component {
             Upload
             <FileUpload />
           </Button>
+          
         </div>
       </form>
     );
