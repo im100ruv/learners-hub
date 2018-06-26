@@ -1,5 +1,4 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import MobileStepper from '@material-ui/core/MobileStepper';
 import Paper from '@material-ui/core/Paper';
@@ -108,8 +107,4 @@ class TextMobileStepper extends React.Component {
     );
   }
 }
-// TextMobileStepper.propTypes = {
-//   classes: PropTypes.object.isRequired,
-//   theme: PropTypes.object.isRequired,
-// };
 export default withStyles(styles, { withTheme: true })(TextMobileStepper);

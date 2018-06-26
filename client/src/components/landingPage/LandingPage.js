@@ -12,10 +12,11 @@ class Landing extends Component {
   constructor(props){
         super(props);
         this.state = {
-          Featured : [{Name:"JAVA", About:"Learn Java Learn Java Learn Java",Logo:{java_card}},
-                      {Name:"Algorithm", About:"Learn Algoruthm Learn Algoruthm",Logo:{java_card} },
-                      {Name:"Python", About:"Learn Python Learn Python Learn",Logo:{java_card}}]
-        }
+          Featured : [{Name:"JAVA", About:"Learn Java Learn Java Learn",Logo:"java_card"},
+                      {Name:"Algorithm", About:"Learn Algoruthm Learn Algoruthm",Logo:"algorithm_card" },
+                      {Name:"Python", About:"Learn Python Learn Python Learn",Logo:"python_card"},
+                      {Name:"React", About:"Learn React Learn Learn React",Logo:"react_card"}]
+          }
     }
 
   heading_style = {
@@ -24,6 +25,7 @@ class Landing extends Component {
     color: 'black',
     fontWeight:'bold',
     background:'Transparent',
+    textAlign:'center'
   }
 
   render() {
@@ -34,7 +36,7 @@ class Landing extends Component {
                 <div className="slider_images">
                     <Slider/>
                 </div>
-                <div class="top_icons">
+                <div className="top_icons">
                     <Paper className="icon">Online Tests</Paper>
                     <Paper className="icon">Experienced Mentors</Paper>
                     <Paper className="icon">Individual Reviews</Paper>
@@ -43,7 +45,7 @@ class Landing extends Component {
                     <Paper className="icon">Get Certified</Paper>
                 </div>
             </div>
-            <Paper style={{opacity:'0.7',padding:'1em 1em',marginLeft:'1.5em',maxWidth:'fit-content'}}><Typography style={this.heading_style}>Our Specialized Courses</Typography></Paper>
+            <Paper style={{margin:'auto',opacity:'0.7',padding:'1em 1em'}}><Typography style={this.heading_style}>Our Specialized Courses</Typography></Paper>
             <div className="cards">
               <div className="card"><Cards feature={this.state.Featured} /></div>
             </div>
