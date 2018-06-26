@@ -1,0 +1,39 @@
+body{
+    background-image: url('../../assets/images/landing.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+}
+.icon{
+    opacity:0.7;
+    font-size: 1.1em;
+    padding: 0.5em 0.5em;
+}
+.icon:hover{
+  opacity:0.95;
+  cursor:pointer;  
+}
+.top_icons{
+    margin-left:auto;
+    margin-right:auto;
+    display: flex;
+    flex-direction: column;
+    width:fit-content;
+    justify-content: space-around;
+}
+.slider_images{
+    padding: 0.8em 1.5em;
+}
+.landing_content{
+ display:flex;   
+}
+.cards{
+ margin:1em 5em;
+}
+.card{
+    display:flex;
+    justify-content: space-between;
+}
+.footer_logo{
+    width:7em;
+    height:7em;
+}
