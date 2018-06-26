@@ -75,34 +75,33 @@ class TextMobileStepper extends React.Component {
     const maxSteps = IMG.length;
 
     return (
-      <div className={classes.root}>
-        <Paper square elevation={0} className={classes.header}>
-          <Typography>{IMG[activeStep].label}</Typography>
-        </Paper>
-        <img
-          className={classes.img}
-          src={IMG[activeStep].imgPath}
-          alt={IMG[activeStep].label}
-        />
-        <MobileStepper
-          steps={maxSteps}
-          position="static"
-          activeStep={activeStep}
-          className={classes.mobileStepper}
-          nextButton={
-            <Button size="small" onClick={this.handleNext} disabled={activeStep === maxSteps - 1}>
-              Next
-              {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
-            </Button>
-          }
-          backButton={
-            <Button size="small" onClick={this.handleBack} disabled={activeStep === 0}>
-              {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
-              Back
-            </Button>
-          }
-        />
-      </div>
+        <div className={classes.root}>
+            <Paper className={classes.header}>
+              <Typography>{IMG[activeStep].label}</Typography>
+            </Paper>
+            <img
+              className={classes.img}
+              src={IMG[activeStep].imgPath}
+              alt={IMG[activeStep].label}
+            />
+            <MobileStepper
+              steps={maxSteps}
+              position="static"
+              activeStep={activeStep}
+              nextButton={
+                <Button size="small" onClick={this.handleNext} disabled={activeStep === maxSteps - 1}>
+                  Next
+                  {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+                </Button>
+              }
+              backButton={
+                <Button size="small" onClick={this.handleBack} disabled={activeStep === 0}>
+                  {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+                  Back
+                </Button>
+              }
+            />
+        </div>
     );
   }
 }
