@@ -49,7 +49,7 @@ class Child extends Component {
         padding: '10px 10px',
         margin: '13px 10px',
         opacity: '0.9',
-        borderRadius: '25px',
+        borderRadius: '10px',
         display: 'flex'
     }
 
