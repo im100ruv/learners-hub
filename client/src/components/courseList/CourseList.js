@@ -3,6 +3,7 @@ import Snackbar from '@material-ui/core/SnackbarContent';
 import Course from './Course';
 import './Course.css';
 import CircularProgress from '../materialUIComponents/CircularProgress';
+import config from '../../config/config.json';
 
 class CourseList extends Component {
   constructor(props) {
@@ -28,7 +29,7 @@ class CourseList extends Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:8000/api/courses')
+    fetch(`${config.APIHostName}:${config.APIHostingPort}/api/courses`)
       .then(res => { return res.json() })
       .then(result => {
         this.setState({

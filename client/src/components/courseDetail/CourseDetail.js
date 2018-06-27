@@ -4,6 +4,7 @@ import CircularProgress from '../materialUIComponents/CircularProgress';
 import BannerCard from './BannerCard';
 import Avatar from '../materialUIComponents/Avatar'
 import Button from '../materialUIComponents/Button'
+import config from '../../config/config.json';
 
 export default class CourseDetail extends React.Component {
   state = {
@@ -12,7 +13,7 @@ export default class CourseDetail extends React.Component {
   }
 
   fetchJsonData = async (query) => {
-    const api_call = await fetch(`http://localhost:8000${query}`)
+    const api_call = await fetch(`${config.APIHostName}:${config.APIHostingPort}${query}`)
     return await api_call.json()
   }
 

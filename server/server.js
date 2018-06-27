@@ -7,7 +7,7 @@ const app = express();
 
 app.listen(config.hostingPort, function(){
     console.log('Listing on port no. :', config.hostingPort);
-    console.log('Go To => http://localhost:8000');
+    console.log(`Go To => ${config.hostname}:${config.hostingPort}`);
 
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended : true}));
