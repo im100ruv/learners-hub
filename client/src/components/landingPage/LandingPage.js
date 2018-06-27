@@ -31,7 +31,10 @@ class Landing extends Component {
   render() {
     return (
       <div>
-        <Header/>
+        <div className="background"></div>
+        <div className="header_content">
+          <Header/>
+        </div>
             <div className="landing_content">
                 <div className="slider_images">
                     <Slider/>
@@ -45,11 +48,13 @@ class Landing extends Component {
                     <Paper className="icon">Get Certified</Paper>
                 </div>
             </div>
-            <Paper style={{margin:'auto',opacity:'0.7',padding:'1em 1em'}}><Typography style={this.heading_style}>Our Specialized Courses</Typography></Paper>
-            <div className="cards">
-              <div className="card"><Cards feature={this.state.Featured} /></div>
+            <div className="footer_content">
+              <Paper style={{background:'Transparent',margin:'auto',opacity:'0.7',padding:'1em 1em'}}><Typography style={this.heading_style}>Our Specialized Courses</Typography></Paper>
+              <div className="cards">
+                <div className="card"><Cards feature={this.state.Featured} /></div>
+              </div>
+              <Footer/>
             </div>
-            <Footer/>
       </div>
     )
   }
