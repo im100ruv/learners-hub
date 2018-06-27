@@ -1,6 +1,7 @@
 import React from 'react';
 import './CourseResource.css'
 import CircularProgress from '../materialUIComponents/CircularProgress';
+import config from '../../config/config.json';
 import BannerCard from '../courseDetail/BannerCard';
 
 export default class CourseDetail extends React.Component {
@@ -16,7 +17,7 @@ export default class CourseDetail extends React.Component {
   }
 
   fetchJsonData = async (query) => {
-    const api_call = await fetch(`http://localhost:8000${query}`)
+    const api_call = await fetch(`${config.APIHostName}:${config.APIHostingPort}${query}`)
     return await api_call.json()
   }
 

@@ -7,6 +7,7 @@ import AddCircle from "@material-ui/icons/AddCircle";
 import Delete from "@material-ui/icons/Delete";
 import Button from "@material-ui/core/Button";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import config from '../../config/config.json';
 import "./CreateCourse.css";
 
 const styles = theme => ({
@@ -57,34 +58,44 @@ class CreateCourse extends React.Component {
   state = {
     key: "LC0008",
     title: "",
-    subtitle:"",
-    banner_image:"",
+    subtitle: "",
+    banner_image: "",
     categories: "",
-    syllabus:"",
-    required_knowledge:"",
-    expected_learning:"",
+    syllabus: "",
+    required_knowledge: "",
+    expected_learning: "",
     expected_duration: "",
     level: "Beginner",
     summary: "",
-    new_release:false,
-    full_course_available:true,
-    expected_duration_unit:"months",
-    file: [],
-    instructors:[{
-      bio:"As an avid programmer and learner, Himanshu mukat began teaching and found his passion. He enjoys the best of both worlds as he works as a Course Developer at Udacity. After earning a degree in computer science, he made the smart decision and moved into the world of HTML, CSS, and JavaScript. For over seven years he worked for an international nonprofit doing everything from frontend web development, to backend programming, to database and server management. Before graduating from the University of Florida’s Web Design and Online Communications Master’s program with a degree in Mass Communication, he had already been asked by the University to come on board as a faculty member. Even with the planning, building and development of courses, he still tries to make time to take in the beauty of the California countryside.",
-      image:"https://yt3.ggpht.com/a-/ACSszfHJCef_uTyAEgv2HjWg7zV8Vks0hLJ4KAx8NA=s900-mo-c-c0xffffffff-rj-k-no",
-      name:"Himanshu Mukat",
+    new_release: false,
+    full_course_available: true,
+    expected_duration_unit: "months",
+    resources: [],
+    instructors: [{
+      bio: "As an avid programmer and learner, Himanshu mukat began teaching and found his passion. He enjoys the best of both worlds as he works as a Course Developer at Udacity. After earning a degree in computer science, he made the smart decision and moved into the world of HTML, CSS, and JavaScript. For over seven years he worked for an international nonprofit doing everything from frontend web development, to backend programming, to database and server management. Before graduating from the University of Florida’s Web Design and Online Communications Master’s program with a degree in Mass Communication, he had already been asked by the University to come on board as a faculty member. Even with the planning, building and development of courses, he still tries to make time to take in the beauty of the California countryside.",
+      image: "https://yt3.ggpht.com/a-/ACSszfHJCef_uTyAEgv2HjWg7zV8Vks0hLJ4KAx8NA=s900-mo-c-c0xffffffff-rj-k-no",
+      name: "Himanshu Mukat",
     }]
   };
   handleChange = stateName => event => {
     event.preventDefault();
+    let value = event.target.value.trim()
+    if (event.target.id === "banner-image-file") {
+      value = event.target.files[0]
+    }
+    if (event.target.id === "course-resources") {
+      value = []
+      for (const key in Object.keys(event.target.files)) {
+        value.push(event.target.files[key])
+      }
+    }
     this.setState({
-      [stateName]: event.target.value.trim()
+      [stateName]: value
     });
     return;
   };
   setData = () => {
-    let scope=this;
+    let scope = this;
     this.setState(
       {
         categories: this.state.categories.split(",").map(category => {
@@ -92,21 +103,24 @@ class CreateCourse extends React.Component {
         })
       },
       () => {
-        fetch("http://localhost:8000/api/courses", {
+        fetch(`${config.APIHostName}:${config.APIHostingPort}/api/courses`, {
           method: "post",
           body: JSON.stringify(this.state),
           headers: {
             "Content-Type": "application/json"
           }
-        }).then(function(response) {
+        }).then(function (response) {
           alert('Course uploaded successfully.');
-          scope.props.setMainComp("course-list","");
+          scope.props.setMainComp("course-list", "");
         });
       }
     );
   };
   render() {
     const { classes } = this.props;
+    let resList = this.state.resources.length > 0 ? this.state.resources.map(file=>{
+      return file.name
+    }).join(", ") : ""
     return (
       <form className={classes.container} autoComplete="off">
         <p className="uploadCourse">UPLOAD NEW COURSE</p>
@@ -125,10 +139,9 @@ class CreateCourse extends React.Component {
           onChange={this.handleChange("subtitle")}
         />
         <input
-          accept="image/*"
+          accept="image"
           className={classes.input}
           id="banner-image-file"
-          multiple
           type="file"
           onChange={this.handleChange("banner_image")}
         />
@@ -138,7 +151,7 @@ class CreateCourse extends React.Component {
           className={classes.textField}
           margin="normal"
           disabled
-          value={this.state.banner_image}
+          value={this.state.banner_image.name}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -149,7 +162,7 @@ class CreateCourse extends React.Component {
             )
           }}
         />
-       
+
         <TextField
           id="syllabus"
           label="Syllabus"
@@ -158,13 +171,13 @@ class CreateCourse extends React.Component {
           multiline
           onChange={this.handleChange("syllabus")}
         />
-         <input
-          accept="image/*"
+        <input
+          accept="*"
           className={classes.input}
-          id="course-file"
+          id="course-resources"
           multiple
           type="file"
-          onChange={this.handleChange("file")}
+          onChange={this.handleChange("resources")}
         />
         <TextField
           id="uploadCourse"
@@ -172,12 +185,12 @@ class CreateCourse extends React.Component {
           className={classes.textField}
           margin="normal"
           disabled
-          value={this.state.file}
+          value={resList}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <label htmlFor="course-file">
-                  <AddCircle className={"add-icon"}/>
+                <label htmlFor="course-resources">
+                  <AddCircle className={"add-icon"} />
                 </label>
               </InputAdornment>
             )
@@ -191,7 +204,7 @@ class CreateCourse extends React.Component {
           multiline
           onChange={this.handleChange("required_knowledge")}
         />
-         <TextField
+        <TextField
           id="expected-learning"
           label="Expected learning"
           placeholder="What will user get after completing this course?"
@@ -253,7 +266,7 @@ class CreateCourse extends React.Component {
             variant="contained"
             color="secondary"
             className={classes.button}
-            onClick={this.props.setMainComp.bind(this,"course-list","")}
+            onClick={this.props.setMainComp.bind(this, "course-list", "")}
           >
             Cancel
             <Delete />
@@ -267,7 +280,7 @@ class CreateCourse extends React.Component {
             Upload
             <FileUpload />
           </Button>
-          
+
         </div>
       </form>
     );
