@@ -80,10 +80,10 @@ class CreateCourse extends React.Component {
   handleChange = stateName => event => {
     event.preventDefault();
     let value = event.target.value.trim()
-    if (event.target.id === "banner-image-file") {
+    if (event.target.id === "banner-image-file" && event.target.files[0] ) {
       value = event.target.files[0]
     }
-    if (event.target.id === "course-resources") {
+    if (event.target.id === "course-resources" && event.target.files[0]) {
       value = []
       for (const key in Object.keys(event.target.files)) {
         value.push(event.target.files[key])
