@@ -101,30 +101,40 @@ class CreateCourse extends React.Component {
         })
       })
     } else if (event.target.id === "course-resources" && event.target.files[0]) {
-      // let value = []
-      // let storageRef = firebase.storage().ref(`courses/resources/${Date.now}`)
-      // //get download url for resource folder
+      let value = []
+      let storageRef = firebase.storage().ref(`courses/resources/${Date.now()}/`)
+      //this async task may create problems
+      storageRef.getDownloadURL().then(url => {
+        this.setState({
+          resourceFolderURL: url
+        });
+      })
 
-      // event.target.files.forEach((file, index) => {
-      //   let extension = file.name.split('.').pop()
-      //   let resourceRef = storageRef.child(file.name)
-      //   let uploadTask = resourceRef.put(file)
+      for (const key in Object.keys(event.target.files)) {
+        let file = event.target.files[key]
 
-      //   uploadTask.on('state_changed', snapshot => {
-      //     // code for progress
-      //   }, err => {
-      //     // error handling here
-      //     // use err.code to handle specific errors
-      //   }, () => {
-      //     // code after upload completion
-      //     snapshot.ref.getDownloadURL().then(url => {
-      //       value.push({
-      //         name: file.name,
-      //         URL: url
-      //       })
-      //     })
-      //   })
-      // })
+        let extension = file.name.split('.').pop()
+        let resourceRef = storageRef.child(file.name)
+        let uploadTask = resourceRef.put(file)
+
+        uploadTask.on('state_changed', snapshot => {
+          // code for progress
+        }, err => {
+          // error handling here
+          // use err.code to handle specific errors
+        }, () => {
+          // code after upload completion
+          resourceRef.getDownloadURL().then(url => {
+            value.push({
+              name: file.name,
+              URL: url
+            })
+            this.setState({
+              [stateName]: value
+            });
+          })
+        })
+      }
     } else {
       let value = event.target.value.trim()
       this.setState({
