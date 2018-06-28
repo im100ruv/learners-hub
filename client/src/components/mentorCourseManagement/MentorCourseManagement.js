@@ -41,12 +41,11 @@ class SimpleModal extends React.Component {
             authDomain: "lmsteam-bfd2a.firebaseapp.com",
             databaseURL: "https://lmsteam-bfd2a.firebaseio.com",
             projectId: "lmsteam-bfd2a",
-            storageBucket: "",
+            storageBucket: "lmsteam-bfd2a.appspot.com",
             messagingSenderId: "127092655126"
           };
           firebase.initializeApp(config);    
     }
-
     handleOpen = () => {
         this.setState({ open: true });
     };
@@ -62,6 +61,33 @@ class SimpleModal extends React.Component {
     getStudent=()=>{
         alert("get Student List enrolled for this course");
     }
+
+    uploadFile=()=>{
+        alert("uploadFileToDataBase");
+    }
+    addToFireBase=(event)=>
+    {
+        // alert(event.target.files[0].name);
+        let storageRef = firebase.storage().ref('courses/')
+        let extension = event.target.files[0].name.split('.').pop()
+        let bannerImgRef = storageRef.child(`${Date.now()}.${extension}`)
+        let uploadTask = bannerImgRef.put(event.target.files[0])
+
+        uploadTask.on('state_changed', snapshot => {
+          // code for progress
+        }, err => {
+          // error handling here
+          // use err.code to handle specific errors
+        }, () => {
+          // code after upload completion
+          bannerImgRef.getDownloadURL().then(url => {
+            alert(url);
+            //this url to be sent to the DataBase
+          })
+        })    
+    }
+
+    
 
     render() {
         const { classes } = this.props;
@@ -87,7 +113,8 @@ class SimpleModal extends React.Component {
                                     <div className="icons">
                                         <FileUpload/>
                                     </div>
-                                    <input type="file"/>
+                                    <input type="file" onChange={this.addToFireBase} />
+                                    <button onClick={this.uploadFile} className="icons">Upload</button>
                             </Typography>
                         </div>
                         <hr className="bottom-hr"/>
