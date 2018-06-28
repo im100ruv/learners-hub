@@ -7,7 +7,7 @@ import AddCircle from "@material-ui/icons/AddCircle";
 import Delete from "@material-ui/icons/Delete";
 import Button from "@material-ui/core/Button";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import config from '../../config/config.json';
+import config from "../../config/config.json";
 import "./CreateCourse.css";
 
 const styles = theme => ({
@@ -71,22 +71,26 @@ class CreateCourse extends React.Component {
     full_course_available: true,
     expected_duration_unit: "months",
     resources: [],
-    instructors: [{
-      bio: "As an avid programmer and learner, Himanshu mukat began teaching and found his passion. He enjoys the best of both worlds as he works as a Course Developer at Udacity. After earning a degree in computer science, he made the smart decision and moved into the world of HTML, CSS, and JavaScript. For over seven years he worked for an international nonprofit doing everything from frontend web development, to backend programming, to database and server management. Before graduating from the University of Florida’s Web Design and Online Communications Master’s program with a degree in Mass Communication, he had already been asked by the University to come on board as a faculty member. Even with the planning, building and development of courses, he still tries to make time to take in the beauty of the California countryside.",
-      image: "https://yt3.ggpht.com/a-/ACSszfHJCef_uTyAEgv2HjWg7zV8Vks0hLJ4KAx8NA=s900-mo-c-c0xffffffff-rj-k-no",
-      name: "Himanshu Mukat",
-    }]
+    instructors: [
+      {
+        bio:
+          "As an avid programmer and learner, Himanshu mukat began teaching and found his passion. He enjoys the best of both worlds as he works as a Course Developer at Udacity. After earning a degree in computer science, he made the smart decision and moved into the world of HTML, CSS, and JavaScript. For over seven years he worked for an international nonprofit doing everything from frontend web development, to backend programming, to database and server management. Before graduating from the University of Florida’s Web Design and Online Communications Master’s program with a degree in Mass Communication, he had already been asked by the University to come on board as a faculty member. Even with the planning, building and development of courses, he still tries to make time to take in the beauty of the California countryside.",
+        image:
+          "https://yt3.ggpht.com/a-/ACSszfHJCef_uTyAEgv2HjWg7zV8Vks0hLJ4KAx8NA=s900-mo-c-c0xffffffff-rj-k-no",
+        name: "Himanshu Mukat"
+      }
+    ]
   };
   handleChange = stateName => event => {
     event.preventDefault();
-    let value = event.target.value.trim()
+    let value = event.target.value.trim();
     if (event.target.id === "banner-image-file") {
-      value = event.target.files[0]
+      value = event.target.files[0];
     }
     if (event.target.id === "course-resources") {
-      value = []
+      value = [];
       for (const key in Object.keys(event.target.files)) {
-        value.push(event.target.files[key])
+        value.push(event.target.files[key]);
       }
     }
     this.setState({
@@ -96,6 +100,14 @@ class CreateCourse extends React.Component {
   };
   setData = () => {
     let scope = this;
+    if (this.state.title.length < 1) {
+      alert("Please give the course name");
+      return;
+    }
+    if (this.state.subtitle.length < 1) {
+      alert("Please give the Subtitle name for this course");
+      return;
+    }
     this.setState(
       {
         categories: this.state.categories.split(",").map(category => {
@@ -109,23 +121,33 @@ class CreateCourse extends React.Component {
           headers: {
             "Content-Type": "application/json"
           }
-        }).then(function (response) {
-          alert('Course uploaded successfully.');
-          scope.props.setMainComp("course-list", "");
-        });
+        })
+          .then(function(response) {
+            alert("Course uploaded successfully.");
+            scope.props.setMainComp("course-list", "");
+          })
+          .catch(err => {
+            alert("Course not uploaded");
+          });
       }
     );
   };
   render() {
     const { classes } = this.props;
-    let resList = this.state.resources.length > 0 ? this.state.resources.map(file=>{
-      return file.name
-    }).join(", ") : ""
+    let resList =
+      this.state.resources.length > 0
+        ? this.state.resources
+            .map(file => {
+              return file.name;
+            })
+            .join(", ")
+        : "";
     return (
       <form className={classes.container} autoComplete="off">
         <p className="uploadCourse">UPLOAD NEW COURSE</p>
         <TextField
           id="title"
+          required
           label="Name of Course"
           className={classes.textField}
           margin="normal"
@@ -133,6 +155,7 @@ class CreateCourse extends React.Component {
         />
         <TextField
           id="subtitle"
+          required
           label="Subtitle of Course"
           className={classes.textField}
           margin="normal"
@@ -280,7 +303,6 @@ class CreateCourse extends React.Component {
             Upload
             <FileUpload />
           </Button>
-
         </div>
       </form>
     );
