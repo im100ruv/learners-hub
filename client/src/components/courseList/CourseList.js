@@ -14,7 +14,7 @@ class courseList extends Component {
   heading_style = {
                     minWidth:'fit-content',
                     color:'white',
-                    fontSize:'38px',
+                    fontSize:'2em',
                     fontWeight:'bold',
                     fontFamily:'TimesNewRoman',
                     height:'1.5em',

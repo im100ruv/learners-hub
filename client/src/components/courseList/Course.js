@@ -14,7 +14,7 @@ class Child extends Component {
     // }
     
     heading_style = {
-                fontSize : '25px',
+                fontSize : '1.3em',
                 fontFamily:'roboto',
                 color: 'black',
                 fontWeight:'bold',
@@ -29,7 +29,8 @@ class Child extends Component {
         backgroundColor:'rgba(150,180,100,1)',
         margin:'0px 5px',
         padding:'5px 5px',
-        color:'white'
+        color:'white',
+        margin:'0.2em 0.2em'
     }
 
     icon_style={
@@ -40,9 +41,10 @@ class Child extends Component {
     }
 
     style_categories ={
-        display:'flex',
         position:'relative',
-        left:'50px'
+        left:'50px',
+        display:'grid',
+        gridTemplateColumns:'1fr 1fr 1fr'
     }
 
     style_subject = {
@@ -69,9 +71,11 @@ class Child extends Component {
                     </ListItem>
                     <ListItem>
                         {
-                            <div style={this.style_categories}>{
+                            <div className="categories" style={this.style_categories}>{
                                 element.categories.map(element =>{
+                                    if(element){
                                     return <Paper style={this.tag_style}>{element}</Paper>;
+                                    }
                                 })
                             }</div>
                         }
