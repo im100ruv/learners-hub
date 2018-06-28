@@ -73,6 +73,7 @@ class CreateCourse extends React.Component {
     full_course_available: true,
     expected_duration_unit: "months",
     resources: [],
+    resourcesName:'',
     instructors: [
       {
         bio:
@@ -88,6 +89,9 @@ class CreateCourse extends React.Component {
     event.preventDefault();
     if (event.target.id === "banner-image-file" && event.target.files[0]) {
       let bannerName=event.target.files[0].name;
+      this.setState({
+        bannerName: bannerName
+      });
       let storageRef = firebase.storage().ref('courses/banners/')
       let extension = event.target.files[0].name.split('.').pop()
       let bannerImgRef = storageRef.child(`${Date.now()}.${extension}`)
@@ -103,11 +107,17 @@ class CreateCourse extends React.Component {
         bannerImgRef.getDownloadURL().then(url => {
           this.setState({
             [stateName]: url,
-            bannerName: bannerName
           });
         })
       })
     } else if (event.target.id === "course-resources" && event.target.files[0]) {
+      let resourcesName = "";
+      for (const key in Object.keys(event.target.files)) {
+        resourcesName=resourcesName+event.target.files[key].name+"\n";
+      }
+      this.setState({
+        resourcesName: resourcesName
+      });
       // let value = []
       // let storageRef = firebase.storage().ref(`courses/resources/${Date.now}`)
       // //get download url for resource folder
@@ -149,7 +159,11 @@ class CreateCourse extends React.Component {
     if (this.state.subtitle.length < 1) {
       alert("Please give the Subtitle name for this course");
       return;
-    }          
+    }  
+    if (this.state.categories.length < 1) {
+      alert("Please give some categories for this course");
+      return;
+    }         
     firebase.storage().ref('courses/banners/').child('default.jpg').getDownloadURL().then(url => {
       let bannerURL = this.state.banner_image
       if (this.state.banner_image === "") {
@@ -183,14 +197,6 @@ class CreateCourse extends React.Component {
 
   render() {
     const { classes } = this.props;
-    let resourseList =
-      this.state.resources.length > 0
-        ? this.state.resources
-            .map(file => {
-              return file.name;
-            })
-            .join("\n")
-        : "";
     return (
       <form className={classes.container} autoComplete="off">
         <p className="uploadCourse">UPLOAD NEW COURSE</p>
@@ -258,7 +264,7 @@ class CreateCourse extends React.Component {
           margin="normal"
           disabled
           multiline
-          value={resourseList}
+          value={this.state.resourcesName}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -289,6 +295,7 @@ class CreateCourse extends React.Component {
         <TextField
           id="categories"
           label="Categories"
+          required
           className={classes.textField}
           placeholder="Enter comma seperated course category"
           margin="normal"
