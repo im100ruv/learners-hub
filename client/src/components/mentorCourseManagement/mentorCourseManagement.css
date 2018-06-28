@@ -1,6 +1,19 @@
 .mentor-item:hover{
     cursor: pointer;
 }
+.mentor-item{
+    margin:0.5em 1em;
+    padding: 0.2em 0.2em;
+    transform: scale(1);
+    transition: all ease-in-out 0.1s;
+    
+}
+.mentor-item:hover{
+    transform: scale(1.05);
+    transition: all ease-in-out 0.1s;
+    background: whitesmoke;
+    border-radius: 10px;
+}
 .icons{
     float: right;
     margin-right:1em;
@@ -10,7 +23,7 @@
 }
 .bottom-hr{
     height:1px;
-    background: green;
+    background: rgb(0, 255, 0);
 }
 .input{
     color:green;

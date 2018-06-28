@@ -34,7 +34,8 @@ class SimpleModal extends React.Component {
     constructor(props){
         super(props);
         this.state={
-            open: false
+            open: false,
+            file_url: undefined
         }
         var config = {
             apiKey: "AIzaSyDQlt81NoxBvuRisNTmCn8Kh_tRZ9rS4_A",
@@ -83,6 +84,10 @@ class SimpleModal extends React.Component {
           bannerImgRef.getDownloadURL().then(url => {
             alert(url);
             //this url to be sent to the DataBase
+            this.setState({
+                file_url:url
+            })
+            console.log(this.state.file_url);
           })
         })    
     }
@@ -111,6 +116,7 @@ class SimpleModal extends React.Component {
                                     <div className="icons">
                                         <FileUpload/>
                                     </div>
+                                    <br/><br/>
                                     <div><input class="input" type="file" onChange={this.addToFireBase} /></div>
                                     <input type="button" className="upload" value="Upload File" onClick={this.uploadFile} />
                             </Typography>
