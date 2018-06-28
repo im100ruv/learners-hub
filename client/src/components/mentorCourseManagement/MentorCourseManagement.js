@@ -87,11 +87,8 @@ class SimpleModal extends React.Component {
         })    
     }
 
-    
-
     render() {
         const { classes } = this.props;
-
         return (
         <div>
             <Button onClick={this.handleOpen}>Sample Course</Button>
@@ -99,40 +96,41 @@ class SimpleModal extends React.Component {
             aria-labelledby="Update_Course_Modal"
             open={this.state.open}
             onClose={this.handleClose}
+            className="modal"
             >
             <div style={getModalPosition()} className={classes.paper}>
-                <Typography style={{textAlign:'center'}} variant="title" id="modal-title">
+                <Typography style={{textAlign:'center',fontSize:'1.6em'}} variant="title" id="modal-title">
                 Mentor Activities
                 </Typography>
                 <hr className="top-hr"/>
                 <div className="content">
                     <div className="items">
                         <div className="mentor-item">
-                            <Typography style={{fontSize:'1.4em'}}>
+                            <Typography style={{fontSize:'1.1em'}}>
                                     Add Chapter
                                     <div className="icons">
                                         <FileUpload/>
                                     </div>
-                                    <input type="file" onChange={this.addToFireBase} />
-                                    <button onClick={this.uploadFile} className="icons">Upload</button>
+                                    <div><input class="input" type="file" onChange={this.addToFireBase} /></div>
+                                    <input type="button" className="upload" value="Upload File" onClick={this.uploadFile} />
                             </Typography>
                         </div>
                         <hr className="bottom-hr"/>
                         <div className="mentor-item" onClick={this.updateData}>
-                            <Typography style={{fontSize:'1.4em'}}>
+                            <Typography style={{fontSize:'1.1em'}}>
                             Delete Chapter
                             <div className="icons">
                                 <Delete/>
-                            </div>
+                            </div>  
                             </Typography>
                         </div>
                         <hr className="bottom-hr"/>
                         <div className="mentor-item" onClick={this.getStudent}>
-                            <Typography style={{fontSize:'1.4em'}}>Certify Student</Typography>
+                            <Typography style={{fontSize:'1.1em'}}>Certify Student</Typography>
                         </div>
                         <hr className="bottom-hr"/>
                         <div className="mentor-item" onClick={this.getStudent}>
-                            <Typography style={{fontSize:'1.4em'}}>Review Student</Typography>
+                            <Typography style={{fontSize:'1.1em'}}>Review Student</Typography>
                         </div>
                         <hr className="bottom-hr"/>
                     </div>

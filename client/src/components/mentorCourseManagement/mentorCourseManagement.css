@@ -6,10 +6,24 @@
     margin-right:1em;
 }
 .top-hr{
-    height: 3px;
-    background: yellow;
+    height: 2px;
 }
 .bottom-hr{
-    height:2px;
-    background: black;
+    height:1px;
+    background: green;
+}
+.input{
+    color:green;
+}
+.modal{
+    background:lightgreen;
+    opacity: 0.8;
+}
+.upload{
+    border:none;
+    padding:0.5em 1em;
+    background-color: green;
+    color:white;
+    margin-top:1em;
+    cursor:pointer;
 }
