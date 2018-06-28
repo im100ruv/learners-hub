@@ -84,7 +84,7 @@ class CreateCourse extends React.Component {
   handleChange = stateName => event => {
     event.preventDefault();
     let value = event.target.value.trim();
-    if (event.target.id === "banner-image-file") {
+    if (event.target.id === "banner-image-file" && event.target.files[0]) {
       value = event.target.files[0];
     }
     if (event.target.id === "course-resources") {
@@ -162,7 +162,7 @@ class CreateCourse extends React.Component {
           onChange={this.handleChange("subtitle")}
         />
         <input
-          accept="image"
+          accept="image/*"
           className={classes.input}
           id="banner-image-file"
           type="file"
@@ -174,7 +174,7 @@ class CreateCourse extends React.Component {
           className={classes.textField}
           margin="normal"
           disabled
-          value={this.state.banner_image.name}
+          value={this.state.banner_image.name?this.state.banner_image.name:""}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
