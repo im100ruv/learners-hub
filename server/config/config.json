@@ -2,14 +2,5 @@
 	"appName": "learners-hub",
 	"hostName": "http://localhost",
 	"hostingPort": 8000,
-	"db": "mongodb://lmsteam:KAAS_lms90@ds163650.mlab.com:63650/learnershub",
-
-	"firebaseConfig" : {
-		"apiKey": "AIzaSyCAuAb4UxMnprYKyUtw_jRqg116WVa46JA",
-		"authDomain": "learnershub-mountblue.firebaseapp.com",
-		"databaseURL": "https://learnershub-mountblue.firebaseio.com",
-		"projectId": "learnershub-mountblue",
-		"storageBucket": "learnershub-mountblue.appspot.com",
-		"messagingSenderId": "229870701693"
-	}
+	"db": "mongodb://lmsteam:KAAS_lms90@ds163650.mlab.com:63650/learnershub"
 }

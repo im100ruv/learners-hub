@@ -1,5 +1,4 @@
 const query = require('./courseQuery');
-const firebaseAdmin = require('firebase-admin');
 
 function getCoursesList(request, response) {
     if (request.query.category) {
@@ -38,77 +37,21 @@ function getCourse(request, response) {
 }
 
 function addCourse(request, response) {
-    if (!(request.body["banner_image"] == "")) {
-        let storageRef = firebaseAdmin.storage().ref('courses/banner/')
-        let extension = request.body["banner_image"].name.split('.').pop()
-        let bannerImgRef = storageRef.child(`${request.body["title"]}.${extension}`)
-        let uploadTask = bannerImgRef.put(request.body["banner_image"])
-
-        uploadTask.on('state_changed', snapshot => {
-            // code for progress
-        }, err => {
-            // error handling here
-            // use err.code to handle specific errors
-        }, () => {
-            // code after upload completion
-            snapshot.ref.getDownloadURL().then(url => {
-                request.body["banner_image"] = url
-                query.addCourseToList(request.body)
-                    .then(res => {
-                        response.send(res);
-                    }).catch(err => {
-                        response.send(err);
-                    });
-            })
-        })
-    } else {
-        firebaseAdmin.storage().ref('courses/banner/').child('default.jpg').getDownloadURL().then(url => {
-            request.body["banner_image"] = url
-            query.addCourseToList(request.body)
-                .then(res => {
-                    response.send(res);
-                }).catch(err => {
-                    response.send(err);
-                });
-        })
-    }
+    query.addCourseToList(request.body)
+        .then(res => {
+            response.send(res);
+        }).catch(err => {
+            response.send(err);
+        });
 }
 
 function updateCourse(request, response) {
-    if (!(request.body["banner_image"] == "")) {
-        let storageRef = firebaseAdmin.storage().ref('courses/banner/')
-        let extension = request.body["banner_image"].name.split('.').pop()
-        let bannerImgRef = storageRef.child(`${request.body["title"]}.${extension}`)
-        let uploadTask = bannerImgRef.put(request.body["banner_image"])
-
-        uploadTask.on('state_changed', snapshot => {
-            // code for progress
-        }, err => {
-            // error handling here
-            // use err.code to handle specific errors
-        }, () => {
-            // code after upload completion
-            snapshot.ref.getDownloadURL().then(url => {
-                request.body["banner_image"] = url
-                query.updateCourseInList(request.params.key, request.body)
-                    .then(res => {
-                        response.send(res);
-                    }).catch(err => {
-                        response.send(err);
-                    });
-            })
-        })
-    } else {
-        firebaseAdmin.storage().ref('courses/banner/').child('default.jpg').getDownloadURL().then(url => {
-            request.body["banner_image"] = url
-            query.updateCourseInList(request.params.key, request.body)
-                .then(res => {
-                    response.send(res);
-                }).catch(err => {
-                    response.send(err);
-                });
-        })
-    }
+    query.updateCourseInList(request.params.key, request.body)
+        .then(res => {
+            response.send(res);
+        }).catch(err => {
+            response.send(err);
+        });
 }
 
 function deleteCourse(request, response) {

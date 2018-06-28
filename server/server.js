@@ -3,7 +3,6 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const config = require('./config/config.json');
 const routes = require('./routes');
-const firebaseAdmin = require('firebase-admin');
 const app = express();
 
 app.listen(config.hostingPort, function () {
@@ -23,9 +22,6 @@ app.listen(config.hostingPort, function () {
     mongoose.connect(config.db)
         .then(success => {
             console.log('DB is Connected');
-            // Initialize firebase
-            firebaseAdmin.initializeApp(config.firebaseConfig);
-            console.log("firebase initialized")
             routes.setup(app);
         }).catch(err => {
             mongoose.connection.close().then(() => {
