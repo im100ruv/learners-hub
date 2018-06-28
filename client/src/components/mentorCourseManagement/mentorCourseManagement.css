@@ -1,21 +1,15 @@
-.content{
-    height:500px;
-    border:1px solid red;
-    display:flex;
-    }
-    .items{
-        order:0;
-        height:100%;
-        width:50%;
-        border:1px solid green;
-    }
-    .sample{
-        order:1;
-        height:100%;
-        width:50%;
-        border:1px solid yellow;
-    }
-    .mentor-item:hover{
-        background: lightblue;
-        cursor: pointer;
-    }
+.mentor-item:hover{
+    cursor: pointer;
+}
+.icons{
+    float: right;
+    margin-right:1em;
+}
+.top-hr{
+    height: 3px;
+    background: yellow;
+}
+.bottom-hr{
+    height:2px;
+    background: black;
+}

@@ -7,7 +7,7 @@ import Paper from '@material-ui/core/Paper';
 import './mentorCourseManagement.css';
 import FileUpload from "@material-ui/icons/FileUpload";
 import Delete from '@material-ui/icons/Delete';
-
+import firebase from 'firebase';
 
 function getModalPosition() {
   const top = 50;
@@ -36,6 +36,15 @@ class SimpleModal extends React.Component {
         this.state={
             open: false
         }
+        var config = {
+            apiKey: "AIzaSyDQlt81NoxBvuRisNTmCn8Kh_tRZ9rS4_A",
+            authDomain: "lmsteam-bfd2a.firebaseapp.com",
+            databaseURL: "https://lmsteam-bfd2a.firebaseio.com",
+            projectId: "lmsteam-bfd2a",
+            storageBucket: "",
+            messagingSenderId: "127092655126"
+          };
+          firebase.initializeApp(config);    
     }
 
     handleOpen = () => {
@@ -66,26 +75,39 @@ class SimpleModal extends React.Component {
             onClose={this.handleClose}
             >
             <div style={getModalPosition()} className={classes.paper}>
-                <Typography variant="title" id="modal-title">
-                Add an Activity or Resource
+                <Typography style={{textAlign:'center'}} variant="title" id="modal-title">
+                Mentor Activities
                 </Typography>
+                <hr className="top-hr"/>
                 <div className="content">
                     <div className="items">
-                        <div className="mentor-item" onClick={this.updateData}>
-                            <Typography style={{fontSize:'1.4em'}}>Add Chapter<FileUpload/></Typography>
+                        <div className="mentor-item">
+                            <Typography style={{fontSize:'1.4em'}}>
+                                    Add Chapter
+                                    <div className="icons">
+                                        <FileUpload/>
+                                    </div>
+                                    <input type="file"/>
+                            </Typography>
                         </div>
+                        <hr className="bottom-hr"/>
                         <div className="mentor-item" onClick={this.updateData}>
-                            <Typography style={{fontSize:'1.4em'}}>Delete Chapter<Delete/></Typography>
+                            <Typography style={{fontSize:'1.4em'}}>
+                            Delete Chapter
+                            <div className="icons">
+                                <Delete/>
+                            </div>
+                            </Typography>
                         </div>
+                        <hr className="bottom-hr"/>
                         <div className="mentor-item" onClick={this.getStudent}>
                             <Typography style={{fontSize:'1.4em'}}>Certify Student</Typography>
                         </div>
+                        <hr className="bottom-hr"/>
                         <div className="mentor-item" onClick={this.getStudent}>
                             <Typography style={{fontSize:'1.4em'}}>Review Student</Typography>
                         </div>
-                    </div>
-                    <div className="sample">
-                        SAMPLE  
+                        <hr className="bottom-hr"/>
                     </div>
                 </div>
                 
