@@ -5,6 +5,9 @@ import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import './mentorCourseManagement.css';
+import FileUpload from "@material-ui/icons/FileUpload";
+import Delete from '@material-ui/icons/Delete';
+
 
 function getModalPosition() {
   const top = 50;
@@ -44,7 +47,11 @@ class SimpleModal extends React.Component {
     };
 
     updateData=()=>{
-        alert("hi");
+        alert("upload file using fireBase");
+    }
+
+    getStudent=()=>{
+        alert("get Student List enrolled for this course");
     }
 
     render() {
@@ -52,7 +59,7 @@ class SimpleModal extends React.Component {
 
         return (
         <div>
-            <Button onClick={this.handleOpen}>Add More Items</Button>
+            <Button onClick={this.handleOpen}>Sample Course</Button>
             <Modal
             aria-labelledby="Update_Course_Modal"
             open={this.state.open}
@@ -64,18 +71,21 @@ class SimpleModal extends React.Component {
                 </Typography>
                 <div className="content">
                     <div className="items">
-                    <div className="Chapter"onClick={this.updateData}>
-                        Chapter
-                    </div>
-                    <div className="Chapter"onClick={this.updateData}>
-                        Chapter
-                    </div>
-                    <div className="Chapter"onClick={this.updateData}>
-                        Chapter
-                    </div>
+                        <div className="mentor-item" onClick={this.updateData}>
+                            <Typography style={{fontSize:'1.4em'}}>Add Chapter<FileUpload/></Typography>
+                        </div>
+                        <div className="mentor-item" onClick={this.updateData}>
+                            <Typography style={{fontSize:'1.4em'}}>Delete Chapter<Delete/></Typography>
+                        </div>
+                        <div className="mentor-item" onClick={this.getStudent}>
+                            <Typography style={{fontSize:'1.4em'}}>Certify Student</Typography>
+                        </div>
+                        <div className="mentor-item" onClick={this.getStudent}>
+                            <Typography style={{fontSize:'1.4em'}}>Review Student</Typography>
+                        </div>
                     </div>
                     <div className="sample">
-                    SAMPLE  
+                        SAMPLE  
                     </div>
                 </div>
                 

@@ -7,7 +7,6 @@ class App extends Component {
       <React.Fragment>
         <Mentor/>
       </React.Fragment>
-      
     );
   }
 }

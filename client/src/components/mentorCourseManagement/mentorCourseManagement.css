@@ -15,8 +15,7 @@
         width:50%;
         border:1px solid yellow;
     }
-    .Chapter:hover{
-        background: black;
-        color:white;
+    .mentor-item:hover{
+        background: lightblue;
         cursor: pointer;
     }
