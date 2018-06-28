@@ -134,13 +134,13 @@ class CreateCourse extends React.Component {
   };
   render() {
     const { classes } = this.props;
-    let resList =
+    let resourseList =
       this.state.resources.length > 0
         ? this.state.resources
             .map(file => {
               return file.name;
             })
-            .join(", ")
+            .join("\n")
         : "";
     return (
       <form className={classes.container} autoComplete="off">
@@ -208,7 +208,8 @@ class CreateCourse extends React.Component {
           className={classes.textField}
           margin="normal"
           disabled
-          value={resList}
+          multiline
+          value={resourseList}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
