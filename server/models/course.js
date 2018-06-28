@@ -7,7 +7,11 @@ const schema = new mongoose.Schema({
     banner_image: String,
     categories: [ String ],
     syllabus: String,
-    resources: [String],
+    resourceFolderURL: String,
+    resources: [{
+      name: String,
+      URL: String
+    }],
     level: String,
     summary: String,
     new_release: Boolean,

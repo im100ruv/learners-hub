@@ -9,6 +9,7 @@ import Button from "@material-ui/core/Button";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import config from '../../config/config.json';
 import "./CreateCourse.css";
+import firebase from 'firebase';
 
 const styles = theme => ({
   container: {
@@ -77,48 +78,94 @@ class CreateCourse extends React.Component {
       name: "Himanshu Mukat",
     }]
   };
+
   handleChange = stateName => event => {
     event.preventDefault();
-    let value = event.target.value.trim()
-    if (event.target.id === "banner-image-file") {
-      value = event.target.files[0]
+    if (event.target.id === "banner-image-file" && event.target.files[0]) {
+      let storageRef = firebase.storage().ref('courses/banners/')
+      let extension = event.target.files[0].name.split('.').pop()
+      let bannerImgRef = storageRef.child(`${Date.now()}.${extension}`)
+      let uploadTask = bannerImgRef.put(event.target.files[0])
+
+      uploadTask.on('state_changed', snapshot => {
+        // code for progress
+      }, err => {
+        // error handling here
+        // use err.code to handle specific errors
+      }, () => {
+        // code after upload completion
+        bannerImgRef.getDownloadURL().then(url => {
+          this.setState({
+            [stateName]: url
+          });
+        })
+      })
+    } else if (event.target.id === "course-resources" && event.target.files[0]) {
+      // let value = []
+      // let storageRef = firebase.storage().ref(`courses/resources/${Date.now}`)
+      // //get download url for resource folder
+
+      // event.target.files.forEach((file, index) => {
+      //   let extension = file.name.split('.').pop()
+      //   let resourceRef = storageRef.child(file.name)
+      //   let uploadTask = resourceRef.put(file)
+
+      //   uploadTask.on('state_changed', snapshot => {
+      //     // code for progress
+      //   }, err => {
+      //     // error handling here
+      //     // use err.code to handle specific errors
+      //   }, () => {
+      //     // code after upload completion
+      //     snapshot.ref.getDownloadURL().then(url => {
+      //       value.push({
+      //         name: file.name,
+      //         URL: url
+      //       })
+      //     })
+      //   })
+      // })
+    } else {
+      let value = event.target.value.trim()
+      this.setState({
+        [stateName]: value
+      });
     }
-    if (event.target.id === "course-resources") {
-      value = []
-      for (const key in Object.keys(event.target.files)) {
-        value.push(event.target.files[key])
-      }
-    }
-    this.setState({
-      [stateName]: value
-    });
-    return;
   };
+
   setData = () => {
     let scope = this;
-    this.setState(
-      {
-        categories: this.state.categories.split(",").map(category => {
-          return category.trim();
-        })
-      },
-      () => {
-        fetch(`${config.APIHostName}:${config.APIHostingPort}/api/courses`, {
-          method: "post",
-          body: JSON.stringify(this.state),
-          headers: {
-            "Content-Type": "application/json"
-          }
-        }).then(function (response) {
-          alert('Course uploaded successfully.');
-          scope.props.setMainComp("course-list", "");
-        });
+    firebase.storage().ref('courses/banners/').child('default.jpg').getDownloadURL().then(url => {
+      let bannerURL = this.state.banner_image
+      if (this.state.banner_image === "") {
+        bannerURL = url
       }
-    );
+      this.setState(
+        {
+          banner_image: bannerURL,
+          categories: this.state.categories.split(",").map(category => {
+            return category.trim();
+          })
+        },
+        () => {
+          fetch(`${config.APIHostName}:${config.APIHostingPort}/api/courses`, {
+            method: "post",
+            body: JSON.stringify(this.state),
+            headers: {
+              "Content-Type": "application/json"
+            }
+          }).then(function (response) {
+            alert('Course uploaded successfully.');
+            scope.props.setMainComp("course-list", "");
+          });
+        }
+      );
+    })
   };
+
   render() {
     const { classes } = this.props;
-    let resList = this.state.resources.length > 0 ? this.state.resources.map(file=>{
+    let resList = this.state.resources.length > 0 ? this.state.resources.map(file => {
       return file.name
     }).join(", ") : ""
     return (
