@@ -66,30 +66,34 @@ class SimpleModal extends React.Component {
     uploadFile=()=>{
         alert("uploadFileToDataBase");
     }
+
     addToFireBase=(event)=>
     {
-        // alert(event.target.files[0].name);
-        let storageRef = firebase.storage().ref('courses/')
-        let extension = event.target.files[0].name.split('.').pop()
-        let bannerImgRef = storageRef.child(`${Date.now()}.${extension}`)
-        let uploadTask = bannerImgRef.put(event.target.files[0])
-
-        uploadTask.on('state_changed', snapshot => {
-          // code for progress
-        }, err => {
-          // error handling here
-          // use err.code to handle specific errors
-        }, () => {
-          // code after upload completion
-          bannerImgRef.getDownloadURL().then(url => {
-            alert(url);
-            //this url to be sent to the DataBase
-            this.setState({
-                file_url:url
+        // let resourcesName;
+        for (const key in Object.keys(event.target.files)) {
+            let storageRef = firebase.storage().ref('courses/multifiles/');
+            let file = event.target.files[key];
+            // resourcesName = resourcesName + event.target.files[key].name + "\n";
+            let FileRef = storageRef.child(file.name);
+            let uploadTask = FileRef.put(file);
+            
+            uploadTask.on('state_changed', snapshot => {
+            // code for progress
+            }, err => {
+            // error handling here
+            }, () => {
+            // code after upload completion
+            FileRef.getDownloadURL().then(url => {
+                alert(url);
+                //this url to be sent to the DataBase
+                this.setState({
+                    file_url:url
+                })
+                console.log(this.state.file_url);
             })
-            console.log(this.state.file_url);
-          })
-        })    
+            })
+        }  
+        // console.log(resourcesName);
     }
 
     render() {
@@ -117,7 +121,7 @@ class SimpleModal extends React.Component {
                                         <FileUpload/>
                                     </div>
                                     <br/><br/>
-                                    <div><input class="input" type="file" onChange={this.addToFireBase} /></div>
+                                    <div><input multiple class="input" type="file" onChange={this.addToFireBase} /></div>
                                     <input type="button" className="upload" value="Upload File" onClick={this.uploadFile} />
                             </Typography>
                         </div>
