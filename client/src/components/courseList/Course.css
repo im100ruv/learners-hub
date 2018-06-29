@@ -1,6 +1,8 @@
 #subject{
     transform: scale(1);
     transition: all ease-in-out 0.6s;
+    overflow: auto;
+    max-height: 12em;
 }  
   #subject:hover{
     transform: scale(1.05);
@@ -9,3 +11,10 @@
 body{
     background : linear-gradient(to right, rgba(255,0,0,0), rgb(211, 212, 100));
 }
+::-webkit-scrollbar-track {    
+    border-radius: 30px;
+}
+::-webkit-scrollbar-thumb { 
+    border-radius: 30px;
+}
+
