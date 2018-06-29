@@ -27,7 +27,6 @@ class Child extends Component {
 
     tag_style = {
         backgroundColor:'rgba(150,180,100,1)',
-        margin:'0px 5px',
         padding:'5px 5px',
         color:'white',
         margin:'0.2em 0.2em',
@@ -83,6 +82,7 @@ class Child extends Component {
                                     if(element){
                                     return <Paper style={this.tag_style}>{element}</Paper>;
                                     }
+                                    return  ""
                                 })
                             }</div>
                         }
