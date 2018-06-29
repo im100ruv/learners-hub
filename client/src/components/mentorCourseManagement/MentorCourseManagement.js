@@ -8,7 +8,7 @@ import FileUpload from "@material-ui/icons/FileUpload";
 import Delete from '@material-ui/icons/Delete';
 import firebase from 'firebase';
 // import config from "../../config/config.json";
-import './mentorCourseManagement.css';
+import './MentorCourseManagement.css';
 
 function getModalPosition() {
   const top = 50;
@@ -37,16 +37,7 @@ class SimpleModal extends React.Component {
         this.state={
             open: false,
             file_url: []
-        }
-        // var config = {
-        //     apiKey: "AIzaSyDQlt81NoxBvuRisNTmCn8Kh_tRZ9rS4_A",
-        //     authDomain: "lmsteam-bfd2a.firebaseapp.com",
-        //     databaseURL: "https://lmsteam-bfd2a.firebaseio.com",
-        //     projectId: "lmsteam-bfd2a",
-        //     storageBucket: "lmsteam-bfd2a.appspot.com",
-        //     messagingSenderId: "127092655126"
-        //   };
-        //   firebase.initializeApp(config);    
+        }    
     }
     handleOpen = () => {
         this.setState({ open: true });
@@ -88,7 +79,7 @@ class SimpleModal extends React.Component {
             FileRef.getDownloadURL().then(url => {
                 url_array.push({name : file.name,link : url});
                 console.log(url_array);
-                alert(url);
+                // alert(url);
                 //this url to be sent to the DataBase
                 this.setState({
                     file_url:url_array
@@ -145,6 +136,10 @@ class SimpleModal extends React.Component {
                         <hr className="bottom-hr"/>
                         <div className="mentor-item" onClick={this.getStudent}>
                             <Typography style={{fontSize:'1.1em'}}>Review Student</Typography>
+                        </div>
+                        <hr className="bottom-hr"/>
+                        <div className="mentor-item" onClick={this.getStudent}>
+                            <Typography style={{fontSize:'1.1em'}}>Update Course</Typography>
                         </div>
                         <hr className="bottom-hr"/>
                     </div>
