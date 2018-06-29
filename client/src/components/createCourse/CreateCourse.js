@@ -57,11 +57,11 @@ const diffLevel = [
 
 class CreateCourse extends React.Component {
   state = {
-    key: "LC0008",
+    key: "LC",
     title: "",
     subtitle: "",
     banner_image: "",
-    bannerName:"",
+    bannerName: "",
     categories: "",
     syllabus: "",
     required_knowledge: "",
@@ -73,7 +73,7 @@ class CreateCourse extends React.Component {
     full_course_available: true,
     expected_duration_unit: "months",
     resources: [],
-    resourcesName:'',
+    resourcesName: '',
     instructors: [
       {
         bio:
@@ -88,13 +88,13 @@ class CreateCourse extends React.Component {
   handleChange = stateName => event => {
     event.preventDefault();
     if (event.target.id === "banner-image-file" && event.target.files[0]) {
-      let bannerName=event.target.files[0].name;
+      let bannerName = event.target.files[0].name;
       this.setState({
         bannerName: bannerName
       });
       let storageRef = firebase.storage().ref('courses/banners/')
       let extension = event.target.files[0].name.split('.').pop()
-      let bannerImgRef = storageRef.child(`${Date.now()}.${extension}`)
+      let bannerImgRef = storageRef.child(`CB${Date.now()}.${extension}`)
       let uploadTask = bannerImgRef.put(event.target.files[0])
 
       uploadTask.on('state_changed', snapshot => {
@@ -113,35 +113,45 @@ class CreateCourse extends React.Component {
     } else if (event.target.id === "course-resources" && event.target.files[0]) {
       let resourcesName = "";
       for (const key in Object.keys(event.target.files)) {
-        resourcesName=resourcesName+event.target.files[key].name+"\n";
+        resourcesName = resourcesName + event.target.files[key].name + "\n";
       }
       this.setState({
         resourcesName: resourcesName
       });
-      // let value = []
-      // let storageRef = firebase.storage().ref(`courses/resources/${Date.now}`)
-      // //get download url for resource folder
 
-      // event.target.files.forEach((file, index) => {
-      //   let extension = file.name.split('.').pop()
-      //   let resourceRef = storageRef.child(file.name)
-      //   let uploadTask = resourceRef.put(file)
+      let value = []
+      let storageRef = firebase.storage().ref(`courses/resources/CRF${Date.now()}/`)
+      //this async task may create problems
+      storageRef.getDownloadURL().then(url => {
+        this.setState({
+          resourceFolderURL: url
+        });
+      })
 
-      //   uploadTask.on('state_changed', snapshot => {
-      //     // code for progress
-      //   }, err => {
-      //     // error handling here
-      //     // use err.code to handle specific errors
-      //   }, () => {
-      //     // code after upload completion
-      //     snapshot.ref.getDownloadURL().then(url => {
-      //       value.push({
-      //         name: file.name,
-      //         URL: url
-      //       })
-      //     })
-      //   })
-      // })
+      for (const key in Object.keys(event.target.files)) {
+        let file = event.target.files[key]
+
+        let resourceRef = storageRef.child(file.name)
+        let uploadTask = resourceRef.put(file)
+
+        uploadTask.on('state_changed', snapshot => {
+          // code for progress
+        }, err => {
+          // error handling here
+          // use err.code to handle specific errors
+        }, () => {
+          // code after upload completion
+          resourceRef.getDownloadURL().then(url => {
+            value.push({
+              name: file.name,
+              URL: url
+            })
+            this.setState({
+              [stateName]: value
+            });
+          })
+        })
+      }
     } else {
       let value = event.target.value.trim()
       this.setState({
@@ -159,11 +169,11 @@ class CreateCourse extends React.Component {
     if (this.state.subtitle.length < 1) {
       alert("Please give the Subtitle name for this course");
       return;
-    }  
+    }
     if (this.state.categories.length < 1) {
       alert("Please give some categories for this course");
       return;
-    }         
+    }
     firebase.storage().ref('courses/banners/').child('default.jpg').getDownloadURL().then(url => {
       let bannerURL = this.state.banner_image
       if (this.state.banner_image === "") {
@@ -171,6 +181,7 @@ class CreateCourse extends React.Component {
       }
       this.setState(
         {
+          key: `CK${Date.now()}`,
           banner_image: bannerURL,
           categories: this.state.categories.split(",").map(category => {
             return category.trim();
@@ -187,9 +198,9 @@ class CreateCourse extends React.Component {
             alert('Course uploaded successfully.');
             scope.props.setMainComp("course-list", "");
           })
-          .catch(err => {
-            alert("Course not uploaded");
-          });
+            .catch(err => {
+              alert("Course not uploaded");
+            });
         }
       );
     })
@@ -229,7 +240,7 @@ class CreateCourse extends React.Component {
           className={classes.textField}
           margin="normal"
           disabled
-          value={this.state.bannerName?this.state.bannerName:""}
+          value={this.state.bannerName ? this.state.bannerName : ""}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
