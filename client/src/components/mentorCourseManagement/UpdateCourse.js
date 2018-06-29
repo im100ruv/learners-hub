@@ -63,7 +63,12 @@ class CreateCourse extends React.Component {
             title:result.title,
             subtitle:result.subtitle,
             syllabus:result.syllabus,
-            required_knowledge:result.required_knowledge
+            required_knowledge:result.required_knowledge,
+            expected_learning:result.expected_learning,
+            expected_duration:result.expected_duration,
+            level:result.level,
+            summary:result.summary,
+            categories:result.categories
         })
         })
     }
@@ -309,25 +314,6 @@ class CreateCourse extends React.Component {
           onChange={this.handleChange("resources")}
         />
         <TextField
-          id="uploadCourse"
-          label="Upload course file"
-          className={classes.textField}
-          margin="normal"
-          disabled
-          multiline
-          required
-          value={this.state.resourcesName}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <label htmlFor="course-resources">
-                  <AddCircle className={"add-icon"} />
-                </label>
-              </InputAdornment>
-            )
-          }}
-        />
-        <TextField
           id="required-knowledge"
           label="Required knowledge for this course"
           className={classes.textField}
@@ -345,6 +331,7 @@ class CreateCourse extends React.Component {
           margin="normal"
           multiline
           required
+          value={this.state.expected_learning}
           onChange={this.handleChange("expected_learning")}
         />
         <TextField
@@ -368,6 +355,7 @@ class CreateCourse extends React.Component {
           }}
           margin="normal"
           required
+          value={this.state.expected_duration}
           onChange={this.handleChange("expected_duration")}
         />
         <TextField
@@ -392,6 +380,7 @@ class CreateCourse extends React.Component {
         </TextField>
         <TextField
           id="summary"
+          value={this.state.summary}
           label="Summary of course"
           multiline
           required
@@ -416,7 +405,7 @@ class CreateCourse extends React.Component {
             className={classes.button}
             onClick={this.setData}
           >
-            Upload
+            Update
             <FileUpload />
           </Button>
         </div>
