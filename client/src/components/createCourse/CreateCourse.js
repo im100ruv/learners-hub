@@ -16,8 +16,8 @@ const styles = theme => ({
     display: "flex",
     flexWrap: "wrap",
     margin: "auto",
-    width: "50%",
-    border: "1px ridge",
+    width: "60%",
+    boxShadow:" 2px 3px 4px 2px #c7b9b9",
     backgroundColor: "#e4f1e566",
     marginTop: "1em"
   },
@@ -28,9 +28,6 @@ const styles = theme => ({
   },
   menu: {
     width: "100%"
-  },
-  discBorder: {
-    marginLeft: "10px"
   },
   button: {
     margin: theme.spacing.unit
@@ -87,6 +84,7 @@ class CreateCourse extends React.Component {
 
   handleChange = stateName => event => {
     event.preventDefault();
+    console.log('hi');
     if (event.target.id === "banner-image-file" && event.target.files[0]) {
       let bannerName = event.target.files[0].name;
       this.setState({
@@ -170,8 +168,32 @@ class CreateCourse extends React.Component {
       alert("Please give the Subtitle name for this course");
       return;
     }
+    if (this.state.syllabus.length < 1) {
+      alert("Please define syllabus for this course");
+      return;
+    }
+    if (this.state.resourcesName.length < 1) {
+      alert("Please upload some course related files");
+      return;
+    }
+    if (this.state.required_knowledge.length < 1) {
+      alert("Please fill required knowledge field for this course");
+      return;
+    }
+    if (this.state.expected_learning.length < 1) {
+      alert("Please fill expected learning field for this course");
+      return;
+    }
     if (this.state.categories.length < 1) {
       alert("Please give some categories for this course");
+      return;
+    }
+    if (this.state.expected_duration.length < 1) {
+      alert("Please fill course duration field for this course");
+      return;
+    }
+    if (this.state.summary.length < 1) {
+      alert("Please fill summary field for this course");
       return;
     }
     firebase.storage().ref('courses/banners/').child('default.jpg').getDownloadURL().then(url => {
@@ -255,6 +277,7 @@ class CreateCourse extends React.Component {
         <TextField
           id="syllabus"
           label="Syllabus"
+          required
           className={classes.textField}
           margin="normal"
           multiline
@@ -275,6 +298,7 @@ class CreateCourse extends React.Component {
           margin="normal"
           disabled
           multiline
+          required
           value={this.state.resourcesName}
           InputProps={{
             endAdornment: (
@@ -292,6 +316,7 @@ class CreateCourse extends React.Component {
           className={classes.textField}
           margin="normal"
           multiline
+          required
           onChange={this.handleChange("required_knowledge")}
         />
         <TextField
@@ -301,6 +326,7 @@ class CreateCourse extends React.Component {
           className={classes.textField}
           margin="normal"
           multiline
+          required
           onChange={this.handleChange("expected_learning")}
         />
         <TextField
@@ -315,12 +341,15 @@ class CreateCourse extends React.Component {
         <TextField
           id="number"
           label="Course Duration in months"
+          placeholder="Enter only number"
           type="number"
+          min='0' 
           className={classes.textField}
           InputLabelProps={{
             shrink: true
           }}
           margin="normal"
+          required
           onChange={this.handleChange("expected_duration")}
         />
         <TextField
@@ -345,8 +374,9 @@ class CreateCourse extends React.Component {
         </TextField>
         <TextField
           id="summary"
-          label="summary of course"
+          label="Summary of course"
           multiline
+          required
           rows="7"
           className="summary-text"
           margin="normal"
