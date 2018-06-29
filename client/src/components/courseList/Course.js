@@ -14,11 +14,11 @@ class Child extends Component {
     // }
 
     heading_style = {
-        fontSize: '25px',
-        fontFamily: 'roboto',
-        color: 'black',
-        fontWeight: 'bold',
-    }
+                fontSize : '1.3em',
+                fontFamily:'roboto',
+                color: 'black',
+                fontWeight:'bold',
+            }
 
     level_style = {
         fontSize: '17px',
@@ -26,60 +26,74 @@ class Child extends Component {
     }
 
     tag_style = {
-        backgroundColor: 'rgba(150,180,100,1)',
-        margin: '0px 5px',
-        padding: '5px 5px',
-        color: 'white'
+        backgroundColor:'rgba(150,180,100,1)',
+        margin:'0px 5px',
+        padding:'5px 5px',
+        color:'white',
+        margin:'0.2em 0.2em',
+        textAlign:'center'
     }
 
     icon_style = {
         width: '160px',
         height: '160px',
-        marginLeft: '10px',
-        marginTop: '10px'
+        marginLeft: '0.5em',
+        marginTop: '0.5em',
     }
 
-    style_categories = {
-        display: 'flex',
-        position: 'relative',
-        left: '50px'
+    style_categories ={
+        position:'relative',
+        left:'4.6em',
+        display:'grid',
+        gridTemplateColumns:'1fr 1fr'
     }
 
     style_subject = {
         padding: '10px 10px',
         margin: '13px 10px',
         opacity: '0.9',
-        borderRadius: '10px',
+        borderRadius: '3px',
         display: 'flex'
     }
 
-    render() {
-        return (
-            this.props.elements.map((element, index) => {
-                return (
-                    <Paper key={index} style={this.style_subject} id="subject">
-                        <img alt="Banner" style={this.icon_style} src={element.banner_image} />
-                        <List>
-                            <ListItem button onClick={this.props.setMainComp.bind(this, "course-detail", element.key)}>
-                                <ListItemText inset primary={<Typography style={this.heading_style}>{`${element.title}`}</Typography>} />
-                            </ListItem>
-                            <ListItem>
-                                <ListItemText inset primary={<Typography style={this.level_style}>{`Level : ${element.level}`}</Typography>} />
-                            </ListItem>
-                            <ListItem>
-                                {
-                                    <div style={this.style_categories}>{
-                                        element.categories.map(element => {
-                                            return <Paper style={this.tag_style}>{element}</Paper>;
-                                        })
-                                    }</div>
-                                }
-                            </ListItem>
-                        </List>
-                    </Paper>
-                )
-            })
-        );
+  render() {
+              
+    return(
+        this.props.elements.map((element,index)=>{
+            return (
+            <Paper key={index} style={this.style_subject} id="subject">
+                <img alt="Banner" style={this.icon_style} src={element.banner_image}/>
+                <List>
+                    <div className="content_subject">
+                    <div>
+                    <ListItem button onClick={this.props.setMainComp.bind(this, "course-detail", element.key)}>
+                        <ListItemText inset primary={<Typography style={this.heading_style}>{`${element.title}`}</Typography>} />
+                    </ListItem>
+                    </div>
+                    <div>
+                    <ListItem>
+                        <ListItemText inset primary={<Typography style={this.level_style}>{`Level : ${element.level}`}</Typography>} />
+                    </ListItem>
+                    </div>
+                    <div>
+                    <ListItem>
+                        {
+                            <div className="categories" style={this.style_categories}>{
+                                element.categories.map(element =>{
+                                    if(element){
+                                    return <Paper style={this.tag_style}>{element}</Paper>;
+                                    }
+                                })
+                            }</div>
+                        }
+                    </ListItem>
+                    </div>
+                    </div>
+                </List>   
+            </Paper>
+            )
+        })
+    );
     }
 }
 export default Child;

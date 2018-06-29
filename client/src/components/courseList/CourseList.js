@@ -14,13 +14,13 @@ class CourseList extends Component {
   }
 
   heading_style = {
-    minWidth: 'fit-content',
-    color: 'white',
-    fontSize: '2em',
-    fontWeight: 'bold',
-    fontFamily: 'TimesNewRoman',
-    height: '1.5em',
-    margin: 'auto'
+                    minWidth:'fit-content',
+                    color:'white',
+                    fontSize:'2em',
+                    fontWeight:'bold',
+                    fontFamily:'TimesNewRoman',
+                    height:'1.5em',
+                    margin:'auto'
   }
 
   content_style = {
