@@ -5,7 +5,12 @@ const schema = new mongoose.Schema({
     email: String,
     password: String,
     mobile: String,
-    user_type: String
+    user_type: String,
+    signup_type: String,
+    token: [{
+        c_token: String,
+        exp_date: Number
+    }]
 });
 
 module.exports = mongoose.model('user', schema);

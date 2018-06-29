@@ -3,8 +3,10 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import './App.css';
 import Header from './components/header/Header';
 import DashBoard from './components/dashboard/Dashboard';
+import './config/firebaseConfig';
 
 class App extends Component {
+
   render() {
     return (
       <React.Fragment>

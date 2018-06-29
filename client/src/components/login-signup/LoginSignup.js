@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import './LoginSignup.css';
+import firebase from 'firebase';
+import bcrypt from 'bcryptjs';
+import loginSignupService from '../../services/loginSignupService'
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -22,6 +25,10 @@ import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
 
 class LoginSignup extends Component {
+    constructor(props) {
+        super(props);
+    }
+
     state = {
         open: false,
         fullScreen: false,
@@ -34,11 +41,13 @@ class LoginSignup extends Component {
             name: '',
             email: '',
             password: '',
-            mobile: ''
+            mobile: '',
+            user_type: 'Learner',
+            signup_type: 'emailAndPassword'
         },
         mainContainer: {
-            width: 400,
-            margin: 'auto'
+            width: 450,
+            left: 0
         }
     };
 
@@ -47,9 +56,16 @@ class LoginSignup extends Component {
             open: true,
             fullScreen : window.screen.availWidth>800 ? false : true,
             mainContainer: {
-                width: window.screen.availWidth<800 ? '100%' : 400,
-                margin: 'auto'
+                width: window.screen.availWidth<800 ? '100%' : 450,
+                left: 0
             }
+        }, () => {
+            this.setState({
+                mainContainer: {
+                    width: this.state.mainContainer.width,
+                    left: "calc(50% - " + this.state.mainContainer.width/2 + "px)"
+                }
+            });
         });
     };
 
@@ -63,7 +79,63 @@ class LoginSignup extends Component {
 
     handleTabChangeIndex = index => {
         this.setState({ value: index });
-      };
+    };
+
+    thirdPartyLogin = platform => {
+        let provider = null;
+        if(platform === 'google') {
+            provider = new firebase.auth.GoogleAuthProvider();
+        }else if(platform === 'facebook') {
+            provider = new firebase.auth.FacebookAuthProvider();
+        }
+        firebase.auth().useDeviceLanguage();
+        firebase.auth().signInWithPopup(provider)
+        .then(result => {
+            let user = {
+                name: result.user.displayName,
+                email: result.user.email,
+                password: Math.random().toString(36).substring(2),
+                number: result.user.phoneNumber || '',
+                user_type: 'Learner',
+                signup_type: platform
+            };
+            this.signup(user);
+        }).catch(error => {
+            console.log(error, 'error');
+        });
+    }
+
+    login = user => {
+        loginSignupService.loginRequest(user)
+        .then(result => {
+            console.log(result);
+            document.cookie = result.token.c_token;
+        }).catch(error => {
+            console.log(error);
+        });
+    }
+
+    signup = user => {
+        loginSignupService.signupRequest(user)
+        .then(result => {
+            console.log(result);
+        }).catch(error => {
+            console.log(error);
+        });
+    }
+
+    handleInputchange = (mode, field, event) => {
+        this.state[mode][field] = event.target.value;
+    }
+
+    handleSubmit = (mode) => {
+        let data = this.state[mode];
+        if(mode === 'login') {
+            this.login(data);
+        } else if(mode === 'signup') {
+            this.signup(data);
+        } else { console.log('somthing wrong') }
+    }
 
     render() {
         return (
@@ -103,7 +175,7 @@ class LoginSignup extends Component {
                                             <Grid item>
                                                 <FormControl fullWidth className="login-email-form" aria-describedby="email-helper-text">
                                                     <InputLabel htmlFor="email-helper">Email</InputLabel>
-                                                    <Input id="email-helper" value={this.state.login.email} type="email"/>
+                                                    <Input id="email-helper" type="email" onChange={this.handleInputchange.bind(this, 'login', 'email')}/>
                                                     <FormHelperText id="email-helper-text">Enter Email Id</FormHelperText>
                                                 </FormControl>
                                             </Grid>
@@ -117,7 +189,7 @@ class LoginSignup extends Component {
                                             <Grid item>
                                                 <FormControl fullWidth className="login-password-form" aria-describedby="password-helper-text">
                                                     <InputLabel htmlFor="password-helper">Password</InputLabel>
-                                                    <Input id="password-helper" type="password" value={this.state.login.password}/>
+                                                    <Input id="password-helper" type="password" onChange={this.handleInputchange.bind(this, 'login', 'password')} />
                                                     <FormHelperText id="password-helper-text">Type Your Password</FormHelperText>
                                                 </FormControl>
                                             </Grid>
@@ -125,7 +197,9 @@ class LoginSignup extends Component {
                                     </div>
                                 </CardContent>
                                 <DialogActions className="dialog-action">
-                                    <Button variant="contained" onClick={this.handleDialogClose}>Login</Button>
+                                    <Button variant="contained" onClick={this.thirdPartyLogin.bind(this, 'google')}>google</Button>
+                                    <Button variant="contained" onClick={this.thirdPartyLogin.bind(this, 'facebook')}>facebook</Button>
+                                    <Button variant="contained" onClick={this.handleSubmit.bind(this, 'login')}>Login</Button>
                                 </DialogActions>
                             </Card>
                             
@@ -139,7 +213,7 @@ class LoginSignup extends Component {
                                             <Grid item>
                                                 <FormControl fullWidth className="signup-name-form" aria-describedby="signup-name-helper-text">
                                                     <InputLabel htmlFor="signup-name-helper">Name</InputLabel>
-                                                    <Input id="signup-name-helper" value={this.state.signup.name}/>
+                                                    <Input id="signup-name-helper" onChange={this.handleInputchange.bind(this, 'signup', 'name')} />
                                                     <FormHelperText id="signup-name-helper-text">Enter name</FormHelperText>
                                                 </FormControl>
                                             </Grid>
@@ -153,7 +227,7 @@ class LoginSignup extends Component {
                                             <Grid item>
                                                 <FormControl fullWidth className="signup-email-form" aria-describedby="signup-email-helper-text">
                                                     <InputLabel htmlFor="signup-email-helper">Email</InputLabel>
-                                                    <Input id="signup-email-helper" value={this.state.signup.email} type="email"/>
+                                                    <Input id="signup-email-helper" type="email" onChange={this.handleInputchange.bind(this, 'signup', 'email')} />
                                                     <FormHelperText id="signup-email-helper-text">Enter Email Id</FormHelperText>
                                                 </FormControl>
                                             </Grid>
@@ -167,7 +241,7 @@ class LoginSignup extends Component {
                                             <Grid item>
                                                 <FormControl fullWidth className="signup-password-form" aria-describedby="signup-password-helper-text">
                                                     <InputLabel htmlFor="signup-password-helper">Password</InputLabel>
-                                                    <Input id="signup-password-helper" type="password" value={this.state.signup.password}/>
+                                                    <Input id="signup-password-helper" type="password" onChange={this.handleInputchange.bind(this, 'signup', 'password')} />
                                                     <FormHelperText id="signup-password-helper-text">Type Your Password</FormHelperText>
                                                 </FormControl>
                                             </Grid>
@@ -181,7 +255,7 @@ class LoginSignup extends Component {
                                             <Grid item>
                                                 <FormControl fullWidth className="signup-mobile-form" aria-describedby="signup-mobile-helper-text">
                                                     <InputLabel htmlFor="signup-mobile-helper">Mobile</InputLabel>
-                                                    <Input id="signup-mobile-helper" value={this.state.signup.mobile}/>
+                                                    <Input id="signup-mobile-helper" onChange={this.handleInputchange.bind(this, 'signup', 'mobile')} />
                                                     <FormHelperText id="signup-mobile-helper-text">Enter Mobile No.</FormHelperText>
                                                 </FormControl>
                                             </Grid>
@@ -189,7 +263,7 @@ class LoginSignup extends Component {
                                     </div>
                                 </CardContent>
                                 <DialogActions className="dialog-action">
-                                    <Button variant="contained" onClick={this.handleDialogClose}>Signup</Button>
+                                    <Button variant="contained" onClick={this.handleSubmit.bind(this, 'signup')}>Signup</Button>
                                 </DialogActions>
                             </Card>
                         </SwipeableViews>

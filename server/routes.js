@@ -1,5 +1,6 @@
-const userControllers = require('./controllers/user/userController')
-const courseControllers = require('./controllers/course/courseController')
+const userControllers = require('./controllers/user/userController');
+const courseControllers = require('./controllers/course/courseController');
+const loginSignupController = require('./controllers/loginSignup/loginSignupController')
 
 function setup(app){
     app.get('/', rootRoute);
@@ -19,6 +20,10 @@ function setup(app){
     app.post('/api/courses', courseControllers.addCourse);
     app.put('/api/courses/:key', courseControllers.updateCourse);
     app.delete('/api/courses/:key', courseControllers.deleteCourse);
+
+    //login-signup
+    app.post('/api/login', loginSignupController.login);
+    app.post('/api/signup', loginSignupController.signup);
 };
 
 function rootRoute(req, res) {
