@@ -279,7 +279,7 @@ class CreateCourse extends React.Component {
         />
         <TextField
           id="banner-image"
-          label="Upload banner image for this course"
+          label="Update banner image for this course"
           className={classes.textField}
           margin="normal"
           disabled
@@ -338,6 +338,7 @@ class CreateCourse extends React.Component {
           id="categories"
           label="Categories"
           required
+          value={this.state.categories}
           className={classes.textField}
           placeholder="Enter comma seperated course category"
           margin="normal"
