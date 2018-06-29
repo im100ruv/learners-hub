@@ -84,12 +84,17 @@ class CreateCourse extends React.Component {
 
   handleChange = stateName => event => {
     event.preventDefault();
-    if(event.target.id==="course-duration" && (event.target.value<1||event.target.value>12)){
+    if (
+      event.target.id === "course-duration" &&
+      (event.target.value < 1 || event.target.value > 12)
+    ) {
       this.setState({
         [stateName]: 1
-      })
-    }
-   else if (event.target.id === "banner-image-file" && event.target.files[0]) {
+      });
+    } else if (
+      event.target.id === "banner-image-file" &&
+      event.target.files[0]
+    ) {
       let bannerName = event.target.files[0].name;
       this.setState({
         bannerName: bannerName
@@ -118,9 +123,7 @@ class CreateCourse extends React.Component {
         }
       );
     } else if (
-      event.target.id === "course-resources" &&
-      event.target.files[0]
-    ) {
+      event.target.id === "course-resources" && event.target.files[0]) {
       let resourcesName = "";
       for (const key in Object.keys(event.target.files)) {
         resourcesName = resourcesName + event.target.files[key].name + "\n";
@@ -129,10 +132,7 @@ class CreateCourse extends React.Component {
         resourcesName: resourcesName
       });
 
-      let value = [];
-      let storageRef = firebase
-        .storage()
-        .ref(`courses/resources/CRF${Date.now()}/`);
+      let storageRef = firebase.storage().ref(`courses/resources/CRF${Date.now()}/`);
       //this async task may create problems
       storageRef.getDownloadURL().then(url => {
         this.setState({
@@ -140,6 +140,7 @@ class CreateCourse extends React.Component {
         });
       });
 
+      let value = [];
       for (const key in Object.keys(event.target.files)) {
         let file = event.target.files[key];
 
@@ -372,7 +373,7 @@ class CreateCourse extends React.Component {
           helperText="Enter only number between 1 to 12"
           type="number"
           value={this.state.expected_duration}
-        //  InputProps={{ inputProps: { min: 0, max: 10 } }}
+          //  InputProps={{ inputProps: { min: 0, max: 10 } }}
           className={classes.textField}
           InputLabelProps={{
             shrink: true
