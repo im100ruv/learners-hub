@@ -4,10 +4,11 @@ import Typography from '@material-ui/core/Typography';
 import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
-import './mentorCourseManagement.css';
 import FileUpload from "@material-ui/icons/FileUpload";
 import Delete from '@material-ui/icons/Delete';
 import firebase from 'firebase';
+// import config from "../../config/config.json";
+import './mentorCourseManagement.css';
 
 function getModalPosition() {
   const top = 50;
@@ -37,15 +38,15 @@ class SimpleModal extends React.Component {
             open: false,
             file_url: []
         }
-        var config = {
-            apiKey: "AIzaSyDQlt81NoxBvuRisNTmCn8Kh_tRZ9rS4_A",
-            authDomain: "lmsteam-bfd2a.firebaseapp.com",
-            databaseURL: "https://lmsteam-bfd2a.firebaseio.com",
-            projectId: "lmsteam-bfd2a",
-            storageBucket: "lmsteam-bfd2a.appspot.com",
-            messagingSenderId: "127092655126"
-          };
-          firebase.initializeApp(config);    
+        // var config = {
+        //     apiKey: "AIzaSyDQlt81NoxBvuRisNTmCn8Kh_tRZ9rS4_A",
+        //     authDomain: "lmsteam-bfd2a.firebaseapp.com",
+        //     databaseURL: "https://lmsteam-bfd2a.firebaseio.com",
+        //     projectId: "lmsteam-bfd2a",
+        //     storageBucket: "lmsteam-bfd2a.appspot.com",
+        //     messagingSenderId: "127092655126"
+        //   };
+        //   firebase.initializeApp(config);    
     }
     handleOpen = () => {
         this.setState({ open: true });
