@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import './App.css';
 import config from './config/config.json';
 import firebase from 'firebase';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import Header from './components/header/Header';
 import DashBoard from './components/dashboard/Dashboard';
 
@@ -19,7 +19,7 @@ class App extends Component {
           <div><DashBoard/></div>
         </div>
       </React.Fragment>
-      
+
     );
   }
 }
