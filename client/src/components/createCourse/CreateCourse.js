@@ -119,7 +119,6 @@ class CreateCourse extends React.Component {
         resourcesName: resourcesName
       });
 
-      let value = []
       let storageRef = firebase.storage().ref(`courses/resources/CRF${Date.now()}/`)
       //this async task may create problems
       storageRef.getDownloadURL().then(url => {
@@ -127,7 +126,8 @@ class CreateCourse extends React.Component {
           resourceFolderURL: url
         });
       })
-
+      
+      let value = []
       for (const key in Object.keys(event.target.files)) {
         let file = event.target.files[key]
 
