@@ -7,7 +7,7 @@ import AddCircle from "@material-ui/icons/AddCircle";
 import Delete from "@material-ui/icons/Delete";
 import Button from "@material-ui/core/Button";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import config from '../../config/config.json';
+import config from "../../config/config.json";
 import "./CreateCourse.css";
 import firebase from 'firebase';
 
@@ -57,10 +57,11 @@ const diffLevel = [
 
 class CreateCourse extends React.Component {
   state = {
-    key: "LC0008",
+    key: "LC",
     title: "",
     subtitle: "",
     banner_image: "",
+    bannerName: "",
     categories: "",
     syllabus: "",
     required_knowledge: "",
@@ -72,19 +73,28 @@ class CreateCourse extends React.Component {
     full_course_available: true,
     expected_duration_unit: "months",
     resources: [],
-    instructors: [{
-      bio: "As an avid programmer and learner, Himanshu mukat began teaching and found his passion. He enjoys the best of both worlds as he works as a Course Developer at Udacity. After earning a degree in computer science, he made the smart decision and moved into the world of HTML, CSS, and JavaScript. For over seven years he worked for an international nonprofit doing everything from frontend web development, to backend programming, to database and server management. Before graduating from the University of Florida’s Web Design and Online Communications Master’s program with a degree in Mass Communication, he had already been asked by the University to come on board as a faculty member. Even with the planning, building and development of courses, he still tries to make time to take in the beauty of the California countryside.",
-      image: "https://yt3.ggpht.com/a-/ACSszfHJCef_uTyAEgv2HjWg7zV8Vks0hLJ4KAx8NA=s900-mo-c-c0xffffffff-rj-k-no",
-      name: "Himanshu Mukat",
-    }]
+    resourcesName: '',
+    instructors: [
+      {
+        bio:
+          "As an avid programmer and learner, Himanshu mukat began teaching and found his passion. He enjoys the best of both worlds as he works as a Course Developer at Udacity. After earning a degree in computer science, he made the smart decision and moved into the world of HTML, CSS, and JavaScript. For over seven years he worked for an international nonprofit doing everything from frontend web development, to backend programming, to database and server management. Before graduating from the University of Florida’s Web Design and Online Communications Master’s program with a degree in Mass Communication, he had already been asked by the University to come on board as a faculty member. Even with the planning, building and development of courses, he still tries to make time to take in the beauty of the California countryside.",
+        image:
+          "https://yt3.ggpht.com/a-/ACSszfHJCef_uTyAEgv2HjWg7zV8Vks0hLJ4KAx8NA=s900-mo-c-c0xffffffff-rj-k-no",
+        name: "Himanshu Mukat"
+      }
+    ]
   };
 
   handleChange = stateName => event => {
     event.preventDefault();
     if (event.target.id === "banner-image-file" && event.target.files[0]) {
+      let bannerName = event.target.files[0].name;
+      this.setState({
+        bannerName: bannerName
+      });
       let storageRef = firebase.storage().ref('courses/banners/')
       let extension = event.target.files[0].name.split('.').pop()
-      let bannerImgRef = storageRef.child(`${Date.now()}.${extension}`)
+      let bannerImgRef = storageRef.child(`CB${Date.now()}.${extension}`)
       let uploadTask = bannerImgRef.put(event.target.files[0])
 
       uploadTask.on('state_changed', snapshot => {
@@ -96,13 +106,21 @@ class CreateCourse extends React.Component {
         // code after upload completion
         bannerImgRef.getDownloadURL().then(url => {
           this.setState({
-            [stateName]: url
+            [stateName]: url,
           });
         })
       })
     } else if (event.target.id === "course-resources" && event.target.files[0]) {
+      let resourcesName = "";
+      for (const key in Object.keys(event.target.files)) {
+        resourcesName = resourcesName + event.target.files[key].name + "\n";
+      }
+      this.setState({
+        resourcesName: resourcesName
+      });
+
       let value = []
-      let storageRef = firebase.storage().ref(`courses/resources/${Date.now()}/`)
+      let storageRef = firebase.storage().ref(`courses/resources/CRF${Date.now()}/`)
       //this async task may create problems
       storageRef.getDownloadURL().then(url => {
         this.setState({
@@ -113,7 +131,6 @@ class CreateCourse extends React.Component {
       for (const key in Object.keys(event.target.files)) {
         let file = event.target.files[key]
 
-        let extension = file.name.split('.').pop()
         let resourceRef = storageRef.child(file.name)
         let uploadTask = resourceRef.put(file)
 
@@ -145,6 +162,18 @@ class CreateCourse extends React.Component {
 
   setData = () => {
     let scope = this;
+    if (this.state.title.length < 1) {
+      alert("Please give the course name");
+      return;
+    }
+    if (this.state.subtitle.length < 1) {
+      alert("Please give the Subtitle name for this course");
+      return;
+    }
+    if (this.state.categories.length < 1) {
+      alert("Please give some categories for this course");
+      return;
+    }
     firebase.storage().ref('courses/banners/').child('default.jpg').getDownloadURL().then(url => {
       let bannerURL = this.state.banner_image
       if (this.state.banner_image === "") {
@@ -152,6 +181,7 @@ class CreateCourse extends React.Component {
       }
       this.setState(
         {
+          key: `CK${Date.now()}`,
           banner_image: bannerURL,
           categories: this.state.categories.split(",").map(category => {
             return category.trim();
@@ -167,7 +197,10 @@ class CreateCourse extends React.Component {
           }).then(function (response) {
             alert('Course uploaded successfully.');
             scope.props.setMainComp("course-list", "");
-          });
+          })
+            .catch(err => {
+              alert("Course not uploaded");
+            });
         }
       );
     })
@@ -175,14 +208,12 @@ class CreateCourse extends React.Component {
 
   render() {
     const { classes } = this.props;
-    let resList = this.state.resources.length > 0 ? this.state.resources.map(file => {
-      return file.name
-    }).join(", ") : ""
     return (
       <form className={classes.container} autoComplete="off">
         <p className="uploadCourse">UPLOAD NEW COURSE</p>
         <TextField
           id="title"
+          required
           label="Name of Course"
           className={classes.textField}
           margin="normal"
@@ -190,13 +221,14 @@ class CreateCourse extends React.Component {
         />
         <TextField
           id="subtitle"
+          required
           label="Subtitle of Course"
           className={classes.textField}
           margin="normal"
           onChange={this.handleChange("subtitle")}
         />
         <input
-          accept="image"
+          accept="image/*"
           className={classes.input}
           id="banner-image-file"
           type="file"
@@ -208,7 +240,7 @@ class CreateCourse extends React.Component {
           className={classes.textField}
           margin="normal"
           disabled
-          value={this.state.banner_image.name}
+          value={this.state.bannerName ? this.state.bannerName : ""}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -242,7 +274,8 @@ class CreateCourse extends React.Component {
           className={classes.textField}
           margin="normal"
           disabled
-          value={resList}
+          multiline
+          value={this.state.resourcesName}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -273,6 +306,7 @@ class CreateCourse extends React.Component {
         <TextField
           id="categories"
           label="Categories"
+          required
           className={classes.textField}
           placeholder="Enter comma seperated course category"
           margin="normal"
@@ -337,7 +371,6 @@ class CreateCourse extends React.Component {
             Upload
             <FileUpload />
           </Button>
-
         </div>
       </form>
     );
