@@ -35,7 +35,7 @@ class SimpleModal extends React.Component {
         super(props);
         this.state={
             open: false,
-            file_url: undefined
+            file_url: []
         }
         var config = {
             apiKey: "AIzaSyDQlt81NoxBvuRisNTmCn8Kh_tRZ9rS4_A",
@@ -68,7 +68,8 @@ class SimpleModal extends React.Component {
     }
 
     addToFireBase=(event)=>
-    {
+    {    
+        let url_array = [];
         // let resourcesName;
         for (const key in Object.keys(event.target.files)) {
             let storageRef = firebase.storage().ref('courses/multifiles/');
@@ -84,12 +85,14 @@ class SimpleModal extends React.Component {
             }, () => {
             // code after upload completion
             FileRef.getDownloadURL().then(url => {
+                url_array.push({name : file.name,link : url});
+                console.log(url_array);
                 alert(url);
                 //this url to be sent to the DataBase
                 this.setState({
-                    file_url:url
+                    file_url:url_array
                 })
-                console.log(this.state.file_url);
+                // console.log(this.state.file_url);
             })
             })
         }  
