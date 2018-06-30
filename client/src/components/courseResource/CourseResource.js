@@ -39,8 +39,8 @@ export default class CourseDetail extends React.Component {
         <div key={index} className="chapter-container">
           {++count}.<a href={item.URL} target="blank">{item.name}</a>
           <div className="object-container">
-            <object data={item.URL} type="application/pdf" width="100%" height="100%">
-              This browser does not support PDFs. Please download the PDF to view it: <a href={item.URL}>Download PDF</a>
+            <object data={item.URL} type="" width="100%" height="100%">
+              This browser does not support the above file-type. Please download the file to view it: <a href={item.URL}>Download PDF</a>
             </object>
           </div>
         </div>
