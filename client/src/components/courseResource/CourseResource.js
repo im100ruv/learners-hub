@@ -1,22 +1,17 @@
 import React from 'react';
 import './CourseResource.css'
 import CircularProgress from '../materialUIComponents/CircularProgress';
+import config from '../../config/config.json';
 import BannerCard from '../courseDetail/BannerCard';
 
 export default class CourseDetail extends React.Component {
   state = {
     key: undefined,
-    homepage: undefined,
-    title: undefined,
-    subtitle: undefined,
-    banner_image: undefined,
-    new_release: undefined,
-    syllabus: undefined,
-    resources: undefined,
+    resources: []
   }
 
   fetchJsonData = async (query) => {
-    const api_call = await fetch(`http://localhost:8000${query}`)
+    const api_call = await fetch(`${config.APIHostName}:${config.APIHostingPort}${query}`)
     return await api_call.json()
   }
 
@@ -37,6 +32,19 @@ export default class CourseDetail extends React.Component {
   }
 
   render() {
+    let count = 0
+    let resourceList = this.state.resources.map((item, index) => {
+      return (
+        <div key={index} className="chapter-container">
+          {++count}.<a href={item.URL} target="blank">{item.name}</a>
+          <div className="object-container">
+            <object data={item.URL} type="application/pdf" width="100%" height="100%">
+              This browser does not support PDFs. Please download the PDF to view it: <a href={item.URL}>Download PDF</a>
+            </object>
+          </div>
+        </div>
+      )
+    })
     return this.state.key ? (
       <React.Fragment>
         <BannerCard
@@ -49,10 +57,7 @@ export default class CourseDetail extends React.Component {
             Course Materials
           </div>
           <div className="resource-list">
-            1. <a href="https://www.youtube.com/watch?v=roDz8mMvbIg&list=PLknSwrodgQ72X4sKpzf5vT8kY80HKcUSe" target="blank">Introduction</a>
-            <p>This is an introduction video for the course.</p>
-            2. <a href="https://www.youtube.com/watch?v=bmuOlpfUVYw&index=2&list=PLknSwrodgQ72X4sKpzf5vT8kY80HKcUSe" target="blank">Installation</a>
-            <p>This is a video for installing the softwares.</p>
+            {resourceList}
           </div>
         </div>
       </React.Fragment>

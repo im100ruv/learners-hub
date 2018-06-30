@@ -7,9 +7,10 @@
   font-family: 'Roboto', 'Noto', sans-serif !important;
 }
 
-body {
+html>body {
   margin: 0;
   padding: 0;
+  background-color: #EEEEEE;
 }
 
 ::-webkit-scrollbar {

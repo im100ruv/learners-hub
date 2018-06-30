@@ -7,7 +7,8 @@ const routes = require('./routes');
 const app = express();
 
 let auth = (req, res, next) => {
-    // console.log(req.headers);
+    // console.log(req);
+
     
     next();
 }
@@ -29,7 +30,7 @@ app.listen(config.hostingPort, function(){
     app.use(auth);
 
     //static directory
-    mongoose.connect(config.localDB)
+    mongoose.connect(config.remoteDB)
     .then(success => {
         console.log('DB is Connected');
         routes.setup(app);

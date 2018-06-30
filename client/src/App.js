@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import './App.css';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import Header from './components/header/Header';
 import DashBoard from './components/dashboard/Dashboard';
 import './config/firebaseConfig';
+// import { Provider } from 'react-redux';
+// import store from './store/store';
 
 class App extends Component {
 
   render() {
+
     return (
       <React.Fragment>
         <CssBaseline />
@@ -16,7 +19,7 @@ class App extends Component {
           <div><DashBoard/></div>
         </div>
       </React.Fragment>
-      
+
     );
   }
 }

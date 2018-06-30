@@ -16,7 +16,7 @@ const styles = theme => ({
   },
   cover: {
     // width: 151,
-    height: "10em",
+    height: "13em",
   },
 });
 
@@ -29,9 +29,9 @@ function MediaControlCard(props) {
         <div className={classes.details}>
           <CardMedia
             className={classes.cover}
-            image="https://d15cw65ipctsrr.cloudfront.net/c8/084f10bb0011e5b7f4377491ebab0b/AAD-banner.jpg"
+            image="https://firebasestorage.googleapis.com/v0/b/learnershub-mountblue.appspot.com/o/courses%2Ffullbanner.jpg?alt=media&token=98c6ea27-033e-48d3-ab78-f1df13d028a0"
           />
-          <CardContent className={classes.content}>
+          <CardContent className={[classes.content, "banner-content"].join(' ')}>
             <Typography variant="headline">{props.title}
               {props.new_release ? <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTW7IGs4zt9OMD-ll0CCPaDh6VAZtOc0qGnZS_3IphN_zOdWQy" alt="new course" width="50px" height="40px" /> : ""}
             </Typography>

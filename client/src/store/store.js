@@ -3,7 +3,7 @@ import thunk from 'redux-thunk';
 import rootReducer from './reducers';
 
 let initialState = {
-    
+    loggedUser : {}
 };
 
 let middleware = applyMiddleware(thunk);

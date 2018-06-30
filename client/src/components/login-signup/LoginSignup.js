@@ -117,6 +117,7 @@ class LoginSignup extends Component {
                     console.log(result);
                 }).catch(error => {
                     console.log(error);
+                    alert(error.message);
                 });
             }
         });
@@ -133,6 +134,7 @@ class LoginSignup extends Component {
                     console.log(result);
                 }).catch(error => {
                     console.log(error);
+                    alert(error.message);
                 });
             }
         });

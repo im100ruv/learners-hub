@@ -4,31 +4,16 @@ import CircularProgress from '../materialUIComponents/CircularProgress';
 import BannerCard from './BannerCard';
 import Avatar from '../materialUIComponents/Avatar'
 import Button from '../materialUIComponents/Button'
+import config from '../../config/config.json';
 
 export default class CourseDetail extends React.Component {
   state = {
     key: undefined,
-    homepage: undefined,
-    title: undefined,
-    subtitle: undefined,
-    banner_image: undefined,
-    categories: undefined,
-    summary: undefined,
-    instructors: undefined,
-    expected_learning: undefined,
-    required_knowledge: undefined,
-    new_release: undefined,
-    full_course_available: undefined,
-    level: undefined,
-    expected_duration_unit: undefined,
-    expected_duration: undefined,
-    syllabus: undefined,
-    resources: undefined,
     faq: undefined
   }
 
   fetchJsonData = async (query) => {
-    const api_call = await fetch(`http://localhost:8000${query}`)
+    const api_call = await fetch(`${config.APIHostName}:${config.APIHostingPort}${query}`)
     return await api_call.json()
   }
 
@@ -84,7 +69,7 @@ export default class CourseDetail extends React.Component {
           <div className="about-course">
             <b> About this course: </b>{this.state.summary}
           </div>
-          <center><Button /></center>
+          <center><Button setMainComp={this.props.setMainComp} courseKey={this.state.key}/></center>
           <div className="instructor-detail">
             <div><Avatar /></div>
             <div>
@@ -120,7 +105,7 @@ export default class CourseDetail extends React.Component {
           <div className="section-faq">
             {faqs}
           </div>
-          <center><Button /></center>
+          <center><Button setMainComp={this.props.setMainComp} courseKey={this.state.key} /></center>
         </div>
       </React.Fragment>
     ) : (<CircularProgress />)

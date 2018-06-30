@@ -1,0 +1,42 @@
+.mentor-item:hover{
+    cursor: pointer;
+}
+.mentor-item{
+    margin:0.5em 1em;
+    padding: 0.2em 0.2em;
+    transform: scale(1);
+    transition: all ease-in-out 0.1s;
+    
+}
+.mentor-item:hover{
+    transform: scale(1.05);
+    transition: all ease-in-out 0.1s;
+    background: whitesmoke;
+    border-radius: 10px;
+}
+.icons{
+    float: right;
+    margin-right:1em;
+}
+.top-hr{
+    height: 2px;
+}
+.bottom-hr{
+    height:1px;
+    background: rgb(0, 255, 0);
+}
+.input{
+    color:green;
+}
+.modal{
+    background:lightgreen;
+    opacity: 0.8;
+}
+.upload{
+    border:none;
+    padding:0.5em 1em;
+    background-color: green;
+    color:white;
+    margin-top:1em;
+    cursor:pointer;
+}
