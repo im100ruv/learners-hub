@@ -106,6 +106,7 @@ class CreateCourse extends React.Component {
   };
 
   handleChange = stateName => event => {
+
     event.preventDefault();
     if(event.target.id === "course-duration" && 
     (event.target.value < 1 || event.target.value > 12)){
@@ -179,7 +180,7 @@ class CreateCourse extends React.Component {
         })
       }
     } else {
-      let value = event.target.value.trim()
+      let value = event.target.value
       this.setState({
         [stateName]: value
       });
@@ -231,7 +232,7 @@ class CreateCourse extends React.Component {
           key: this.state.key,
           banner_image: bannerURL,
           categories: this.state.categories.split(",").map(category => {
-            return category.trim();
+            return category;
           })
         },
         () => {
