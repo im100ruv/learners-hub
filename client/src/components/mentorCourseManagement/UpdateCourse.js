@@ -9,7 +9,7 @@ import Button from "@material-ui/core/Button";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import config from "../../config/config.json";
 import "./UpdateCourse.css";
-import firebase from 'firebase';
+import firebase from "firebase";
 
 const styles = theme => ({
   container: {
@@ -17,7 +17,7 @@ const styles = theme => ({
     flexWrap: "wrap",
     margin: "auto",
     width: "60%",
-    boxShadow:" 2px 3px 4px 2px #c7b9b9",
+    boxShadow: " 2px 3px 4px 2px #c7b9b9",
     backgroundColor: "#e4f1e566",
     marginTop: "1em"
   },
@@ -53,28 +53,33 @@ const diffLevel = [
 ];
 
 class CreateCourse extends React.Component {
-
-    componentWillMount(){
-        fetch(`${config.APIHostName}:${config.APIHostingPort}/api/courses/CK1530343440720`)
-        .then(res => { return res.json() })
-        .then(result => {   
-        console.log(result);
+  componentWillMount() {
+    fetch(`${config.APIHostName}:${config.APIHostingPort}/api/courses/LC`)
+      .then(res => {
+        return res.json();
+      })
+      .then(result => {
+        let categoriesString = "";
+        result.categories.forEach((item, index) => {
+          if (index == 0) categoriesString += item;
+          else categoriesString += "," + item;
+        });
         this.setState({
-            title:result.title,
-            subtitle:result.subtitle,
-            syllabus:result.syllabus,
-            required_knowledge:result.required_knowledge,
-            expected_learning:result.expected_learning,
-            expected_duration:result.expected_duration,
-            level:result.level,
-            summary:result.summary,
-            categories:result.categories,
-            level:result.level,
-            key:result.key,
-            banner_image:result.banner_image
-        })
-        })
-    }
+          title: result.title,
+          subtitle: result.subtitle,
+          syllabus: result.syllabus,
+          required_knowledge: result.required_knowledge,
+          expected_learning: result.expected_learning,
+          expected_duration: result.expected_duration,
+          level: result.level,
+          summary: result.summary,
+          categories: categoriesString,
+          level: result.level,
+          key: result.key,
+          banner_image: result.banner_image
+        });
+      });
+  }
 
   state = {
     key: "LC",
@@ -93,7 +98,7 @@ class CreateCourse extends React.Component {
     full_course_available: true,
     expected_duration_unit: "months",
     resources: [],
-    resourcesName: '',
+    resourcesName: "",
     instructors: [
       {
         bio:
@@ -106,38 +111,49 @@ class CreateCourse extends React.Component {
   };
 
   handleChange = stateName => event => {
-
     event.preventDefault();
-    if(event.target.id === "course-duration" && 
-    (event.target.value < 1 || event.target.value > 12)){
+    if (
+      event.target.id === "course-duration" &&
+      (event.target.value < 1 || event.target.value > 12)
+    ) {
       this.setState({
-        [stateName]:1
-      })
-    }
-    else if (event.target.id === "banner-image-file" && event.target.files[0]) {
+        [stateName]: 1
+      });
+    } else if (
+      event.target.id === "banner-image-file" &&
+      event.target.files[0]
+    ) {
       let bannerName = event.target.files[0].name;
       this.setState({
         bannerName: bannerName
       });
-      let storageRef = firebase.storage().ref('courses/banners/')
-      let extension = event.target.files[0].name.split('.').pop()
-      let bannerImgRef = storageRef.child(`CB${Date.now()}.${extension}`)
-      let uploadTask = bannerImgRef.put(event.target.files[0])
+      let storageRef = firebase.storage().ref("courses/banners/");
+      let extension = event.target.files[0].name.split(".").pop();
+      let bannerImgRef = storageRef.child(`CB${Date.now()}.${extension}`);
+      let uploadTask = bannerImgRef.put(event.target.files[0]);
 
-      uploadTask.on('state_changed', snapshot => {
-        // code for progress
-      }, err => {
-        // error handling here
-        // use err.code to handle specific errors
-      }, () => {
-        // code after upload completion
-        bannerImgRef.getDownloadURL().then(url => {
-          this.setState({
-            [stateName]: url,
+      uploadTask.on(
+        "state_changed",
+        snapshot => {
+          // code for progress
+        },
+        err => {
+          // error handling here
+          // use err.code to handle specific errors
+        },
+        () => {
+          // code after upload completion
+          bannerImgRef.getDownloadURL().then(url => {
+            this.setState({
+              [stateName]: url
+            });
           });
-        })
-      })
-    } else if (event.target.id === "course-resources" && event.target.files[0]) {
+        }
+      );
+    } else if (
+      event.target.id === "course-resources" &&
+      event.target.files[0]
+    ) {
       let resourcesName = "";
       for (const key in Object.keys(event.target.files)) {
         resourcesName = resourcesName + event.target.files[key].name + "\n";
@@ -146,41 +162,48 @@ class CreateCourse extends React.Component {
         resourcesName: resourcesName
       });
 
-      let value = []
-      let storageRef = firebase.storage().ref(`courses/resources/CRF${Date.now()}/`)
+      let value = [];
+      let storageRef = firebase
+        .storage()
+        .ref(`courses/resources/CRF${Date.now()}/`);
       //this async task may create problems
       storageRef.getDownloadURL().then(url => {
         this.setState({
           resourceFolderURL: url
         });
-      })
+      });
 
       for (const key in Object.keys(event.target.files)) {
-        let file = event.target.files[key]
+        let file = event.target.files[key];
 
-        let resourceRef = storageRef.child(file.name)
-        let uploadTask = resourceRef.put(file)
+        let resourceRef = storageRef.child(file.name);
+        let uploadTask = resourceRef.put(file);
 
-        uploadTask.on('state_changed', snapshot => {
-          // code for progress
-        }, err => {
-          // error handling here
-          // use err.code to handle specific errors
-        }, () => {
-          // code after upload completion
-          resourceRef.getDownloadURL().then(url => {
-            value.push({
-              name: file.name,
-              URL: url
-            })
-            this.setState({
-              [stateName]: value
+        uploadTask.on(
+          "state_changed",
+          snapshot => {
+            // code for progress
+          },
+          err => {
+            // error handling here
+            // use err.code to handle specific errors
+          },
+          () => {
+            // code after upload completion
+            resourceRef.getDownloadURL().then(url => {
+              value.push({
+                name: file.name,
+                URL: url
+              });
+              this.setState({
+                [stateName]: value
+              });
             });
-          })
-        })
+          }
+        );
       }
     } else {
-      let value = event.target.value
+      let value = event.target.value;
       this.setState({
         [stateName]: value
       });
@@ -201,7 +224,7 @@ class CreateCourse extends React.Component {
       alert("Please define syllabus for this course");
       return;
     }
-    
+
     if (this.state.required_knowledge.length < 1) {
       alert("Please fill required knowledge field for this course");
       return;
@@ -222,37 +245,45 @@ class CreateCourse extends React.Component {
       alert("Please fill summary field for this course");
       return;
     }
-    firebase.storage().ref('courses/banners/').child('default.jpg').getDownloadURL().then(url => {
-      let bannerURL = this.state.banner_image
-      // if (this.state.banner_image === "") {
-      //   bannerURL = url
-      // }
-      this.setState(
-        {
-          key: this.state.key,
-          banner_image: bannerURL,
-          // categories: this.state.categories.split(",").map(category => {
-          //   return category;
-          // })
-        },
-        () => {
-          
-          fetch(`${config.APIHostName}:${config.APIHostingPort}/api/courses/CK1530343440720`, {
-            method: "put",
-            body: JSON.stringify(this.state),
-            headers: {
-              "Content-Type": "application/json"
-            }
-          }).then(function (response) {
-            alert('Course updated successfully.');
-            // scope.props.setMainComp("course-list", "");
-          })
-            .catch(err => {
-              alert("Course not updated!!");
-            });
-        }
-      );
-    })
+    firebase
+      .storage()
+      .ref("courses/banners/")
+      .child("default.jpg")
+      .getDownloadURL()
+      .then(url => {
+        let bannerURL = this.state.banner_image;
+        // if (this.state.banner_image === "") {
+        //   bannerURL = url
+        // }
+        this.setState(
+          {
+            key: this.state.key,
+            banner_image: bannerURL,
+            categories: this.state.categories.split(",").map(category => {
+              return category;
+            })
+          },
+          () => {
+            fetch(
+              `${config.APIHostName}:${config.APIHostingPort}/api/courses/LC`,
+              {
+                method: "put",
+                body: JSON.stringify(this.state),
+                headers: {
+                  "Content-Type": "application/json"
+                }
+              }
+            )
+              .then(function(response) {
+                alert("Course updated successfully.");
+                // scope.props.setMainComp("course-list", "");
+              })
+              .catch(err => {
+                alert("Course not updated!!");
+              });
+          }
+        );
+      });
   };
 
   render() {
@@ -306,7 +337,7 @@ class CreateCourse extends React.Component {
         <TextField
           id="syllabus"
           label="Syllabus"
-          value = {this.state.syllabus}
+          value={this.state.syllabus}
           required
           className={classes.textField}
           margin="normal"
@@ -357,7 +388,7 @@ class CreateCourse extends React.Component {
           label="Course Duration in months"
           helperText="Enter number between 1 and 12"
           type="number"
-          min='0' 
+          min="0"
           className={classes.textField}
           InputLabelProps={{
             shrink: true
@@ -382,7 +413,10 @@ class CreateCourse extends React.Component {
           onChange={this.handleChange("level")}
         >
           {diffLevel.map(option => (
-            <option key={option.value} selected={this.state.level==option.label?"selected":""} >
+            <option
+              key={option.value}
+              selected={this.state.level == option.label ? "selected" : ""}
+            >
               {option.label}
             </option>
           ))}
