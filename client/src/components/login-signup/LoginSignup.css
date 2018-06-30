@@ -1,0 +1,23 @@
+.login-card, .signup-card {
+    height: 100%;
+}
+
+div.login-form-icon, div.signup-form-icon {
+    margin-bottom: 10px;
+}
+div.login-form-icon svg, div.signup-form-icon svg {
+    font-size: 30px;
+}
+div.dialog-action {
+    margin: 0;
+    padding: 16px 24px;
+}
+div.dialog-action button {
+    background-color: #07aa07;
+}
+div.dialog-action button:hover {
+    background-color: #048e04;
+}
+.login-email, .login-password, .signup-email, .signup-password {
+    margin-top: 10px;
+}

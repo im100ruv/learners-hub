@@ -71,7 +71,6 @@ class Dashboard extends Component {
       flexGrow: 1,
       padding: '10px',
       minWidth: 0,
-      height: '500px',
       marginTop: '65px',
       overflowWrap: 'break-word',
       overflowY: 'auto'
