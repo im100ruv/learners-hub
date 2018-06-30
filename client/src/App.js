@@ -13,10 +13,13 @@ class App extends Component {
 
     return (
       <React.Fragment>
-        <Header/>
-        <Update/>        
-        {/* <List/> */}
+        <CssBaseline />
+        <div className="app">
+          <div><Header/></div>
+          <div><DashBoard/></div>
+        </div>
       </React.Fragment>
+
     );
   }
 }
