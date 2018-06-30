@@ -69,7 +69,7 @@ export default class CourseDetail extends React.Component {
           <div className="about-course">
             <b> About this course: </b>{this.state.summary}
           </div>
-          <center><Button setMainComp={this.props.setMainComp} courseKey={this.state.key}/></center>
+          <center><Button setMainComp={this.props.setMainComp} courseKey={this.state.key} buttonValue="Start Course" destination="course-resource"/></center>
           <div className="instructor-detail">
             <div><Avatar /></div>
             <div>
@@ -105,7 +105,7 @@ export default class CourseDetail extends React.Component {
           <div className="section-faq">
             {faqs}
           </div>
-          <center><Button setMainComp={this.props.setMainComp} courseKey={this.state.key} /></center>
+          <center><Button setMainComp={this.props.setMainComp} courseKey={this.state.key} buttonValue="Start Course" destination="course-resource" /></center>
         </div>
       </React.Fragment>
     ) : (<CircularProgress />)
