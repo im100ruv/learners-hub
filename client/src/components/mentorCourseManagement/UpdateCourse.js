@@ -55,7 +55,7 @@ const diffLevel = [
 class CreateCourse extends React.Component {
 
     componentWillMount(){
-        fetch(`${config.APIHostName}:${config.APIHostingPort}/api/courses/LC0005`)
+        fetch(`${config.APIHostName}:${config.APIHostingPort}/api/courses/LC0006`)
         .then(res => { return res.json() })
         .then(result => {   
         console.log(result);
@@ -68,7 +68,8 @@ class CreateCourse extends React.Component {
             expected_duration:result.expected_duration,
             level:result.level,
             summary:result.summary,
-            categories:result.categories
+            categories:result.categories,
+            level:result.level
         })
         })
     }
@@ -177,7 +178,7 @@ class CreateCourse extends React.Component {
     }
   };
 
-  setData = () => {
+  updateData = () => {
     let scope = this;
     if (this.state.title.length < 1) {
       alert("Please give the course name");
@@ -191,10 +192,7 @@ class CreateCourse extends React.Component {
       alert("Please define syllabus for this course");
       return;
     }
-    if (this.state.resourcesName.length < 1) {
-      alert("Please upload some course related files");
-      return;
-    }
+    
     if (this.state.required_knowledge.length < 1) {
       alert("Please fill required knowledge field for this course");
       return;
@@ -229,8 +227,9 @@ class CreateCourse extends React.Component {
           })
         },
         () => {
-          fetch(`${config.APIHostName}:${config.APIHostingPort}/api/courses`, {
-            method: "post",
+          
+          fetch(`${config.APIHostName}:${config.APIHostingPort}/api/courses/:LC0006`, {
+            method: "put",
             body: JSON.stringify(this.state),
             headers: {
               "Content-Type": "application/json"
@@ -374,7 +373,7 @@ class CreateCourse extends React.Component {
           onChange={this.handleChange("level")}
         >
           {diffLevel.map(option => (
-            <option key={option.value} value={option.value}>
+            <option key={option.value} selected={this.state.level==option.label?"selected":""} >
               {option.label}
             </option>
           ))}
@@ -395,7 +394,7 @@ class CreateCourse extends React.Component {
             variant="contained"
             color="secondary"
             className={classes.button}
-            // onClick={this.props.setMainComp.bind(this, "course-list", "")}
+            // onClick={this.props.setMainComp.bind(this, "course-list", "")}8
           >
             Cancel
             <Delete />
@@ -404,7 +403,7 @@ class CreateCourse extends React.Component {
             variant="contained"
             color="primary"
             className={classes.button}
-            onClick={this.setData}
+            onClick={this.updateData}
           >
             Update
             <FileUpload />
