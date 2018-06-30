@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './LoginSignup.css';
 import firebase from 'firebase';
 import bcrypt from 'bcryptjs';
-import loginSignupService from '../../services/loginSignupService'
+import loginSignupService from '../../services/loginSignupService';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -30,6 +30,7 @@ class LoginSignup extends Component {
     }
 
     state = {
+        salt: "$2a$09$nrrCd85V7az4Vvu0CzeZ3e",
         open: false,
         fullScreen: false,
         value: 0,
@@ -95,7 +96,7 @@ class LoginSignup extends Component {
                 name: result.user.displayName,
                 email: result.user.email,
                 password: Math.random().toString(36).substring(2),
-                number: result.user.phoneNumber || '',
+                mobile: result.user.phoneNumber ? result.user.phoneNumber : '',
                 user_type: 'Learner',
                 signup_type: platform
             };
@@ -106,21 +107,34 @@ class LoginSignup extends Component {
     }
 
     login = user => {
-        loginSignupService.loginRequest(user)
-        .then(result => {
-            console.log(result);
-            document.cookie = result.token.c_token;
-        }).catch(error => {
-            console.log(error);
+        bcrypt.hash(user.password, this.state.salt, function(err, hash) {
+            if(err) {
+                console.log('could not encrypted your password... Try Again.');
+            } else {
+                user.password = hash;
+                loginSignupService.loginRequest(user)
+                .then(result => {
+                    console.log(result);
+                }).catch(error => {
+                    console.log(error);
+                });
+            }
         });
     }
 
     signup = user => {
-        loginSignupService.signupRequest(user)
-        .then(result => {
-            console.log(result);
-        }).catch(error => {
-            console.log(error);
+        bcrypt.hash(user.password, this.state.salt, function(err, hash) {
+            if(err) {
+                console.log('could not encrypted your password... Try Again.');
+            } else {
+                user.password = hash;
+                loginSignupService.signupRequest(user)
+                .then(result => {
+                    console.log(result);
+                }).catch(error => {
+                    console.log(error);
+                });
+            }
         });
     }
 
@@ -134,7 +148,10 @@ class LoginSignup extends Component {
             this.login(data);
         } else if(mode === 'signup') {
             this.signup(data);
-        } else { console.log('somthing wrong') }
+        } else {
+            console.log('somthing wrong');
+        }
+        this.handleDialogClose();
     }
 
     render() {

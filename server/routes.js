@@ -24,6 +24,7 @@ function setup(app){
     //login-signup
     app.post('/api/login', loginSignupController.login);
     app.post('/api/signup', loginSignupController.signup);
+    app.get('/api/logout/:email', loginSignupController.logout);
 };
 
 function rootRoute(req, res) {

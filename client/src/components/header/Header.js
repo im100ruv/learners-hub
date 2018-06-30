@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import './Header.css';
+import loginSignupService from '../../services/loginSignupService';
+import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography'
@@ -165,8 +167,35 @@ class Header extends Component {
           value: newValue,
         });
     };
+
+    logout = () => {
+        loginSignupService.logoutRequest('pawan.akshaykr@gmail.com')
+        .then(res => {
+            this.setState({});
+        }).catch(err => {
+            console.log(err);
+        });
+    }
     
+    buttontemplate = () => {
+        let cookie = document.cookie;
+        cookie = cookie.replace('; ', '=');
+        let arr = cookie.split('=');
+        if(arr.includes('c_token')) {
+            return(
+                <Button variant="contained" color="secondary" className="ContainedButtons" onClick={this.logout}>
+                    Logout
+                </Button>
+            );
+        } else {
+            return(
+                <LoginSignup />
+            );
+        }
+    }
+
     render() {
+        let buttonCreated = this.buttontemplate();
         return(
             <div className="header">
                 <AppBar position="static" color="default">
@@ -190,7 +219,7 @@ class Header extends Component {
                                 onChange: this.handleChange,
                             }}
                         />
-                        <LoginSignup />
+                        {buttonCreated}
                     </Toolbar>
                 </AppBar>
             </div>

@@ -7,7 +7,7 @@ const schema = new mongoose.Schema({
     mobile: String,
     user_type: String,
     signup_type: String,
-    token: [{
+    tokens: [{
         c_token: String,
         exp_date: Number
     }]

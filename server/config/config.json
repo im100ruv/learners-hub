@@ -2,5 +2,6 @@
 	"appName" : "learners-hub",
 	"hostName" : "",
 	"hostingPort" : 8000,
-	"db": "mongodb://lmsteam:KAAS_lms90@ds163650.mlab.com:63650/learnershub"
+	"localDB": "mongodb://localhost:27017/learnershub", 
+	"remoteDB": "mongodb://lmsteam:KAAS_lms90@ds163650.mlab.com:63650/learnershub"
 }
