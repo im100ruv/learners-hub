@@ -70,7 +70,8 @@ class CreateCourse extends React.Component {
             summary:result.summary,
             categories:result.categories,
             level:result.level,
-            key:result.key
+            key:result.key,
+            banner_image:result.banner_image
         })
         })
     }
@@ -222,9 +223,9 @@ class CreateCourse extends React.Component {
     }
     firebase.storage().ref('courses/banners/').child('default.jpg').getDownloadURL().then(url => {
       let bannerURL = this.state.banner_image
-      if (this.state.banner_image === "") {
-        bannerURL = url
-      }
+      // if (this.state.banner_image === "") {
+      //   bannerURL = url
+      // }
       this.setState(
         {
           key: this.state.key,

@@ -13,6 +13,7 @@ class App extends Component {
       <React.Fragment>
         <Header/>
         <Update/>        
+        {/* <List/> */}
       </React.Fragment>
     );
   }
