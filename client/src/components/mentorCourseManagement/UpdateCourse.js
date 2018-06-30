@@ -55,7 +55,7 @@ const diffLevel = [
 class CreateCourse extends React.Component {
 
     componentWillMount(){
-        fetch(`${config.APIHostName}:${config.APIHostingPort}/api/courses/CK1530339308078`)
+        fetch(`${config.APIHostName}:${config.APIHostingPort}/api/courses/LC`)
         .then(res => { return res.json() })
         .then(result => {   
         console.log(result);
@@ -69,7 +69,8 @@ class CreateCourse extends React.Component {
             level:result.level,
             summary:result.summary,
             categories:result.categories,
-            level:result.level
+            level:result.level,
+            key:result.key
         })
         })
     }
@@ -105,7 +106,13 @@ class CreateCourse extends React.Component {
 
   handleChange = stateName => event => {
     event.preventDefault();
-    if (event.target.id === "banner-image-file" && event.target.files[0]) {
+    if(event.target.id === "course-duration" && 
+    (event.target.value < 1 || event.target.value > 12)){
+      this.setState({
+        [stateName]:1
+      })
+    }
+    else if (event.target.id === "banner-image-file" && event.target.files[0]) {
       let bannerName = event.target.files[0].name;
       this.setState({
         bannerName: bannerName
@@ -220,7 +227,7 @@ class CreateCourse extends React.Component {
       }
       this.setState(
         {
-          key: `CK${Date.now()}`,
+          key: this.state.key,
           banner_image: bannerURL,
           categories: this.state.categories.split(",").map(category => {
             return category.trim();
@@ -228,7 +235,7 @@ class CreateCourse extends React.Component {
         },
         () => {
           
-          fetch(`${config.APIHostName}:${config.APIHostingPort}/api/courses/CK1530339308078`, {
+          fetch(`${config.APIHostName}:${config.APIHostingPort}/api/courses/LC`, {
             method: "put",
             body: JSON.stringify(this.state),
             headers: {
@@ -344,9 +351,9 @@ class CreateCourse extends React.Component {
           onChange={this.handleChange("categories")}
         />
         <TextField
-          id="number"
+          id="course-duration"
           label="Course Duration in months"
-          placeholder="Enter only number"
+          helperText="Enter number between 1 and 12"
           type="number"
           min='0' 
           className={classes.textField}
