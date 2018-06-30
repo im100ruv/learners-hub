@@ -8,7 +8,7 @@ import Delete from "@material-ui/icons/Delete";
 import Button from "@material-ui/core/Button";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import config from "../../config/config.json";
-import "./UpdateCourse.css";
+import "./UpdateCourse.css";  
 import firebase from "firebase";
 
 const styles = theme => ({
@@ -52,7 +52,7 @@ const diffLevel = [
   }
 ];
 
-class CreateCourse extends React.Component {
+class UpdateCourse extends React.Component {
   componentWillMount() {
     fetch(`${config.APIHostName}:${config.APIHostingPort}/api/courses/LC`)
       .then(res => {
@@ -186,7 +186,6 @@ class CreateCourse extends React.Component {
           },
           err => {
             // error handling here
-            // use err.code to handle specific errors
           },
           () => {
             // code after upload completion
@@ -252,9 +251,6 @@ class CreateCourse extends React.Component {
       .getDownloadURL()
       .then(url => {
         let bannerURL = this.state.banner_image;
-        // if (this.state.banner_image === "") {
-        //   bannerURL = url
-        // }
         this.setState(
           {
             key: this.state.key,
@@ -456,9 +452,7 @@ class CreateCourse extends React.Component {
     );
   }
 }
-
-CreateCourse.propTypes = {
+UpdateCourse.propTypes = {
   classes: PropTypes.object.isRequired
 };
-
-export default withStyles(styles)(CreateCourse);
+export default withStyles(styles)(UpdateCourse);
