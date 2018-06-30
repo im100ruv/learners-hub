@@ -1,11 +1,11 @@
 import React from 'react';
-import './CourseResource.css';
+import './CourseQuiz.css';
 import CircularProgress from '../materialUIComponents/CircularProgress';
 import config from '../../config/config.json';
 import BannerCard from '../courseDetail/BannerCard';
 import Button from '../materialUIComponents/Button';
 
-export default class CourseDetail extends React.Component {
+export default class CourseQuiz extends React.Component {
   state = {
     key: undefined,
     resources: []
@@ -33,19 +33,6 @@ export default class CourseDetail extends React.Component {
   }
 
   render() {
-    let count = 0
-    let resourceList = this.state.resources.map((item, index) => {
-      return (
-        <div key={index} className="chapter-container">
-          {++count}.<a href={item.URL} target="blank">{item.name}</a>
-          <div className="object-container">
-            <object data={item.URL} type="application/pdf" width="100%" height="100%">
-              This browser does not support PDFs. Please download the PDF to view it: <a href={item.URL}>Download PDF</a>
-            </object>
-          </div>
-        </div>
-      )
-    })
     return this.state.key ? (
       <React.Fragment>
         <BannerCard
@@ -55,13 +42,13 @@ export default class CourseDetail extends React.Component {
         />
         <div className="course-body">
           <div className="section-title">
-            Course Materials
+            Course Quiz and/or Assignment
           </div>
           <div className="resource-list">
-            {resourceList}
+            Quiz goes here...
           </div>
         </div>
-        <center><Button setMainComp={this.props.setMainComp} courseKey={this.state.key} buttonValue="Quiz/Assignments" destination="course-quiz" /></center>
+        <center><Button setMainComp={this.props.setMainComp} courseKey={this.state.key} buttonValue="Submit" destination="certificate" /></center>
       </React.Fragment>
     ) : (<CircularProgress />)
   }
