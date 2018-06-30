@@ -231,9 +231,9 @@ class CreateCourse extends React.Component {
         {
           key: this.state.key,
           banner_image: bannerURL,
-          categories: this.state.categories.split(",").map(category => {
-            return category;
-          })
+          // categories: this.state.categories.split(",").map(category => {
+          //   return category;
+          // })
         },
         () => {
           
