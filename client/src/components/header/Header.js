@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import './Header.css';
+import loginSignupService from '../../services/loginSignupService';
+import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography'
@@ -10,11 +12,11 @@ import Autosuggest from 'react-autosuggest';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
-import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import CourseCategoryIcon from '@material-ui/icons/Apps';
 import SearchIcon from '@material-ui/icons/Search';
 import logo from '../../assets/images/logo.svg'
+import LoginSignup from '../login-signup/LoginSignup';
 
 class Header extends Component {
     state = {
@@ -165,8 +167,35 @@ class Header extends Component {
           value: newValue,
         });
     };
+
+    logout = () => {
+        loginSignupService.logoutRequest('pawan.akshaykr@gmail.com')
+        .then(res => {
+            this.setState({});
+        }).catch(err => {
+            console.log(err);
+        });
+    }
     
+    buttontemplate = () => {
+        let cookie = document.cookie;
+        cookie = cookie.replace('; ', '=');
+        let arr = cookie.split('=');
+        if(arr.includes('c_token')) {
+            return(
+                <Button variant="contained" color="secondary" className="ContainedButtons" onClick={this.logout}>
+                    Logout
+                </Button>
+            );
+        } else {
+            return(
+                <LoginSignup />
+            );
+        }
+    }
+
     render() {
+        let buttonCreated = this.buttontemplate();
         return(
             <div className="header">
                 <AppBar position="static" color="default">
@@ -190,9 +219,7 @@ class Header extends Component {
                                 onChange: this.handleChange,
                             }}
                         />
-                        <Button variant="contained" color="primary" className="ContainedButtons">
-                            Login
-                        </Button>
+                        {buttonCreated}
                     </Toolbar>
                 </AppBar>
             </div>

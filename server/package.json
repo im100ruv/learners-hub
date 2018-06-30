@@ -9,6 +9,7 @@
   "author": "Akshay, Saurav, Kuljit, Abhay",
   "license": "ISC",
   "dependencies": {
+    "cookie-parser": "^1.4.3",
     "express": "^4.16.3",
     "mongoose": "^5.1.5",
     "nodemon": "^1.17.5"

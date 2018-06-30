@@ -1,14 +1,5 @@
 {
 	"appName" : "learners-hub",
 	"APIHostName" : "http://localhost",
-	"APIHostingPort" : 8000,
-
-	"firebaseConfig" : {
-		"apiKey": "AIzaSyCAuAb4UxMnprYKyUtw_jRqg116WVa46JA",
-		"authDomain": "learnershub-mountblue.firebaseapp.com",
-		"databaseURL": "https://learnershub-mountblue.firebaseio.com",
-		"projectId": "learnershub-mountblue",
-		"storageBucket": "learnershub-mountblue.appspot.com",
-		"messagingSenderId": "229870701693"
-	}
+	"APIHostingPort" : 8000
 }
