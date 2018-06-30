@@ -16,6 +16,10 @@ export default class CourseDetail extends React.Component {
     return await api_call.json()
   }
 
+  sampleFunction = (x, y) => {
+
+  }
+
   componentDidMount() {
     this.fetchJsonData(`/api/courses/${this.props.courseKey}`)
       .then(course => {
@@ -33,11 +37,14 @@ export default class CourseDetail extends React.Component {
   }
 
   render() {
-    let count = 0
+
+    // here make resources component and show one by one with next and prev button
+    // at last show certificate
+
     let resourceList = this.state.resources.map((item, index) => {
       return (
         <div key={index} className="chapter-container">
-          {++count}.<a href={item.URL} target="blank">{item.name}</a>
+          {index + 1}.<a href={item.URL} target="blank">{item.name}</a>
           <div className="object-container">
             <object data={item.URL} type="" width="100%" height="100%">
               This browser does not support the above file-type. Please download the file to view it: <a href={item.URL}>Download PDF</a>
@@ -61,7 +68,7 @@ export default class CourseDetail extends React.Component {
             {resourceList}
           </div>
         </div>
-        <center><Button setMainComp={this.props.setMainComp} courseKey={this.state.key} buttonValue="Quiz/Assignments" destination="course-quiz" /></center>
+        <center><Button setMainComp={this.sampleFunction} courseKey={this.state.key} buttonValue="Quiz/Assignments" destination="course-quiz" /></center>
       </React.Fragment>
     ) : (<CircularProgress />)
   }
