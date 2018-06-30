@@ -25,10 +25,6 @@ import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
 
 class LoginSignup extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     state = {
         salt: "$2a$09$nrrCd85V7az4Vvu0CzeZ3e",
         open: false,
@@ -141,6 +137,7 @@ class LoginSignup extends Component {
     }
 
     handleInputchange = (mode, field, event) => {
+        //following line to be modified later
         this.state[mode][field] = event.target.value;
     }
 
