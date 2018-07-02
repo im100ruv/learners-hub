@@ -54,7 +54,7 @@ const diffLevel = [
 
 class UpdateCourse extends React.Component {
   componentWillMount() {
-    fetch(`${config.APIHostName}:${config.APIHostingPort}/api/courses/LC`)
+    fetch(`${config.APIHostName}:${config.APIHostingPort}/api/courses/CK1530539422823`)
       .then(res => {
         return res.json();
       })
@@ -208,6 +208,27 @@ class UpdateCourse extends React.Component {
     }
   };
 
+  DeleteCourse = () =>{
+    if(window.confirm("Are You Sure?")){
+      fetch(
+        `${config.APIHostName}:${config.APIHostingPort}/api/courses/CK1530539422823`,
+        {
+          method: "delete",
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      )
+        .then(function(response) {
+          alert("Course Deleted");
+          // scope.props.setMainComp("course-list", "");
+        })
+        .catch(err => {
+          alert("Course not Deleted");
+        });
+    }   
+  }
+
   updateData = () => {
     // let scope = this;
     if (this.state.title == false)  {
@@ -260,7 +281,7 @@ class UpdateCourse extends React.Component {
           },
           () => {
             fetch(
-              `${config.APIHostName}:${config.APIHostingPort}/api/courses/LC`,
+              `${config.APIHostName}:${config.APIHostingPort}/api/courses/CK1530539422823`,
               {
                 method: "put",
                 body: JSON.stringify(this.state),
@@ -427,14 +448,20 @@ class UpdateCourse extends React.Component {
           margin="normal"
           onChange={this.handleChange("summary")}
         />
+        
         <div className="uploadButton">
           <Button
             variant="contained"
+            className={classes.button}
+          >
+            Cancel</Button>
+            <Button
+            variant="contained"
             color="secondary"
             className={classes.button}
-            // onClick={this.props.setMainComp.bind(this, "course-list", "")}8
+            onClick={this.DeleteCourse}
           >
-            Cancel
+            Delete Course
             <Delete />
           </Button>
           <Button
