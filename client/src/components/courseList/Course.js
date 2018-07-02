@@ -78,9 +78,9 @@ class Child extends Component {
                     <ListItem>
                         {
                             <div className="categories" style={this.style_categories}>{
-                                element.categories.map(element =>{
+                                element.categories.map((element, index) =>{
                                     if(element){
-                                    return <Paper style={this.tag_style}>{element}</Paper>;
+                                    return <Paper key={index} style={this.tag_style}>{element}</Paper>;
                                     }
                                     return  ""
                                 })
