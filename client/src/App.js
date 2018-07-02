@@ -10,9 +10,18 @@ class App extends Component {
   render() {
     return (
       <React.Fragment>
+<<<<<<< HEAD
         <Header/>
         <Update/>
+=======
+        <CssBaseline />
+        <div className="app">
+          <div><Header/></div>
+          <div><DashBoard/></div>
+        </div>
+>>>>>>> 82cc15a6308e6a78ca970146a7cd163007e09260
       </React.Fragment>
+
     );
   }
 }
