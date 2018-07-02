@@ -13,12 +13,12 @@
 .summary-text>div {
     border: 2px inset;
     margin: auto;
-    width: calc(100% - 4px);
+    width: calc(100% - 10px);
 }
 
 .summary-text>label {
     
-   padding-left: 5px;
+   padding-left: 10px;
 }
 .uploadButton{
     width: 100%;
