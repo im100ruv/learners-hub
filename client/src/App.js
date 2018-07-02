@@ -9,18 +9,18 @@ import './config/firebaseConfig';
 
 class App extends Component {
 
-  render() {
+ render() {
 
-    return (
-      <React.Fragment>
-        <CssBaseline />
-        <div className="app">
-          <div><Header/></div>
-          <div><DashBoard/></div>
-        </div>
-      </React.Fragment>
+   return (
+     <React.Fragment>
+       <CssBaseline />
+       <div className="app">
+         <div><Header/></div>
+         <div><DashBoard/></div>
+       </div>
+     </React.Fragment>
 
-    );
-  }
+   );
+ }
 }
 export default App;

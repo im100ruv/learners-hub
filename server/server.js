@@ -15,13 +15,13 @@ let auth = (req, res, next) => {
 
 app.listen(config.hostingPort, function(){
     console.log('Listing on port no. :', config.hostingPort);
-    console.log('Go To => http://localhost:8000');
+    console.log(`Go To => ${config.hostName}:${config.hostingPort}`);
 
     app.use(cookieParser());
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended : true}));
     app.use(function(req, res, next) {
-        res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+        res.header("Access-Control-Allow-Origin", "http://localhost:3000"); //client address
         res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, X-Custom-Header, Accept");
         res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, XMODIFY");
         res.header('Access-Control-Allow-Credentials', true);
