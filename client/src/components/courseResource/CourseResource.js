@@ -5,10 +5,12 @@ import config from '../../config/config.json';
 import BannerCard from '../courseDetail/BannerCard';
 import Button from '../materialUIComponents/Button';
 import Chapter from './Chapter';
+import Certificate from './Certificate';
 
-export default class CourseDetail extends React.Component {
+export default class CourseResource extends React.Component {
   state = {
     index: 0,
+    answeredCorrect: false,
     key: undefined,
     resources: []
   }
@@ -18,12 +20,16 @@ export default class CourseDetail extends React.Component {
     return await api_call.json()
   }
 
-  sampleFunction = (x, y) => {
-    if(x === "next"){
-      this.setState({index: ++this.state.index})
-    } else if(x === "prev"){
-      this.setState({index: --this.state.index})
+  sampleFunction = (direction, dummy) => {
+    if (direction === "next") {
+      this.setState({ index: this.state.index + 1, answeredCorrect: false })
+    } else if (direction === "prev") {
+      this.setState({ index: this.state.index - 1 })
     }
+  }
+
+  setAnsweredCorrect = () => {
+    this.setState({ answeredCorrect: true })
   }
 
   componentDidMount() {
@@ -68,6 +74,11 @@ export default class CourseDetail extends React.Component {
               question: "Do you have java installed?",
               options: ["yes", "no"],
               answer: "yes"
+            },{
+              objective: true,
+              question: "Do you have all softwares installed?",
+              options: ["yes", "no"],
+              answer: "yes"
             }]
           }, {
             title: "Final Summary",
@@ -82,8 +93,8 @@ export default class CourseDetail extends React.Component {
             quiz: [{
               objective: true,
               question: "Was the lesson useful?",
-              options: ["yes", "no"],
-              answer: "yes"
+              options: ["nice", "not good"],
+              answer: "nice"
             }]
           }],
         })
@@ -103,10 +114,26 @@ export default class CourseDetail extends React.Component {
             Course Materials
           </div>
           <div className="resource-list">
-            <Chapter resource={this.state.resources[this.state.index]} index={this.state.index} setMainComp={this.sampleFunction} courseKey={this.state.key} />
+            {this.state.index < this.state.resources.length ? (
+              <Chapter
+                resource={this.state.resources[this.state.index]}
+                index={this.state.index}
+                setMainComp={this.sampleFunction}
+                courseKey={this.state.key}
+                setAnsweredCorrect={this.setAnsweredCorrect}
+              />
+            ) : (
+                <Certificate />
+              )}
           </div>
-          <Button setMainComp={this.sampleFunction} courseKey={this.state.key} buttonValue="Next" destination="next" />
-          <Button setMainComp={this.sampleFunction} courseKey={this.state.key} buttonValue="Previous" destination="prev" />
+          {this.state.index < this.state.resources.length ? (
+            <div>
+              <Button disabled={!this.state.answeredCorrect} setMainComp={this.sampleFunction} courseKey={this.state.key} buttonValue="Next" destination="next" />
+              {this.state.index === 0 ? "" : (
+                <Button setMainComp={this.sampleFunction} courseKey={this.state.key} buttonValue="Previous" destination="prev" />
+              )}
+            </div>
+          ) : ""}
         </div>
       </React.Fragment>
     ) : (<CircularProgress />)
