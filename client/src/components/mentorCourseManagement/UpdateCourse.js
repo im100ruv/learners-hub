@@ -8,7 +8,7 @@ import Delete from "@material-ui/icons/Delete";
 import Button from "@material-ui/core/Button";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import config from "../../config/config.json";
-import "./UpdateCourse.css";  
+import "./UpdateCourse.css";
 import firebase from "firebase";
 
 const styles = theme => ({

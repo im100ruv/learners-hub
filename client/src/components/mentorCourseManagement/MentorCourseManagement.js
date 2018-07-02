@@ -3,11 +3,8 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
-<<<<<<< HEAD
-=======
 import Paper from '@material-ui/core/Paper';
 import './mentorCourseManagement.css';
->>>>>>> 82cc15a6308e6a78ca970146a7cd163007e09260
 import FileUpload from "@material-ui/icons/FileUpload";
 import Delete from '@material-ui/icons/Delete';
 import firebase from 'firebase';
