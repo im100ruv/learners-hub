@@ -71,7 +71,6 @@ class UpdateCourse extends React.Component {
           required_knowledge: result.required_knowledge,
           expected_learning: result.expected_learning,
           expected_duration: result.expected_duration,
-          level: result.level,
           summary: result.summary,
           categories: categoriesString,
           level: result.level,
@@ -210,7 +209,7 @@ class UpdateCourse extends React.Component {
   };
 
   updateData = () => {
-    let scope = this;
+    // let scope = this;
     if (this.state.title.length < 1) {
       alert("Please give the course name");
       return;

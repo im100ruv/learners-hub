@@ -3,7 +3,6 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
 import FileUpload from "@material-ui/icons/FileUpload";
 import Delete from '@material-ui/icons/Delete';
 import firebase from 'firebase';
