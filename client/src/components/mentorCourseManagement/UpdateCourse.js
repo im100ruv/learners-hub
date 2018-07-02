@@ -210,28 +210,28 @@ class UpdateCourse extends React.Component {
 
   updateData = () => {
     // let scope = this;
-    if (this.state.title.length < 1) {
+    if (this.state.title == false)  {
       alert("Please give the course name");
       return;
     }
-    if (this.state.subtitle.length < 1) {
+    if (this.state.subtitle == false)  {
       alert("Please give the Subtitle name for this course");
       return;
     }
-    if (this.state.syllabus.length < 1) {
+    if (this.state.syllabus == false) {
       alert("Please define syllabus for this course");
       return;
     }
 
-    if (this.state.required_knowledge.length < 1) {
+    if (this.state.required_knowledge == false) {
       alert("Please fill required knowledge field for this course");
       return;
     }
-    if (this.state.expected_learning.length < 1) {
+    if (this.state.expected_learning.length == false) {
       alert("Please fill expected learning field for this course");
       return;
     }
-    if (this.state.categories.length < 1) {
+    if (this.state.categories == false) {
       alert("Please give some categories for this course");
       return;
     }
@@ -239,7 +239,7 @@ class UpdateCourse extends React.Component {
       alert("Please fill course duration field for this course");
       return;
     }
-    if (this.state.summary.length < 1) {
+    if (this.state.summary == false) {
       alert("Please fill summary field for this course");
       return;
     }
