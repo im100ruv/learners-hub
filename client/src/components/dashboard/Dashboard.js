@@ -150,6 +150,7 @@ class Dashboard extends Component {
           </Drawer>
           <main style={this.theme.content}>
             {mainRender}
+            {/* <CreateResource courseKey={this.state.courseKey} setMainComp={this.setMainComp}/>	 */}
           </main>
         </div>
       </div>

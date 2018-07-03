@@ -82,16 +82,12 @@ class CreateCourse extends React.Component {
 
   handleChange = stateName => event => {
     event.preventDefault();
-    if (
-      event.target.id === "course-duration" &&
-      (event.target.value < 1 || event.target.value > 12)
+    if (event.target.id === "course-duration" && (event.target.value < 1 || event.target.value > 12)
     ) {
       this.setState({
         [stateName]: 1
       });
-    } else if (
-      event.target.id === "banner-image-file" &&
-      event.target.files[0]
+    } else if (event.target.id === "banner-image-file" && event.target.files[0]
     ) {
       let bannerName = event.target.files[0].name;
       this.setState({

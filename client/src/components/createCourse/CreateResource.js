@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Send from "@material-ui/icons/Send";
 import Delete from "@material-ui/icons/Delete";
+import Add from "@material-ui/icons/Add";
 import Button from "@material-ui/core/Button";
 import config from "../../config/config.json";
 import "./CreateCourse.css";
@@ -38,6 +39,7 @@ const styles = theme => ({
 class CreateResource extends React.Component {
   state = {
     key: this.props.courseKey,
+    resourceFolderURL: "",
     resources: [{
       title: "",
       // description: "Java is a programming Language Java is a programming Language Java is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming Language....",
@@ -55,28 +57,71 @@ class CreateResource extends React.Component {
       //   answer: "programming language"
       // }]
     }],
+    chapter: {
+      title: "",
+      fileName: "",
+    }
   };
 
   handleChange = stateName => event => {
     event.preventDefault();
-    let value = event.target.value.trim();
-    this.setState({
-      [stateName]: value
-    });
+    if (event.target.id === "chapter_file" && event.target.files[0]) {
+      let resourceName = event.target.files[0].name;
+      this.setState({
+        chapter: {
+          fileName: resourceName
+        }
+      });
+
+      let storageRef = firebase.storage().refFromURL(this.state.resourceFolderURL);
+
+      let file = event.target.files[0];
+      let resourceRef = storageRef.child(resourceName);
+      let uploadTask = resourceRef.put(file);
+
+      uploadTask.on("state_changed", snapshot => {
+        // code for progress
+      }, err => {
+        // error handling here
+        // use err.code to handle specific errors
+      }, () => {
+        // code after upload completion
+        resourceRef.getDownloadURL().then(url => {
+          this.setState({
+            chapter: {
+              [stateName]: url
+            }
+          });
+        });
+      });
+    } else if (event.target.name === "quiz_question") {
+      let value = event.target.value.trim();
+      this.setState({
+        chapter: {
+          [stateName]: value
+        }
+      });
+    } else {
+      let value = event.target.value.trim();
+      this.setState({
+        chapter: {
+          quiz: [{
+            [stateName]: value
+          }],
+        }
+      });
+    }
   };
 
   cancelUpload = () => {
-    // let scope = this
-    // if (this.state.banner_image) {
-    //   var deleteRef = firebase.storage().refFromURL(this.state.banner_image)
+    let scope = this
+    var deleteRef = firebase.storage().refFromURL(this.state.resourceFolderURL)
 
-    //   deleteRef.delete().then(function () {
-    //     // File deleted successfully
-    //     scope.props.setMainComp("course-list", "")
-    //   }).catch(function (error) {
-    //     console.log("error while deleting banner image..", error)
-    //   });
-    // }
+    deleteRef.delete().then(function () {
+      scope.props.setMainComp("course-list", "")
+    }).catch(function (error) {
+      console.log("error while deleting course resources..", error)
+    });
   }
 
   setData = () => {
@@ -126,32 +171,55 @@ class CreateResource extends React.Component {
     //add the form agian
   }
 
+  componentDidMount() {
+    let storageRef = firebase.storage().ref(`courses/resources/CRF${Date.now()}/`);
+    storageRef.getDownloadURL().then(url => {
+      this.setState({
+        resourceFolderURL: url
+      });
+    });
+  }
+
   render() {
     const { classes } = this.props;
+
     console.log(this.state.resources)
+
     return (
       <React.Fragment>
-        <ResourceForm handleChange={this.handleChange} fileName={this.state.resources.fileName}/>
-        <br />
-        <p className="label-button" onClick={this.addChapter}>Add Another Chapter</p>
-        <Button
-          variant="contained"
-          color="secondary"
-          className={classes.button}
-          onClick={this.cancelUpload}
-        >
-          Cancel
+        <div className={classes.container}>
+          <ResourceForm handleChange={this.handleChange} fileName={this.state.resources.fileName} />
+          <div>
+            <Button
+              color="primary"
+              className={classes.button}
+              onClick={this.addChapter}
+            >
+              <Add />
+              Save &amp; Add Another Chapter
+            </Button>
+            <div>
+              <Button
+                variant="contained"
+                color="secondary"
+                className={classes.button}
+                onClick={this.cancelUpload}
+              >
+                Cancel
             <Delete />
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          className={classes.button}
-          onClick={this.setData}
-        >
-          Submit
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                onClick={this.setData}
+              >
+                Submit
             <Send />
-        </Button>
+              </Button>
+            </div>
+          </div>
+        </div>
       </React.Fragment>
     );
   }

@@ -11,10 +11,9 @@ const styles = theme => ({
     display: "flex",
     flexWrap: "wrap",
     margin: "auto",
-    width: "60%",
+    width: "100%",
     boxShadow: " 2px 3px 4px 2px #c7b9b9",
     backgroundColor: "#e4f1e566",
-    marginTop: "1em"
   },
   textField: {
     marginLeft: theme.spacing.unit,
@@ -48,10 +47,9 @@ class ResourceForm extends React.Component {
             onChange={this.props.handleChange("title")}
           />
           <TextField
-            name="summary"
+            name="description"
             label="Describe the chapter.."
             multiline
-            required
             rows="7"
             className="summary-text"
             margin="normal"
@@ -70,7 +68,7 @@ class ResourceForm extends React.Component {
             className={classes.textField}
             margin="normal"
             disabled
-            value={this.props.state.resources.fileName ? this.props.state.resources.fileName : ""}
+            value={this.props.fileName ? this.props.fileName : ""}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -86,7 +84,6 @@ class ResourceForm extends React.Component {
             label="Enter a question"
             className={classes.textField}
             margin="normal"
-            required
             onChange={this.props.handleChange("question")}
           />
         </form>
