@@ -18,8 +18,8 @@ let server = app
     console.log("Listing on port no. :", config.hostingPort);
     console.log(`Go To => ${config.hostName}:${config.hostingPort}`);
 
-    const server = require('http').createServer()
-const io = require('socket.io')(server)
+    const server = require("http").createServer();
+    const io = require("socket.io")(server);
 
     app.use(cookieParser());
     app.use(bodyParser.json());
@@ -65,14 +65,16 @@ const io = require('socket.io')(server)
       console.log("DB connection closed");
     });
   });
-  //Socket setup
-  let io = socket(server);
-      io.on('connection',socket => {
-      console.log("New Connection.. Current clients: " + socket.conn.server.clientsCount);
+//Socket setup
+let io = socket(server);
+io.on("connection", socket => {
+  console.log(
+    "New Connection.. Current clients: " + socket.conn.server.clientsCount
+  );
 
-      socket.on('disconnect', function () {
-        console.log("Disconnected.. Current clients: " + socket.conn.server.clientsCount);
-      });
-      
-  })
-
+  socket.on("disconnect", function() {
+    console.log(
+      "Disconnected.. Current clients: " + socket.conn.server.clientsCount
+    );
+  });
+});
