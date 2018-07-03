@@ -10,6 +10,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import config from "../../config/config.json";
 import "./UpdateCourse.css";
 import firebase from "firebase";
+import swal from 'sweetalert';
 
 const styles = theme => ({
   container: {
@@ -53,8 +54,9 @@ const diffLevel = [
 ];
 
 class UpdateCourse extends React.Component {
+  
   componentWillMount() {
-    fetch(`${config.APIHostName}:${config.APIHostingPort}/api/courses/LC`)
+    fetch(`${config.APIHostName}:${config.APIHostingPort}/api/courses/CK1530597258177`)
       .then(res => {
         return res.json();
       })
@@ -208,39 +210,100 @@ class UpdateCourse extends React.Component {
     }
   };
 
+  DeleteCourse = () =>{
+    
+    swal({
+      title: "Are you sure?",
+      text: "You will not be able to recover this Course!",
+      icon: "warning",
+      buttons: [
+        'No, cancel it!',
+        'Yes, I am sure!'
+      ],
+      dangerMode: true,
+    }).then((isConfirm)=> {
+      if (isConfirm) {
+        swal({
+          title: 'Success!',
+          text: 'Course successfully removed!',
+          icon: 'success'
+        }).then(()=> {
+           fetch(
+            `${config.APIHostName}:${config.APIHostingPort}/api/courses/CK1530597258177`,
+            {
+              method: "delete",
+              headers: {
+                "Content-Type": "application/json"
+              }
+            }
+          )
+          .catch(err => {
+              swal("Course not Deleted");
+            });
+        });
+      } else {
+        swal("Cancelled", "Your Course is safe", "error");
+      }
+    })
+  }
+
   updateData = () => {
     // let scope = this;
     if (this.state.title == false)  {
-      alert("Please give the course name");
+      swal({
+        title: "Please enter the Course name",
+        icon: "warning"
+      });
       return;
     }
     if (this.state.subtitle == false)  {
-      alert("Please give the Subtitle name for this course");
+      swal({
+        title: "Please add Subtitle for this course",
+        icon: "warning"
+      });
       return;
     }
     if (this.state.syllabus == false) {
-      alert("Please define syllabus for this course");
+      swal({
+        title: "Please define Syllabus for this course",
+        icon: "warning"
+      });
       return;
     }
 
     if (this.state.required_knowledge == false) {
-      alert("Please fill required knowledge field for this course");
+      swal({
+        title: "Please add Required Knowledge field for this course",
+        icon: "warning"
+      });
       return;
     }
     if (this.state.expected_learning.length == false) {
-      alert("Please fill expected learning field for this course");
+     swal({
+        title: "Please fill Expected Learning field for this course",
+        icon: "warning"
+      });
       return;
     }
     if (this.state.categories == false) {
-      alert("Please give some categories for this course");
+      swal({
+        title: "Please add Categories for this course",
+        icon: "warning"
+      });
       return;
     }
     if (this.state.expected_duration.length < 1) {
-      alert("Please fill course duration field for this course");
+      swal({
+        title: "Please add the Course Duration",
+        icon: "warning"
+      });
       return;
     }
     if (this.state.summary == false) {
-      alert("Please fill summary field for this course");
+      swal({
+        title: "Please give Summary of the course",
+        icon: "warning"
+      });
       return;
     }
     firebase
@@ -260,7 +323,7 @@ class UpdateCourse extends React.Component {
           },
           () => {
             fetch(
-              `${config.APIHostName}:${config.APIHostingPort}/api/courses/LC`,
+              `${config.APIHostName}:${config.APIHostingPort}/api/courses/CK1530597258177`,
               {
                 method: "put",
                 body: JSON.stringify(this.state),
@@ -269,12 +332,15 @@ class UpdateCourse extends React.Component {
                 }
               }
             )
-              .then(function(response) {
-                alert("Course updated successfully.");
+              .then((response)=> {
+                swal({
+                  title: "The Course Has Been Successfully Updated",
+                  icon:"success"
+                })
                 // scope.props.setMainComp("course-list", "");
               })
               .catch(err => {
-                alert("Course not updated!!");
+                swal("Course not updated!!");
               });
           }
         );
@@ -427,14 +493,20 @@ class UpdateCourse extends React.Component {
           margin="normal"
           onChange={this.handleChange("summary")}
         />
+        
         <div className="uploadButton">
           <Button
             variant="contained"
+            className={classes.button}
+          >
+            Cancel</Button>
+            <Button
+            variant="contained"
             color="secondary"
             className={classes.button}
-            // onClick={this.props.setMainComp.bind(this, "course-list", "")}8
+            onClick={this.DeleteCourse}
           >
-            Cancel
+            Delete Course
             <Delete />
           </Button>
           <Button
