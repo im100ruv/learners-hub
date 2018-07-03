@@ -64,11 +64,9 @@ class CreateCourse extends React.Component {
     required_knowledge: "",
     expected_learning: "",
     expected_duration: "1",
-    expected_duration_unit: "months",
     level: "Beginner",
     summary: "",
     new_release: false,
-    full_course_available: true,
     resources: [],
     resourcesName: "",
     instructors: [
@@ -245,7 +243,7 @@ class CreateCourse extends React.Component {
                 }
               }
             )
-              .then(function(response) {
+              .then(function (response) {
                 alert("Course uploaded successfully.");
                 scope.props.setMainComp("course-list", "");
               })
