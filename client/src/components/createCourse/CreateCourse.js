@@ -10,6 +10,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import config from "../../config/config.json";
 import "./CreateCourse.css";
 import firebase from "firebase";
+import swal from 'sweetalert';
 
 const styles = theme => ({
   container: {
@@ -144,35 +145,59 @@ class CreateCourse extends React.Component {
   setData = () => {
     let scope = this;
     if (this.state.title.length < 1) {
-      alert("Please give the course name");
+      swal({
+        title: "Please enter the Course name",
+        icon: "warning"
+      });
       return;
     }
     if (this.state.subtitle.length < 1) {
-      alert("Please give the Subtitle name for this course");
+      swal({
+        title: "Please add Subtitle for this course",
+        icon: "warning"
+      });
       return;
     }
     if (this.state.syllabus.length < 1) {
-      alert("Please define syllabus for this course");
+      swal({
+        title: "Please define Syllabus for this course",
+        icon: "warning"
+      });
       return;
     }
     if (this.state.required_knowledge.length < 1) {
-      alert("Please fill required knowledge field for this course");
+      swal({
+        title: "Please add Required Knowledge field for this course",
+        icon: "warning"
+      });
       return;
     }
     if (this.state.expected_learning.length < 1) {
-      alert("Please fill expected learning field for this course");
+      swal({
+        title: "Please fill Expected Learning field for this course",
+        icon: "warning"
+      });
       return;
     }
     if (this.state.categories.length < 1) {
-      alert("Please give some categories for this course");
+      swal({
+        title: "Please add Categories for this course",
+        icon: "warning"
+      });
       return;
     }
     if (this.state.expected_duration.length < 1) {
-      alert("Please fill course duration field for this course");
+      swal({
+        title: "Please add the Course Duration",
+        icon: "warning"
+      });
       return;
     }
     if (this.state.summary.length < 1) {
-      alert("Please fill summary field for this course");
+      swal({
+        title: "Please give Summary of the course",
+        icon: "warning"
+      });
       return;
     }
     firebase
@@ -205,11 +230,14 @@ class CreateCourse extends React.Component {
               }
             )
               .then(function (response) {
-                alert("Course uploaded successfully.");
-                scope.props.setMainComp("create-resource", "");
+                swal({
+                  title: "The Course Has Been Successfully Updated",
+                  icon:"success"
+                })
+                scope.props.setMainComp("course-list", "");
               })
               .catch(err => {
-                alert("Course not uploaded");
+                swal("Course not uploaded");
               });
           }
         );

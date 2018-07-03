@@ -5,10 +5,15 @@ import Header from './components/header/Header';
 import DashBoard from './components/dashboard/Dashboard';
 import './config/firebaseConfig';
 // import { Provider } from 'react-redux';
-// import store from './store/store';
+// // import store from './store/store';
+import io from 'socket.io-client';
 
 class App extends Component {
-
+constructor(){
+  super();
+this.socket = io('http://localhost:8000');
+}
+  
  render() {
 
    return (
