@@ -56,8 +56,6 @@ const diffLevel = [
 class UpdateCourse extends React.Component {
   
   componentWillMount() {
-    console.log("!!!");
-    console.log(this.props.courseKey);
     fetch(`${config.APIHostName}:${config.APIHostingPort}/api/courses/${this.props.courseKey}`)
       .then(res => {
         return res.json();
@@ -213,6 +211,7 @@ class UpdateCourse extends React.Component {
   };
 
   DeleteCourse = () =>{
+    let scope = this;
     
     swal({
       title: "Are you sure?",
@@ -238,11 +237,13 @@ class UpdateCourse extends React.Component {
                 "Content-Type": "application/json"
               }
             }
-          )
+          ).then(()=>{
+            scope.props.setMainComp("course-list", "");
+          })
           .catch(err => {
               swal("Course not Deleted");
             });
-        });
+        })
       } else {
         swal("Cancelled", "Your Course is safe", "error");
       }
@@ -250,7 +251,7 @@ class UpdateCourse extends React.Component {
   }
 
   updateData = () => {
-    // let scope = this;
+    let scope = this;
     if (this.state.title == false)  {
       swal({
         title: "Please enter the Course name",
@@ -339,7 +340,8 @@ class UpdateCourse extends React.Component {
                   title: "The Course Has Been Successfully Updated",
                   icon:"success"
                 })
-                // scope.props.setMainComp("course-list", "");
+              }).then(()=>{
+                scope.props.setMainComp("course-detail", this.props.courseKey);
               })
               .catch(err => {
                 swal("Course not updated!!");
@@ -500,6 +502,7 @@ class UpdateCourse extends React.Component {
           <Button
             variant="contained"
             className={classes.button}
+            onClick={this.props.setMainComp.bind(this, "course-detail", this.props.courseKey)}
           >
             Cancel</Button>
             <Button
