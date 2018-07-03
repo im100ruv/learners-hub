@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-import FileUpload from "@material-ui/icons/FileUpload";
+import ArrowForward from "@material-ui/icons/ArrowForward";
 import AddCircle from "@material-ui/icons/AddCircle";
 import Delete from "@material-ui/icons/Delete";
 import Button from "@material-ui/core/Button";
@@ -69,11 +69,10 @@ class CreateCourse extends React.Component {
     summary: "",
     new_release: false,
     resources: [],
-    resourcesName: "",
     instructors: [
       {
         bio:
-          "As an avid programmer and learner, Himanshu mukat began teaching and found his passion. He enjoys the best of both worlds as he works as a Course Developer at Udacity. After earning a degree in computer science, he made the smart decision and moved into the world of HTML, CSS, and JavaScript. For over seven years he worked for an international nonprofit doing everything from frontend web development, to backend programming, to database and server management. Before graduating from the University of Florida’s Web Design and Online Communications Master’s program with a degree in Mass Communication, he had already been asked by the University to come on board as a faculty member. Even with the planning, building and development of courses, he still tries to make time to take in the beauty of the California countryside.",
+          "As an avid programmer and learner, Himanshu mukat began teaching and found his passion. He enjoys the best of both worlds as he works as a Course Developer at Udacity. After earning a degree in computer science, he made the smart decision and moved into the world of HTML, CSS, and JavaScript. For over seven years he worked for an international nonprofit doing everything from frontend web development, to backend programming, to database and server management.",
         image:
           "https://yt3.ggpht.com/a-/ACSszfHJCef_uTyAEgv2HjWg7zV8Vks0hLJ4KAx8NA=s900-mo-c-c0xffffffff-rj-k-no",
         name: "Himanshu Mukat"
@@ -121,54 +120,6 @@ class CreateCourse extends React.Component {
           });
         }
       );
-    } else if (
-      event.target.id === "course-resources" && event.target.files[0]) {
-      let resourcesName = "";
-      for (const key in Object.keys(event.target.files)) {
-        resourcesName = resourcesName + event.target.files[key].name + "\n";
-      }
-      this.setState({
-        resourcesName: resourcesName
-      });
-
-      let storageRef = firebase.storage().ref(`courses/resources/CRF${Date.now()}/`);
-      //this async task may create problems
-      storageRef.getDownloadURL().then(url => {
-        this.setState({
-          resourceFolderURL: url
-        });
-      });
-
-      let value = [];
-      for (const key in Object.keys(event.target.files)) {
-        let file = event.target.files[key];
-
-        let resourceRef = storageRef.child(file.name);
-        let uploadTask = resourceRef.put(file);
-
-        uploadTask.on(
-          "state_changed",
-          snapshot => {
-            // code for progress
-          },
-          err => {
-            // error handling here
-            // use err.code to handle specific errors
-          },
-          () => {
-            // code after upload completion
-            resourceRef.getDownloadURL().then(url => {
-              value.push({
-                name: file.name,
-                URL: url
-              });
-              this.setState({
-                [stateName]: value
-              });
-            });
-          }
-        );
-      }
     } else {
       let value = event.target.value.trim();
       this.setState({
@@ -176,6 +127,20 @@ class CreateCourse extends React.Component {
       });
     }
   };
+
+  cancelUpload = () => {
+    let scope = this
+    if (this.state.banner_image) {
+      var deleteRef = firebase.storage().refFromURL(this.state.banner_image)
+
+      deleteRef.delete().then(function () {
+        // File deleted successfully
+        scope.props.setMainComp("course-list", "")
+      }).catch(function (error) {
+        console.log("error while deleting banner image..",error)
+      });
+    }
+  }
 
   setData = () => {
     let scope = this;
@@ -198,10 +163,6 @@ class CreateCourse extends React.Component {
         title: "Please define Syllabus for this course",
         icon: "warning"
       });
-      return;
-    }
-    if (this.state.resourcesName.length < 1) {
-      alert("Please upload some course related files");
       return;
     }
     if (this.state.required_knowledge.length < 1) {
@@ -338,33 +299,7 @@ class CreateCourse extends React.Component {
           multiline
           onChange={this.handleChange("syllabus")}
         />
-        <input
-          accept="application/pdf"
-          className={classes.input}
-          id="course-resources"
-          multiple
-          type="file"
-          onChange={this.handleChange("resources")}
-        />
-        <TextField
-          id="uploadCourse"
-          label="Upload course file"
-          className={classes.textField}
-          margin="normal"
-          disabled
-          multiline
-          required
-          value={this.state.resourcesName}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <label htmlFor="course-resources">
-                  <AddCircle className={"add-icon"} />
-                </label>
-              </InputAdornment>
-            )
-          }}
-        />
+
         <TextField
           id="required-knowledge"
           label="Required knowledge for this course"
@@ -443,7 +378,7 @@ class CreateCourse extends React.Component {
             variant="contained"
             color="secondary"
             className={classes.button}
-            onClick={this.props.setMainComp.bind(this, "course-list", "")}
+            onClick={this.cancelUpload}
           >
             Cancel
             <Delete />
@@ -454,8 +389,8 @@ class CreateCourse extends React.Component {
             className={classes.button}
             onClick={this.setData}
           >
-            Upload
-            <FileUpload />
+            Next (course contents)
+            <ArrowForward />
           </Button>
         </div>
       </form>
