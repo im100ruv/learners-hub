@@ -37,12 +37,10 @@ export default class CourseResource extends React.Component {
       .then(course => {
         this.setState({
           key: course.key,
-          homepage: course.homepage,
           title: course.title,
           subtitle: course.subtitle,
           banner_image: course.banner_image,
           new_release: course.new_release,
-          syllabus: course.syllabus,
           resources: [{
             title: "Introduction",
             description: "Java is a programming Language Java is a programming Language Java is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming Language....",
