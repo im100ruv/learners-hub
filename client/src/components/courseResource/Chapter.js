@@ -2,6 +2,7 @@ import React from 'react';
 import './CourseResource.css';
 import Button from '../materialUIComponents/Button';
 import RadioGroup from './RadioGroup';
+import sweetAlert from 'sweetalert';
 
 export default class Chapter extends React.Component {
   state = {
@@ -24,7 +25,18 @@ export default class Chapter extends React.Component {
   validateAnswer = (dummy1, dummy2) => {
     if (this.state.questionsSolvedIndexes.length === this.props.resource.quiz.length) {
       this.props.setAnsweredCorrect()
+      sweetAlert({ title: "Congratulations", icon: "success" })
+    } else {
+      sweetAlert({ title: "Wrong answer", icon: "error" })
     }
+  }
+
+  showAnswer = () => {
+    let answer = ""
+    this.props.resource.quiz.forEach((item, index) => {
+      answer += (index + 1) + ". " + item.answer + "\n"
+    })
+    sweetAlert("Answers", answer, "info")
   }
 
   componentWillReceiveProps() {
@@ -59,6 +71,8 @@ export default class Chapter extends React.Component {
             </div>
           )
         })}
+        <br/>
+        <p className="label-button" onClick={this.showAnswer}>Show Answer</p>
         <center><Button disabled={!this.state.userInputGiven} setMainComp={this.validateAnswer} courseKey={this.props.courseKey} buttonValue="Submit" destination="" /></center>
       </React.Fragment>
     )
