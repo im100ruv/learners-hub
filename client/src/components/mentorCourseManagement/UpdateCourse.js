@@ -56,7 +56,7 @@ const diffLevel = [
 class UpdateCourse extends React.Component {
   
   componentWillMount() {
-    fetch(`${config.APIHostName}:${config.APIHostingPort}/api/courses/CK1530545572823`)
+    fetch(`${config.APIHostName}:${config.APIHostingPort}/api/courses/CK1530597258177`)
       .then(res => {
         return res.json();
       })
@@ -229,7 +229,7 @@ class UpdateCourse extends React.Component {
           icon: 'success'
         }).then(()=> {
            fetch(
-            `${config.APIHostName}:${config.APIHostingPort}/api/courses/CK1530545572823`,
+            `${config.APIHostName}:${config.APIHostingPort}/api/courses/CK1530597258177`,
             {
               method: "delete",
               headers: {
@@ -323,7 +323,7 @@ class UpdateCourse extends React.Component {
           },
           () => {
             fetch(
-              `${config.APIHostName}:${config.APIHostingPort}/api/courses/CK1530545572823`,
+              `${config.APIHostName}:${config.APIHostingPort}/api/courses/CK1530597258177`,
               {
                 method: "put",
                 body: JSON.stringify(this.state),
