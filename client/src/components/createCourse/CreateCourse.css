@@ -28,3 +28,8 @@
 .add-icon{
     cursor: pointer;
 }
+
+.label-button {
+  cursor: pointer;
+  color: #010153;
+}
