@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 import './Header.css';
 import loginSignupService from '../../services/loginSignupService';
-import Button from '@material-ui/core/Button';
+import LoginSignup from '../login-signup/LoginSignup';
+
+import { connect } from 'react-redux'
+import loggedUserAction from '../../store/actions/loggedUser';
+import loginAuth from '../../services/loginAuth';
+
+//matarial component
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography'
@@ -15,12 +21,23 @@ import parse from 'autosuggest-highlight/parse';
 import IconButton from '@material-ui/core/IconButton';
 import CourseCategoryIcon from '@material-ui/icons/Apps';
 import SearchIcon from '@material-ui/icons/Search';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import AccountCircle from '@material-ui/icons/AccountCircle';
 import logo from '../../assets/images/logo.svg'
-import LoginSignup from '../login-signup/LoginSignup';
+import Tooltip from '@material-ui/core/Tooltip';
+import Menu from '@material-ui/core/Menu';
+import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 
 class Header extends Component {
+    constructor() {
+        super();
+        this.afterLoginLogout = this.afterLoginLogout.bind(this);
+    }
+
     state = {
         value: '',
+        anchorEl: null,
+        loggedUser: null,
         suggestions : [],
         theme : {
             container: {
@@ -44,7 +61,7 @@ class Header extends Component {
                 listStyleType: 'none',
             },
         }
-    }
+    };
 
     suggestions = [
         { label: 'Afghanistan' },
@@ -168,30 +185,101 @@ class Header extends Component {
         });
     };
 
+    handleAcountMenu = event => {
+        this.setState({ anchorEl: event.currentTarget });
+    };
+
+    handleAcountClose = () => {
+        this.setState({ anchorEl: null });
+    };
+
+    handleAcountCloseOnButton = () => {
+        this.setState({ anchorEl: null }, this.logout());
+    };
+
+    afterLoginLogout(logged) {
+        this.setState({
+            logged: logged
+        });
+    }
+
     logout = () => {
-        loginSignupService.logoutRequest('pawan.akshaykr@gmail.com')
+        loginSignupService.logoutRequest(this.props.loggedUser.email)
         .then(res => {
-            this.setState({});
+            console.log(res);
+            this.props.removeLoggedUser();
+            this.afterLoginLogout(false);
         }).catch(err => {
             console.log(err);
         });
     }
     
+    goto(path) {
+        this.props.history.push(path);
+    }
+
     buttontemplate = () => {
-        let cookie = document.cookie;
-        cookie = cookie.replace('; ', '=');
-        let arr = cookie.split('=');
-        if(arr.includes('c_token')) {
+        if(this.state.logged) {
             return(
-                <Button variant="contained" color="secondary" className="ContainedButtons" onClick={this.logout}>
-                    Logout
-                </Button>
+                <React.Fragment>
+                    <BottomNavigationAction className='dashboard-icon' style={{flex: 'none', paddingLeft: 15, paddingRight: 15}} label="Dashboard" onClick={this.goto.bind(this, '/dashboard')} icon={<DashboardIcon/>} />
+                    {/* <Tooltip id="tooltip-fab" title="Dashoard">
+                        <IconButton onClick={this.goto.bind(this, '/dashboard')}><DashboardIcon/></IconButton>
+                    </Tooltip> */}
+                    <Typography variant="subheading" color="inherit">
+                        {this.state.loggedUser.name}
+                    </Typography>
+
+                    <div>
+                        <IconButton
+                            aria-owns={this.state.anchorEl ? 'menu-appbar' : null}
+                            aria-haspopup="true"
+                            onClick={this.handleAcountMenu}
+                            color="primary"
+                        >
+                            <AccountCircle />
+                        </IconButton>
+                        <Menu
+                            id="menu-appbar"
+                            anchorEl={this.state.anchorEl}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            style={{
+                                marginLeft: -12,
+                                marginRight: 20,
+                                top: 35
+                            }}
+                            open={this.state.anchorEl ? true : false}
+                            onClose={this.handleAcountClose}
+                        >
+                            <MenuItem onClick={this.handleAcountCloseOnButton}>Logout</MenuItem>
+                        </Menu>
+                    </div>
+
+                    {/* <Button variant="contained" color="secondary" className="ContainedButtons" onClick={this.logout}>
+                        Logout
+                    </Button> */}
+                </React.Fragment>
             );
         } else {
             return(
-                <LoginSignup />
+                <LoginSignup afterLoginLogout={this.afterLoginLogout} />
             );
         }
+    }
+
+    componentWillReceiveProps(nextprops) {
+        let logged = loginAuth.isLoggedIn(nextprops.loggedUser);
+        this.setState({
+            logged: logged,
+            loggedUser: nextprops.loggedUser
+        });
     }
 
     render() {
@@ -204,7 +292,9 @@ class Header extends Component {
                         <Typography variant="title" color="inherit">
                             LEARNER'S HUB
                         </Typography>
-                        <IconButton><CourseCategoryIcon/></IconButton>
+                        <Tooltip id="tooltip-fab" title="Courses Category">
+                            <IconButton><CourseCategoryIcon/></IconButton>
+                        </Tooltip>
                         <Autosuggest
                             theme={this.state.theme}
                             renderInputComponent={this.renderInput}
@@ -227,4 +317,6 @@ class Header extends Component {
     }
 }
 
-export default Header;
+export default connect((state) => ({
+    loggedUser: state.loggedUser
+}), loggedUserAction)(Header);

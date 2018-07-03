@@ -3,6 +3,10 @@ import './LoginSignup.css';
 import firebase from 'firebase';
 import bcrypt from 'bcryptjs';
 import loginSignupService from '../../services/loginSignupService';
+// import { Redirect, BrowserRouter } from 'react-router-dom';
+import Redirects from '../redirect/redirect'
+
+//matarial component
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -103,7 +107,8 @@ class LoginSignup extends Component {
     }
 
     login = user => {
-        bcrypt.hash(user.password, this.state.salt, function(err, hash) {
+        let scope = this;
+        bcrypt.hash(user.password, scope.state.salt, function(err, hash) {
             if(err) {
                 console.log('could not encrypted your password... Try Again.');
             } else {
@@ -111,15 +116,16 @@ class LoginSignup extends Component {
                 loginSignupService.loginRequest(user)
                 .then(result => {
                     console.log(result);
+                    scope.props.afterLoginLogout(true);
                 }).catch(error => {
                     console.log(error);
-                    alert(error.message);
                 });
             }
         });
     }
 
     signup = user => {
+        let scope = this;
         bcrypt.hash(user.password, this.state.salt, function(err, hash) {
             if(err) {
                 console.log('could not encrypted your password... Try Again.');
@@ -128,9 +134,9 @@ class LoginSignup extends Component {
                 loginSignupService.signupRequest(user)
                 .then(result => {
                     console.log(result);
+                    scope.props.afterLoginLogout(true);
                 }).catch(error => {
                     console.log(error);
-                    alert(error.message);
                 });
             }
         });

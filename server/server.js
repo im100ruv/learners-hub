@@ -7,10 +7,18 @@ const routes = require('./routes');
 const app = express();
 
 let auth = (req, res, next) => {
-    // console.log(req);
-
-    
-    next();
+    let path = req.path;
+    if(path === '/api/login' || '/api/signup') {
+        // res.clearCookie('c_token');
+        next();
+    } else {
+        if(req.cookies.c_token) {
+            next();
+        } else {
+            // res.send({ message: 'Unauthorized Request' });
+            next();
+        }
+    }
 }
 
 app.listen(config.hostingPort, function(){
@@ -42,7 +50,7 @@ app.listen(config.hostingPort, function(){
     });
 }).on('error', function(err) {
     if(err.code == 'EADDRINUSE') {
-        console.log('Port No.: ' + config.hostingPort +' is already occupied');
+        console.log('Port No.: ' + config.remotePort +' is already occupied');
         console.log('Server is not runnig');
     } else {
         console.log(err);
