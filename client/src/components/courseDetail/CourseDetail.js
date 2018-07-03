@@ -58,7 +58,8 @@ export default class CourseDetail extends React.Component {
           title={this.state.title}
           subtitle={this.state.subtitle}
           new_release={this.state.new_release}
-        />
+        />    
+        <center><Button setMainComp={this.props.setMainComp} courseKey={this.state.key} buttonValue="Update Course" destination="update-course" /></center>
         <div className="course-body">
           <div className="about-course">
             <b> About this course: </b>{this.state.summary}

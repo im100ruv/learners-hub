@@ -19,6 +19,7 @@ import CourseList from '../courseList/CourseList';
 import CourseDetail from '../courseDetail/CourseDetail';
 import CourseResource from '../courseResource/CourseResource';
 import CreateCourse from '../createCourse/CreateCourse';
+import UpdateCourse from '../mentorCourseManagement/UpdateCourse';
 
 class Dashboard extends Component {
   learnerMenu = [
@@ -120,6 +121,8 @@ class Dashboard extends Component {
       mainRender = <CourseResource courseKey={this.state.courseKey} />
     } else if (this.state.mainComp === "add-course") {
       mainRender = <CreateCourse setMainComp={this.setMainComp}/>
+    } else if (this.state.mainComp === "update-course") {
+      mainRender = <UpdateCourse courseKey={this.state.courseKey} setMainComp={this.setMainComp}/>
     }
     return (
       <div className="dashboard">
