@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const schema = new mongoose.Schema({
     key: String,
-    homepage: String,
     title: String,
     subtitle: String,
     banner_image: String,
@@ -9,14 +8,25 @@ const schema = new mongoose.Schema({
     syllabus: String,
     resourceFolderURL: String,
     resources: [{
-      name: String,
-      URL: String
+      title: String,
+      description: String,
+      fileName: String,
+      fileURL: String,
+      assignment: {
+        question: String,
+        fileName: String,
+        evaluationMatchValue: String
+      },
+      quiz: [{
+        objective: Boolean,
+        question: String,
+        options: [String],
+        answer: String
+      }]
     }],
     level: String,
     summary: String,
     new_release: Boolean,
-    full_course_available: Boolean,
-    expected_duration_unit: String,
     expected_duration: Number,
     required_knowledge: String,
     instructors: [ {

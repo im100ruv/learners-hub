@@ -18,7 +18,6 @@ import SettingIcon from '@material-ui/icons/Settings';
 import CourseList from '../courseList/CourseList';
 import CourseDetail from '../courseDetail/CourseDetail';
 import CourseResource from '../courseResource/CourseResource';
-import CourseQuiz from '../courseQuiz/CourseQuiz';
 import CreateCourse from '../createCourse/CreateCourse';
 
 class Dashboard extends Component {
@@ -118,9 +117,7 @@ class Dashboard extends Component {
     } else if (this.state.mainComp === "course-detail") {
       mainRender = <CourseDetail courseKey={this.state.courseKey} setMainComp={this.setMainComp} />
     } else if (this.state.mainComp === "course-resource") {
-      mainRender = <CourseResource courseKey={this.state.courseKey} setMainComp={this.setMainComp} />
-    } else if (this.state.mainComp === "course-quiz") {
-      mainRender = <CourseQuiz courseKey={this.state.courseKey} setMainComp={this.setMainComp}/>
+      mainRender = <CourseResource courseKey={this.state.courseKey} />
     } else if (this.state.mainComp === "add-course") {
       mainRender = <CreateCourse setMainComp={this.setMainComp}/>
     }
