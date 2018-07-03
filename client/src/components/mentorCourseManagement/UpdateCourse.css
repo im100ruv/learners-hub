@@ -23,7 +23,7 @@
 .uploadButton{
     width: 100%;
     justify-content: flex-end;
-    display: flex;;
+    display: flex;
 }
 .add-icon{
     cursor: pointer;
