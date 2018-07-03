@@ -1,16 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import FileUpload from "@material-ui/icons/FileUpload";
 import Send from "@material-ui/icons/Send";
-import AddCircle from "@material-ui/icons/AddCircle";
 import Delete from "@material-ui/icons/Delete";
 import Button from "@material-ui/core/Button";
-import InputAdornment from "@material-ui/core/InputAdornment";
 import config from "../../config/config.json";
 import "./CreateCourse.css";
 import firebase from "firebase";
+import ResourceForm from './ResourceForm';
 
 const styles = theme => ({
   container: {
@@ -40,37 +37,32 @@ const styles = theme => ({
 
 class CreateResource extends React.Component {
   state = {
-    key: "LC",
-    title: "",
-    subtitle: "",
-    banner_image: "",
-    categories: "",
-    new_release: false,
+    key: this.props.courseKey,
     resources: [{
-      title: "Introduction",
-      description: "Java is a programming Language Java is a programming Language Java is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming Language....",
+      title: "",
+      // description: "Java is a programming Language Java is a programming Language Java is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming Language....",
       fileName: "",
-      fileURL: "",
-      assignment: {
-        question: "",
-        fileName: "",
-        evaluationMatchValue: ""
-      },
-      quiz: [{
-        objective: true,
-        question: "Java is a ..",
-        options: ["computer", "programming language", "nothing", "joke"],
-        answer: "programming language"
-      }]
+      // fileURL: "",
+      // assignment: {
+      //   question: "",
+      //   fileName: "",
+      //   evaluationMatchValue: ""
+      // },
+      // quiz: [{
+      //   objective: true,
+      //   question: "Java is a ..",
+      //   options: ["computer", "programming language", "nothing", "joke"],
+      //   answer: "programming language"
+      // }]
     }],
   };
 
   handleChange = stateName => event => {
-    // event.preventDefault();
-    // let value = event.target.value.trim();
-    // this.setState({
-    //   [stateName]: value
-    // });
+    event.preventDefault();
+    let value = event.target.value.trim();
+    this.setState({
+      [stateName]: value
+    });
   };
 
   cancelUpload = () => {
@@ -130,103 +122,37 @@ class CreateResource extends React.Component {
     //   });
   };
 
+  addChapter = () => {
+    //add the form agian
+  }
+
   render() {
     const { classes } = this.props;
+    console.log(this.state.resources)
     return (
-      <form className={classes.container} autoComplete="off">
-        <p className="uploadCourse">CREATE RESOURCE</p>
-        <TextField
-          id="title"
-          required
-          label="Chapter Heading"
-          className={classes.textField}
-          margin="normal"
-          onChange={this.handleChange("title")}
-        />
-        <TextField
-          id="summary"
-          label="Describe the chapter.."
-          multiline
-          required
-          rows="7"
-          className="summary-text"
-          margin="normal"
-          onChange={this.handleChange("description")}
-        />
-        <input
-          accept="*"
-          className={classes.input}
-          id="chapter_file"
-          type="file"
-          onChange={this.handleChange("fileURL")}
-        />
-        <TextField
-          id="chapter_file_textField"
-          label="Upload a file/video related to this chapter"
-          className={classes.textField}
-          margin="normal"
-          disabled
-          value={this.state.resources.fileName ? this.state.resources.fileName : ""}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <label htmlFor="chapter_file">
-                  <AddCircle className={"add-icon"} />
-                </label>
-              </InputAdornment>
-            )
-          }}
-        />
-        <TextField
-          id="expected-learning"
-          label="Expected learning"
-          placeholder="What will user get after completing this course?"
-          className={classes.textField}
-          margin="normal"
-          multiline
-          required
-          onChange={this.handleChange("expected_learning")}
-        />
-        <TextField
-          id="summary"
-          label="Summary of course"
-          multiline
-          required
-          rows="7"
-          className="summary-text"
-          margin="normal"
-          onChange={this.handleChange("summary")}
-        />
-        <div className="uploadButton">
-          <Button
-            variant="contained"
-            color="secondary"
-            className={classes.button}
-            onClick={this.cancelUpload}
-          >
-            Cancel
+      <React.Fragment>
+        <ResourceForm handleChange={this.handleChange} fileName={this.state.resources.fileName}/>
+        <br />
+        <p className="label-button" onClick={this.addChapter}>Add Another Chapter</p>
+        <Button
+          variant="contained"
+          color="secondary"
+          className={classes.button}
+          onClick={this.cancelUpload}
+        >
+          Cancel
             <Delete />
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            onClick={this.setData}
-          >
-            Push
-            <FileUpload />
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            onClick={this.setData}
-          >
-            Submit
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.button}
+          onClick={this.setData}
+        >
+          Submit
             <Send />
-          </Button>
-        </div>
-      </form>
+        </Button>
+      </React.Fragment>
     );
   }
 }

@@ -136,7 +136,7 @@ class CreateCourse extends React.Component {
         // File deleted successfully
         scope.props.setMainComp("course-list", "")
       }).catch(function (error) {
-        console.log("error while deleting banner image..",error)
+        console.log("error while deleting banner image..", error)
       });
     }
   }
@@ -175,6 +175,7 @@ class CreateCourse extends React.Component {
       alert("Please fill summary field for this course");
       return;
     }
+    let key = ""
     firebase
       .storage()
       .ref("courses/banners/")
@@ -194,6 +195,7 @@ class CreateCourse extends React.Component {
             })
           },
           () => {
+            key = this.state.key
             fetch(
               `${config.APIHostName}:${config.APIHostingPort}/api/courses`,
               {
@@ -206,7 +208,7 @@ class CreateCourse extends React.Component {
             )
               .then(function (response) {
                 alert("Course uploaded successfully.");
-                scope.props.setMainComp("create-resource", "");
+                scope.props.setMainComp("create-resource", key);
               })
               .catch(err => {
                 alert("Course not uploaded");

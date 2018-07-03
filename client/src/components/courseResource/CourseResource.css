@@ -39,5 +39,6 @@ a{
 }
 
 .label-button {
-  color: #010153
+  cursor: pointer;
+  color: #010153;
 }
