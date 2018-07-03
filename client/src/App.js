@@ -6,14 +6,12 @@ import DashBoard from './components/dashboard/Dashboard';
 import './config/firebaseConfig';
 // import { Provider } from 'react-redux';
 // // import store from './store/store';
-// import socket from 'socket.io';
+import io from 'socket.io-client';
 
-// const socket =io.connect("http://localhost:8000");
-import SocketIOClient from 'socket.io-client';
 class App extends Component {
 constructor(){
   super();
-this.socket = SocketIOClient('http://localhost:8000');
+this.socket = io('http://localhost:8000');
 }
   
  render() {

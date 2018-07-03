@@ -67,9 +67,12 @@ const io = require('socket.io')(server)
   });
   //Socket setup
   let io = socket(server);
+      io.on('connection',socket => {
+      console.log("New Connection.. Current clients: " + socket.conn.server.clientsCount);
 
-  io.on('connection',socket => {
-    var clients = socket.client.conn.emit.length;
-      console.log("clients: " + clients);
-      console.log('made socket connection',socket.id)
+      socket.on('disconnect', function () {
+        console.log("Disconnected.. Current clients: " + socket.conn.server.clientsCount);
+      });
+      
   })
+
