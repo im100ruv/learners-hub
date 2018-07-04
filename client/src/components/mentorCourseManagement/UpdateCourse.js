@@ -252,21 +252,21 @@ class UpdateCourse extends React.Component {
 
   updateData = () => {
     let scope = this;
-    if (!this.state.title)  {
+    if (this.state.title.trim()==="")  {
       swal({
         title: "Please enter the Course name",
         icon: "warning"
       });
       return;
     }
-    if (!this.state.subtitle)  {
+    if (this.state.subtitle.trim()==="")  {
       swal({
         title: "Please add Subtitle for this course",
         icon: "warning"
       });
       return;
     }
-    if (!this.state.syllabus) {
+    if (this.state.syllabus.trim()==="") {
       swal({
         title: "Please define Syllabus for this course",
         icon: "warning"
@@ -274,21 +274,21 @@ class UpdateCourse extends React.Component {
       return;
     }
 
-    if (!this.state.required_knowledge) {
+    if (this.state.required_knowledge.trim()==="") {
       swal({
         title: "Please add Required Knowledge field for this course",
         icon: "warning"
       });
       return;
     }
-    if (!this.state.expected_learning.length) {
+    if (this.state.expected_learning.trim()==="") {
      swal({
         title: "Please fill Expected Learning field for this course",
         icon: "warning"
       });
       return;
     }
-    if (!this.state.categories) {
+    if (this.state.categories.trim()==="") {
       swal({
         title: "Please add Categories for this course",
         icon: "warning"
@@ -302,7 +302,7 @@ class UpdateCourse extends React.Component {
       });
       return;
     }
-    if (!this.state.summary) {
+    if (this.state.summary.trim()==="") {
       swal({
         title: "Please give Summary of the course",
         icon: "warning"
