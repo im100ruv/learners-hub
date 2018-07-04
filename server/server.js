@@ -49,16 +49,10 @@ let server = app
     app.use(auth);
 
     //static directory
-<<<<<<< HEAD
     mongoose
       .connect(config.remoteDB)
       .then(success => {
         console.log("DB is Connected");
-=======
-    mongoose.connect(config.localDB)
-    .then(success => {
-        console.log('DB is Connected');
->>>>>>> 8992b2012ba3cd99eb385fa77e484f905d1c7989
         routes.setup(app);
       })
       .catch(err => {
@@ -66,20 +60,12 @@ let server = app
           console.log("DB could not Connected");
           console.log(err.message);
         });
-<<<<<<< HEAD
       });
   })
   .on("error", function(err) {
     if (err.code == "EADDRINUSE") {
       console.log("Port No.: " + config.hostingPort + " is already occupied");
       console.log("Server is not runnig");
-=======
-    });
-}).on('error', function(err) {
-    if(err.code == 'EADDRINUSE') {
-        console.log('Port No.: ' + config.remotePort +' is already occupied');
-        console.log('Server is not runnig');
->>>>>>> 8992b2012ba3cd99eb385fa77e484f905d1c7989
     } else {
       console.log(err);
       console.log("Server is not runnig");
