@@ -24,10 +24,14 @@ import MobileIcon from '@material-ui/icons/PhoneIphone';
 import EmailIcon from '@material-ui/icons/Email';
 import PasswordIcon from '@material-ui/icons/Lock';
 import TextField from '@material-ui/core/TextField';
+import UserType from '@material-ui/icons/AccountBox'
 import Grid from '@material-ui/core/Grid';
 import googleIcon from '../../assets/images/googleIcon.svg';
+import MenuItem from '@material-ui/core/MenuItem';
 // import Snackbar from '@material-ui/core/Snackbar';
 import sweetAlert from 'sweetalert';
+import { Typography } from '@material-ui/core';
+
 class LoginSignup extends Component {
     state = {
         salt: "$2a$09$nrrCd85V7az4Vvu0CzeZ3e",
@@ -53,7 +57,8 @@ class LoginSignup extends Component {
         mainContainer: {
             width: 450,
             left: 0
-        }
+        },
+        selectedvalue: ''
     };
 
     handleClickDialogOpen = () => {
@@ -161,6 +166,11 @@ class LoginSignup extends Component {
     handleInputchange = (mode, field, event) => {
         //following line to be modified later
         this.state[mode][field] = event.target.value;
+        if(field === 'user_type') {
+            this.setState({
+                selectedvalue: event.target.value
+            })
+        }
     }
 
     handleSubmit = (mode) => {
@@ -250,8 +260,9 @@ class LoginSignup extends Component {
                                     </div>
                                 </CardContent>
                                 <DialogActions className="dialog-action">
-                                    <Button variant="fab" className='googleButton' onClick={this.thirdPartyLogin.bind(this, 'google')}><img src={googleIcon} /></Button>
                                     <Button variant="contained" color='primary' type='submit' className='submit' onClick={this.handleSubmit.bind(this, 'login')}>Login</Button>
+                                    <Typography>--------------- <strong>OR</strong> ---------------</Typography>
+                                    <Button variant="fab" className='googleButton' onClick={this.thirdPartyLogin.bind(this, 'google')}><img src={googleIcon} /></Button>
                                 </DialogActions>
                             </Card>
                             
@@ -320,6 +331,28 @@ class LoginSignup extends Component {
                                                     helperText="Enter Mobile No."
                                                     onChange={this.handleInputchange.bind(this, 'signup', 'mobile')}
                                                 />
+                                            </Grid>
+                                        </Grid>
+                                    </div>
+                                    <div className="signup-user-type">
+                                        <Grid container spacing={8} alignItems="flex-end">
+                                            <Grid item className="signup-form-icon">
+                                                <UserType />
+                                            </Grid>
+                                            <Grid item style={{width: '68%'}}>
+                                                <TextField
+                                                    fullWidth
+                                                    required
+                                                    select
+                                                    label="Signup As"
+                                                    className="signup-user-type-form"
+                                                    value={this.state.selectedvalue}
+                                                    helperText="Select User Type"
+                                                    onChange={this.handleInputchange.bind(this, 'signup', 'user_type')}
+                                                >
+                                                    <MenuItem selected value="Learner">Learner</MenuItem>
+                                                    <MenuItem value="Author">Author</MenuItem>
+                                                </TextField>
                                             </Grid>
                                         </Grid>
                                     </div>

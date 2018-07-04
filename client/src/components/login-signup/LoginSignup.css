@@ -13,8 +13,7 @@ div.login-form-icon svg, div.signup-form-icon svg {
     margin-right: 12px;
 }
 div.dialog-action .submit {
-    margin: 0 25px 10px 0;
-    padding: 12px 25px;
+    padding: 12px 90px;
 }
 .login-email, .login-password, .signup-email, .signup-password {
     margin-top: 10px;
@@ -29,4 +28,12 @@ input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     -moz-appearance: none;
     margin: 0; 
+}
+div.dialog-action {
+    display: flex;
+    flex-direction: column;
+}
+div.dialog-action>* {
+    margin: 10px auto;
+    padding: 0;
 }

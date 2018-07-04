@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import './Dashboard.css';
+import { connect } from 'react-redux'
+import loggedUserAction from '../../store/actions/loggedUser';
+
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -13,7 +16,6 @@ import ProfileIcon from '@material-ui/icons/AccountCircle';
 import CoursesIcon from '@material-ui/icons/LibraryBooks';
 import AddCourseIcon from '@material-ui/icons/LibraryAdd';
 import CourseListIcon from "@material-ui/icons/ViewList";
-import UploadCourse from "@material-ui/icons/FileUpload";
 import SettingIcon from '@material-ui/icons/Settings';
 import CourseList from '../courseList/CourseList';
 import CourseDetail from '../courseDetail/CourseDetail';
@@ -23,6 +25,16 @@ import UpdateCourse from '../mentorCourseManagement/UpdateCourse';
 import CreateResource from '../createCourse/CreateResource';
 
 class Dashboard extends Component {
+  constructor(props) {
+    super(props);
+    this.state={
+      loggedUser: null,
+      menuArr: this.learnerMenu,
+      mainComp: "course-list",
+      courseKey: ""
+    };
+  }
+
   learnerMenu = [
     {
       name: 'Profile',
@@ -36,26 +48,23 @@ class Dashboard extends Component {
       name: 'View All Courses',
       icon: CourseListIcon,
       value: "course-list"
-    },
-    {
-      name: 'Create A Course',
-      icon: UploadCourse,
-      value: "add-course"
     }
   ];
 
   authorMenu = [
     {
-      name: 'Add Course',
-      icon: AddCourseIcon
-    },
-    {
       name: 'Profile',
       icon: ProfileIcon
     },
     {
-      name: 'Course List',
-      icon: CoursesIcon
+      name: 'Add Course',
+      icon: AddCourseIcon,
+      value: "add-course"
+    },
+    {
+      name: 'View All Courses',
+      icon: CourseListIcon,
+      value: "course-list"
     }
   ];
 
@@ -77,15 +86,6 @@ class Dashboard extends Component {
       overflowY: 'auto'
     }
   };
-
-  constructor() {
-    super();
-    this.state = {
-      menuArr: this.learnerMenu,
-      mainComp: "course-list",
-      courseKey: ""
-    };
-  }
 
   menuList = arr => {
     let scope = this;
@@ -111,8 +111,33 @@ class Dashboard extends Component {
     })
   }
 
+  // componentWillReceiveProps(nextProps, nextState) {
+  //   if(nextProps.loggedUser.user_type === 'Learner') {
+  //     this.setState({
+  //       menuArr: this.learnerMenu,
+  //       loggedUser: nextProps.loggedUser
+  //     });
+  //   } else if(nextProps.loggedUser.user_type === 'Author') {
+  //     this.setState({
+  //       menuArr: this.authorMenu,
+  //       loggedUser: nextProps.loggedUser
+  //     });
+  //   } else {
+  //     this.setState({
+  //       loggedUser: nextProps.loggedUser
+  //     });
+  //   }
+  // }
+
   render() {
-    let listRender = this.menuList(this.state.menuArr);
+    let listRender;
+    if(this.props.loggedUser.user_type === 'Learner') {
+      listRender = this.menuList(this.learnerMenu);
+    } else if(this.props.loggedUser.user_type === 'Author') {
+      listRender = this.menuList(this.authorMenu);
+    }
+
+    // let listRender = this.menuList(this.state.menuArr);
     let mainRender;
     if (this.state.mainComp === "course-list") {
       mainRender = <CourseList setMainComp={this.setMainComp} />
@@ -127,6 +152,7 @@ class Dashboard extends Component {
     } else if (this.state.mainComp === "create-resource") {
       mainRender = <CreateResource courseKey={this.state.courseKey} setMainComp={this.setMainComp}/>
     }
+    
     return (
       <div className="dashboard">
         <div style={this.theme.root}>
@@ -160,4 +186,6 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard;
+export default connect((state) => ({
+  loggedUser: state.loggedUser
+}), loggedUserAction)(Dashboard);
