@@ -14,6 +14,7 @@ import react_card from '../../assets/images/react.png';
 const styles = {
   card: {
     maxWidth: 350,
+    cursor:'default'
   },
   media: {
     paddingTop: '14em',
