@@ -333,12 +333,10 @@ class LoginSignup extends Component {
                     </Paper>
                 </Dialog>
                 <Snackbar
+                    anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                     open={this.state.snakeBar.open}
                     onClose={() => {
                         this.setState({ snakeBar: {open: false, message: ''} });
-                    }}
-                    TransitionComponent={(props) => {
-                        return <Slide {...props} direction="up" />;
                     }}
                     ContentProps={{
                         'aria-describedby': 'message-id',
