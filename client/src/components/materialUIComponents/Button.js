@@ -12,19 +12,19 @@ const styles = theme => ({
   },
 });
 
-function ContainedButtons(props) {
+function Buttons(props) {
   const { classes } = props;
   return (
     <div>
-      <Button variant="contained" color="primary" className={classes.button} onClick={props.setMainComp.bind(this, props.destination, props.courseKey)}>
+      <Button disabled={props.disabled === true ? true : false} variant="contained" color="primary" className={classes.button} onClick={props.setMainComp.bind(this, props.destination, props.courseKey)}>
         {props.buttonValue}
       </Button>
     </div>
   );
 }
 
-ContainedButtons.propTypes = {
+Buttons.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(ContainedButtons);
+export default withStyles(styles)(Buttons);

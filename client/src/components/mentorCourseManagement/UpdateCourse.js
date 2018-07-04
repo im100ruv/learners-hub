@@ -2,13 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-import ArrowForward from "@material-ui/icons/ArrowForward";
+import FileUpload from "@material-ui/icons/FileUpload";
 import AddCircle from "@material-ui/icons/AddCircle";
 import Delete from "@material-ui/icons/Delete";
 import Button from "@material-ui/core/Button";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import config from "../../config/config.json";
-import "./CreateCourse.css";
+import "./UpdateCourse.css";
 import firebase from "firebase";
 import swal from 'sweetalert';
 
@@ -53,7 +53,35 @@ const diffLevel = [
   }
 ];
 
-class CreateCourse extends React.Component {
+class UpdateCourse extends React.Component {
+  
+  componentWillMount() {
+    fetch(`${config.APIHostName}:${config.APIHostingPort}/api/courses/${this.props.courseKey}`)
+      .then(res => {
+        return res.json();
+      })
+      .then(result => {
+        let categoriesString = "";
+        result.categories.forEach((item, index) => {
+          if (index == 0) categoriesString += item;
+          else categoriesString += "," + item;
+        });
+        this.setState({
+          title: result.title,
+          subtitle: result.subtitle,
+          syllabus: result.syllabus,
+          required_knowledge: result.required_knowledge,
+          expected_learning: result.expected_learning,
+          expected_duration: result.expected_duration,
+          summary: result.summary,
+          categories: categoriesString,
+          level: result.level,
+          key: result.key,
+          banner_image: result.banner_image
+        });
+      });
+  }
+
   state = {
     key: "LC",
     title: "",
@@ -64,15 +92,18 @@ class CreateCourse extends React.Component {
     syllabus: "",
     required_knowledge: "",
     expected_learning: "",
-    expected_duration: "1",
+    expected_duration: "",
     level: "Beginner",
     summary: "",
     new_release: false,
+    full_course_available: true,
+    expected_duration_unit: "months",
     resources: [],
+    resourcesName: "",
     instructors: [
       {
         bio:
-          "As an avid programmer and learner, Himanshu mukat began teaching and found his passion. He enjoys the best of both worlds as he works as a Course Developer at Udacity. After earning a degree in computer science, he made the smart decision and moved into the world of HTML, CSS, and JavaScript. For over seven years he worked for an international nonprofit doing everything from frontend web development, to backend programming, to database and server management.",
+          "As an avid programmer and learner, Himanshu mukat began teaching and found his passion. He enjoys the best of both worlds as he works as a Course Developer at Udacity. After earning a degree in computer science, he made the smart decision and moved into the world of HTML, CSS, and JavaScript. For over seven years he worked for an international nonprofit doing everything from frontend web development, to backend programming, to database and server management. Before graduating from the University of Florida’s Web Design and Online Communications Master’s program with a degree in Mass Communication, he had already been asked by the University to come on board as a faculty member. Even with the planning, building and development of courses, he still tries to make time to take in the beauty of the California countryside.",
         image:
           "https://yt3.ggpht.com/a-/ACSszfHJCef_uTyAEgv2HjWg7zV8Vks0hLJ4KAx8NA=s900-mo-c-c0xffffffff-rj-k-no",
         name: "Himanshu Mukat"
@@ -120,66 +151,144 @@ class CreateCourse extends React.Component {
           });
         }
       );
+    } else if (
+      event.target.id === "course-resources" &&
+      event.target.files[0]
+    ) {
+      let resourcesName = "";
+      for (const key in Object.keys(event.target.files)) {
+        resourcesName = resourcesName + event.target.files[key].name + "\n";
+      }
+      this.setState({
+        resourcesName: resourcesName
+      });
+
+      let value = [];
+      let storageRef = firebase
+        .storage()
+        .ref(`courses/resources/CRF${Date.now()}/`);
+      //this async task may create problems
+      storageRef.getDownloadURL().then(url => {
+        this.setState({
+          resourceFolderURL: url
+        });
+      });
+
+      for (const key in Object.keys(event.target.files)) {
+        let file = event.target.files[key];
+
+        let resourceRef = storageRef.child(file.name);
+        let uploadTask = resourceRef.put(file);
+
+        uploadTask.on(
+          "state_changed",
+          snapshot => {
+            // code for progress
+          },
+          err => {
+            // error handling here
+          },
+          () => {
+            // code after upload completion
+            resourceRef.getDownloadURL().then(url => {
+              value.push({
+                name: file.name,
+                URL: url
+              });
+              this.setState({
+                [stateName]: value
+              });
+            });
+          }
+        );
+      }
     } else {
-      let value = event.target.value.trim();
+      let value = event.target.value;
       this.setState({
         [stateName]: value
       });
     }
   };
 
-  cancelUpload = () => {
-    let scope = this
-    if (this.state.banner_image) {
-      var deleteRef = firebase.storage().refFromURL(this.state.banner_image)
-
-      deleteRef.delete().then(function () {
-        // File deleted successfully
-        scope.props.setMainComp("course-list", "")
-      }).catch(function (error) {
-        console.log("error while deleting banner image..", error)
-      });
-    }
+  DeleteCourse = () =>{
+    let scope = this;
+    
+    swal({
+      title: "Are you sure?",
+      text: "You will not be able to recover this Course!",
+      icon: "warning",
+      buttons: [
+        'No, cancel it!',
+        'Yes, I am sure!'
+      ],
+      dangerMode: true,
+    }).then((isConfirm)=> {
+      if (isConfirm) {
+        swal({
+          title: 'Success!',
+          text: 'Course successfully removed!',
+          icon: 'success'
+        }).then(()=> {
+           fetch(
+            `${config.APIHostName}:${config.APIHostingPort}/api/courses/${this.props.courseKey}`,
+            {
+              method: "delete",
+              headers: {
+                "Content-Type": "application/json"
+              }
+            }
+          ).then(()=>{
+            scope.props.setMainComp("course-list", "");
+          })
+          .catch(err => {
+              swal("Course not Deleted");
+            });
+        })
+      } else {
+        swal("Cancelled", "Your Course is safe", "error");
+      }
+    })
   }
 
-  setData = () => {
+  updateData = () => {
     let scope = this;
-    if (this.state.title.length < 1) {
+    if (this.state.title == false)  {
       swal({
         title: "Please enter the Course name",
         icon: "warning"
       });
       return;
     }
-    if (this.state.subtitle.length < 1) {
+    if (this.state.subtitle == false)  {
       swal({
         title: "Please add Subtitle for this course",
         icon: "warning"
       });
       return;
     }
-    if (this.state.syllabus.length < 1) {
+    if (this.state.syllabus == false) {
       swal({
         title: "Please define Syllabus for this course",
         icon: "warning"
       });
       return;
     }
-    if (this.state.required_knowledge.length < 1) {
+
+    if (this.state.required_knowledge == false) {
       swal({
         title: "Please add Required Knowledge field for this course",
         icon: "warning"
       });
       return;
     }
-    if (this.state.expected_learning.length < 1) {
-      swal({
+    if (this.state.expected_learning.length == false) {
+     swal({
         title: "Please fill Expected Learning field for this course",
         icon: "warning"
       });
       return;
     }
-    if (this.state.categories.length < 1) {
+    if (this.state.categories == false) {
       swal({
         title: "Please add Categories for this course",
         icon: "warning"
@@ -193,14 +302,13 @@ class CreateCourse extends React.Component {
       });
       return;
     }
-    if (this.state.summary.length < 1) {
+    if (this.state.summary == false) {
       swal({
         title: "Please give Summary of the course",
         icon: "warning"
       });
       return;
     }
-    let key = ""
     firebase
       .storage()
       .ref("courses/banners/")
@@ -208,39 +316,35 @@ class CreateCourse extends React.Component {
       .getDownloadURL()
       .then(url => {
         let bannerURL = this.state.banner_image;
-        if (this.state.banner_image === "") {
-          bannerURL = url;
-        }
         this.setState(
           {
-            key: `CK${Date.now()}`,
+            key: this.state.key,
             banner_image: bannerURL,
             categories: this.state.categories.split(",").map(category => {
-              return category.trim();
+              return category;
             })
           },
           () => {
-            key = this.state.key
             fetch(
-              `${config.APIHostName}:${config.APIHostingPort}/api/courses`,
+              `${config.APIHostName}:${config.APIHostingPort}/api/courses/${this.props.courseKey}`,
               {
-                method: "post",
+                method: "put",
                 body: JSON.stringify(this.state),
                 headers: {
                   "Content-Type": "application/json"
                 }
               }
             )
-              .then(function (response) {
+              .then((response)=> {
                 swal({
-                  title: "Course Successfully Uploaded",
-                  text: "Please add contents to course.",
+                  title: "The Course Has Been Successfully Updated",
                   icon:"success"
                 })
-                scope.props.setMainComp("create-resource", key);
+              }).then(()=>{
+                scope.props.setMainComp("course-detail", this.props.courseKey);
               })
               .catch(err => {
-                swal("Course not uploaded");
+                swal("Course not updated!!");
               });
           }
         );
@@ -251,9 +355,10 @@ class CreateCourse extends React.Component {
     const { classes } = this.props;
     return (
       <form className={classes.container} autoComplete="off">
-        <p className="uploadCourse">UPLOAD NEW COURSE</p>
+        <p className="uploadCourse">UPDATE COURSE</p>
         <TextField
           id="title"
+          value={this.state.title}
           required
           label="Name of Course"
           className={classes.textField}
@@ -262,6 +367,7 @@ class CreateCourse extends React.Component {
         />
         <TextField
           id="subtitle"
+          value={this.state.subtitle}
           required
           label="Subtitle of Course"
           className={classes.textField}
@@ -277,7 +383,7 @@ class CreateCourse extends React.Component {
         />
         <TextField
           id="banner-image"
-          label="Upload banner image for this course"
+          label="Update banner image for this course"
           className={classes.textField}
           margin="normal"
           disabled
@@ -296,18 +402,27 @@ class CreateCourse extends React.Component {
         <TextField
           id="syllabus"
           label="Syllabus"
+          value={this.state.syllabus}
           required
           className={classes.textField}
           margin="normal"
           multiline
           onChange={this.handleChange("syllabus")}
         />
-
+        <input
+          accept="*"
+          className={classes.input}
+          id="course-resources"
+          multiple
+          type="file"
+          onChange={this.handleChange("resources")}
+        />
         <TextField
           id="required-knowledge"
           label="Required knowledge for this course"
           className={classes.textField}
           margin="normal"
+          value={this.state.required_knowledge}
           multiline
           required
           onChange={this.handleChange("required_knowledge")}
@@ -320,12 +435,14 @@ class CreateCourse extends React.Component {
           margin="normal"
           multiline
           required
+          value={this.state.expected_learning}
           onChange={this.handleChange("expected_learning")}
         />
         <TextField
           id="categories"
           label="Categories"
           required
+          value={this.state.categories}
           className={classes.textField}
           placeholder="Enter comma seperated course category"
           margin="normal"
@@ -334,16 +451,16 @@ class CreateCourse extends React.Component {
         <TextField
           id="course-duration"
           label="Course Duration in months"
-          helperText="Enter only number between 1 to 12"
+          helperText="Enter number between 1 and 12"
           type="number"
-          value={this.state.expected_duration}
-          //  InputProps={{ inputProps: { min: 0, max: 10 } }}
+          min="0"
           className={classes.textField}
           InputLabelProps={{
             shrink: true
           }}
           margin="normal"
           required
+          value={this.state.expected_duration}
           onChange={this.handleChange("expected_duration")}
         />
         <TextField
@@ -361,13 +478,17 @@ class CreateCourse extends React.Component {
           onChange={this.handleChange("level")}
         >
           {diffLevel.map(option => (
-            <option key={option.value} value={option.value}>
+            <option
+              key={option.value}
+              selected={this.state.level == option.label ? "selected" : ""}
+            >
               {option.label}
             </option>
           ))}
         </TextField>
         <TextField
           id="summary"
+          value={this.state.summary}
           label="Summary of course"
           multiline
           required
@@ -376,33 +497,38 @@ class CreateCourse extends React.Component {
           margin="normal"
           onChange={this.handleChange("summary")}
         />
+        
         <div className="uploadButton">
           <Button
             variant="contained"
+            className={classes.button}
+            onClick={this.props.setMainComp.bind(this, "course-detail", this.props.courseKey)}
+          >
+            Cancel</Button>
+            <Button
+            variant="contained"
             color="secondary"
             className={classes.button}
-            onClick={this.cancelUpload}
+            onClick={this.DeleteCourse}
           >
-            Cancel
+            Delete Course
             <Delete />
           </Button>
           <Button
             variant="contained"
             color="primary"
             className={classes.button}
-            onClick={this.setData}
+            onClick={this.updateData}
           >
-            Next (course contents)
-            <ArrowForward />
+            Update
+            <FileUpload />
           </Button>
         </div>
       </form>
     );
   }
 }
-
-CreateCourse.propTypes = {
+UpdateCourse.propTypes = {
   classes: PropTypes.object.isRequired
 };
-
-export default withStyles(styles)(CreateCourse);
+export default withStyles(styles)(UpdateCourse);
