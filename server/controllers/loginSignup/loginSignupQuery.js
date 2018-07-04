@@ -14,7 +14,7 @@ function createToken() {
 
 function loginQuery(data) {
     return new Promise((resolve, reject) => {
-        user.find(data, {id : 1, name: 1, email: 1, user_type: 1}).exec((err, res) => {
+        user.find(data, {_id : 0, name: 1, email: 1, user_type: 1}).exec((err, res) => {
             if(err) {
                 reject(err);
             } else {
@@ -99,8 +99,31 @@ function logoutQuery(email, cookie) {
     });
 }
 
+function isLoggedQuery(token) {
+    token = '' + token;
+    let arr = token.split('=');
+    token = arr[1];
+    return new Promise((resolve, reject) => {
+        user.find(
+            {'tokens.c_token': token},
+            {_id: 0, name: 1, email: 1, user_type: 1}
+        ).exec((err, res) => {
+            if(err) {
+                reject(err);
+            } else {
+                if(res.length === 0) {
+                    resolve({ message: 'not logged in' });
+                } else {
+                    resolve(res[0]);
+                }
+            }
+        });
+    });
+}
+
 module.exports = {
     loginQuery: loginQuery,
     signupQuery : signupQuery,
-    logoutQuery: logoutQuery
+    logoutQuery: logoutQuery,
+    isLoggedQuery: isLoggedQuery
 };

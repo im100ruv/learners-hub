@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import './LandingPage.css';
 import Paper from '@material-ui/core/Paper';
 import Slider from './Slider.js';
-import Header from '../../components/header/Header';
 import Cards from './Cards.js';
 import Typography from '@material-ui/core/Typography';
 import Footer from './Footer';
@@ -32,9 +31,6 @@ class Landing extends Component {
     return (
       <div>
         <div className="background"></div>
-        <div className="header_content">
-          <Header/>
-        </div>
             <div className="landing_content">
                 <div className="slider_images">
                     <Slider/>

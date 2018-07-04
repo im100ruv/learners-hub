@@ -8,10 +8,19 @@ const socket = require("socket.io");
 const app = express();
 
 let auth = (req, res, next) => {
-  // console.log(req);
-
-  next();
-};
+    let path = req.path;
+    if(path === '/api/login' || '/api/signup') {
+        // res.clearCookie('c_token');
+        next();
+    } else {
+        if(req.cookies.c_token) {
+            next();
+        } else {
+            // res.send({ message: 'Unauthorized Request' });
+            next();
+        }
+    }
+}
 
 let server = app
   .listen(config.hostingPort, function() {

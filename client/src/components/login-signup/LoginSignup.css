@@ -8,16 +8,25 @@ div.login-form-icon, div.signup-form-icon {
 div.login-form-icon svg, div.signup-form-icon svg {
     font-size: 30px;
 }
-div.dialog-action {
-    margin: 0;
-    padding: 16px 24px;
+.login-card div.dialog-action {
+    margin-top: 60px;
+    margin-right: 12px;
 }
-div.dialog-action button {
-    background-color: #07aa07;
-}
-div.dialog-action button:hover {
-    background-color: #048e04;
+div.dialog-action .submit {
+    margin: 0 25px 10px 0;
+    padding: 12px 25px;
 }
 .login-email, .login-password, .signup-email, .signup-password {
     margin-top: 10px;
+}
+button.googleButton {
+    background: white;
+    margin: 0 20px;
+    min-width: auto;
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    margin: 0; 
 }
