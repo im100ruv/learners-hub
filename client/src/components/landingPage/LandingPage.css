@@ -3,19 +3,15 @@
     background-size: cover;
     background-attachment: fixed;
     position: absolute;
-    height:180vh;
+    height:190vh;
     left:0;
     right:0;
     filter:blur(4px);
 }
 .icon{
-    opacity:0.7;
+    opacity:0.99;
     font-size: 1.1em;
     padding: 0.5em 0.5em;
-}
-.icon:hover{
-  opacity:0.95;
-  cursor:pointer;  
 }
 .top_icons{
     margin-left:auto;
@@ -45,4 +41,7 @@
 }
 .footer_content,.header_content{
     position:relative;
+}
+p.enroll{
+    padding-left: 0;
 }

@@ -13,12 +13,12 @@ import exam_image from '../../assets/images/exams.jpg'
 
 const IMG = [
   {
-    label: <Typography style={{fontFamily:'TimesNewRoman',fontWeight:'italic', fontSize:'1.8em'}}>Get Guidance from the best Teaching Staff in Online classes. . . </Typography>,
-    imgPath: teacher_image,
-  },
-  {
     label: <Typography style={{fontFamily:'TimesNewRoman',fontWeight:'italic', fontSize:'1.8em'}}>Gain knowledge and get certified by our institute. . . </Typography>,
     imgPath: certificate_image,
+  },
+  {
+    label: <Typography style={{fontFamily:'TimesNewRoman',fontWeight:'italic', fontSize:'1.8em'}}>Get Guidance from the best Teaching Staff in Online classes. . . </Typography>,
+    imgPath: teacher_image,
   },
   {
     label: <Typography style={{fontFamily:'TimesNewRoman',fontWeight:'italic', fontSize:'1.8em'}}>Participate in online Test Series and sharpen your skills</Typography>,

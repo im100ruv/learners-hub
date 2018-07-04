@@ -21,7 +21,7 @@ class Landing extends Component {
   heading_style = {
     fontSize : '30px',
     fontFamily:'roboto',
-    color: 'black',
+    color: 'white',
     fontWeight:'bold',
     background:'Transparent',
     textAlign:'center'
@@ -45,7 +45,7 @@ class Landing extends Component {
                 </div>
             </div>
             <div className="footer_content">
-              <Paper style={{background:'Transparent',margin:'auto',opacity:'0.7',padding:'1em 1em'}}><Typography style={this.heading_style}>Our Specialized Courses</Typography></Paper>
+              <Paper style={{background:'Transparent',margin:'auto',padding:'1em 1em'}}><Typography style={this.heading_style}>Our Specialized Courses</Typography></Paper>
               <div className="cards">
                 <div className="card"><Cards feature={this.state.Featured} /></div>
               </div>
