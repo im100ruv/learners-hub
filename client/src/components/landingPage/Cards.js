@@ -29,7 +29,7 @@ function MediaCard(props) {
                         <Card className={classes.card}>
                             <CardMedia
                             className={classes.media}
-                            image= {element.Logo=="java_card"?java_card:element.Logo=="algorithm_card"?algorithm_card:element.Logo=="python_card"?py_card:element.Logo=="react_card"?react_card:null}
+                            image= {element.Logo==="java_card"?java_card:element.Logo==="algorithm_card"?algorithm_card:element.Logo==="python_card"?py_card:element.Logo==="react_card"?react_card:null}
                             />
                             <CardContent>
                                 <Typography gutterBottom variant="headline" component="h2">
