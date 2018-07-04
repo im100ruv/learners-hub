@@ -1,5 +1,7 @@
+import config from '../config/config.json'
+
 function loginRequest(data) {
-    let url = 'http://localhost:8000/api/login';
+    let url = `${config.APIHostName}:${config.APIHostingPort}/api/login` ;
     return new Promise((resolve, reject) => {
         fetch(url, {
             method: 'POST',
@@ -20,7 +22,7 @@ function loginRequest(data) {
 }
 
 function signupRequest(data) {
-    let url = 'http://localhost:8000/api/signup';
+    let url = `${config.APIHostName}:${config.APIHostingPort}/api/signup`;
     return new Promise((resolve, reject) => {
         fetch(url, {
             method: 'POST',
@@ -41,7 +43,7 @@ function signupRequest(data) {
 }
 
 function logoutRequest(email) {
-    let url = 'http://localhost:8000/api/logout/' + email;
+    let url = `${config.APIHostName}:${config.APIHostingPort}/api/logout/${email}`;
     let cookie = document.cookie;
     return new Promise((resolve, reject) => {
         fetch(url, {
@@ -63,7 +65,7 @@ function logoutRequest(email) {
 }
 
 function checkLoginRequest() {
-    let url = 'http://localhost:8000/api/is-logged';
+    let url = `${config.APIHostName}:${config.APIHostingPort}/api/is-logged`;
     let cookie = document.cookie;
     return new Promise((resolve, reject) => {
         fetch(url, {
