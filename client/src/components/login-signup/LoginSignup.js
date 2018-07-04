@@ -3,8 +3,6 @@ import './LoginSignup.css';
 import firebase from 'firebase';
 import bcrypt from 'bcryptjs';
 import loginSignupService from '../../services/loginSignupService';
-// import { Redirect, BrowserRouter } from 'react-router-dom';
-import Redirects from '../redirect/redirect'
 
 //matarial component
 import Button from '@material-ui/core/Button';
@@ -22,15 +20,23 @@ import SignupIcon from '@material-ui/icons/PersonAdd';
 import MobileIcon from '@material-ui/icons/PhoneIphone';
 import EmailIcon from '@material-ui/icons/Email';
 import PasswordIcon from '@material-ui/icons/Lock';
+import TextField from '@material-ui/core/TextField';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
+import googleIcon from '../../assets/images/googleIcon.svg';
+import Snackbar from '@material-ui/core/Snackbar';
+import Slide from '@material-ui/core/Slide';
 
 class LoginSignup extends Component {
     state = {
         salt: "$2a$09$nrrCd85V7az4Vvu0CzeZ3e",
+        snakeBar : {
+            open: false,
+            message: ''
+        },
         open: false,
         fullScreen: false,
         value: 0,
@@ -82,7 +88,7 @@ class LoginSignup extends Component {
         this.setState({ value: index });
     };
 
-    thirdPartyLogin = platform => {
+    thirdPartyLogin = platform => { let scope = this;
         let provider = null;
         if(platform === 'google') {
             provider = new firebase.auth.GoogleAuthProvider();
@@ -102,23 +108,30 @@ class LoginSignup extends Component {
             };
             this.signup(user);
         }).catch(error => {
-            console.log(error, 'error');
+            scope.showSnakeBar(error.message);
         });
+    }
+
+    showSnakeBar(message) {
+        this.setState({ snakeBar : { open: true, message: message } });
     }
 
     login = user => {
         let scope = this;
         bcrypt.hash(user.password, scope.state.salt, function(err, hash) {
             if(err) {
-                console.log('could not encrypted your password... Try Again.');
+                scope.showSnakeBar('could not encrypted your password... Try Again.');
             } else {
                 user.password = hash;
                 loginSignupService.loginRequest(user)
                 .then(result => {
-                    console.log(result);
-                    scope.props.afterLoginLogout(true);
+                    if(result.message) {
+                        scope.showSnakeBar(result.message)
+                    } else {
+                        scope.props.afterLoginLogout(true);
+                    }
                 }).catch(error => {
-                    console.log(error);
+                    scope.showSnakeBar(error.message);
                 });
             }
         });
@@ -128,15 +141,18 @@ class LoginSignup extends Component {
         let scope = this;
         bcrypt.hash(user.password, this.state.salt, function(err, hash) {
             if(err) {
-                console.log('could not encrypted your password... Try Again.');
+                scope.showSnakeBar('could not encrypted your password... Try Again.');
             } else {
                 user.password = hash;
                 loginSignupService.signupRequest(user)
                 .then(result => {
-                    console.log(result);
-                    scope.props.afterLoginLogout(true);
+                    if(result.message) {
+                        scope.showSnakeBar(result.message)
+                    } else {
+                        scope.props.afterLoginLogout(true);
+                    }
                 }).catch(error => {
-                    console.log(error);
+                    scope.showSnakeBar(error.message)
                 });
             }
         });
@@ -150,9 +166,17 @@ class LoginSignup extends Component {
     handleSubmit = (mode) => {
         let data = this.state[mode];
         if(mode === 'login') {
-            this.login(data);
+            if(data.email === "" || data.password === "") {
+                this.showSnakeBar('Required field empty');
+            } else {
+                this.login(data);
+            }
         } else if(mode === 'signup') {
-            this.signup(data);
+            if(data.name === "" || data.email === "" || data.password === "") {
+                this.showSnakeBar('Required field empty');
+            } else {
+                this.signup(data);
+            }
         } else {
             console.log('somthing wrong');
         }
@@ -195,11 +219,15 @@ class LoginSignup extends Component {
                                                 <EmailIcon />
                                             </Grid>
                                             <Grid item>
-                                                <FormControl fullWidth className="login-email-form" aria-describedby="email-helper-text">
-                                                    <InputLabel htmlFor="email-helper">Email</InputLabel>
-                                                    <Input id="email-helper" type="email" onChange={this.handleInputchange.bind(this, 'login', 'email')}/>
-                                                    <FormHelperText id="email-helper-text">Enter Email Id</FormHelperText>
-                                                </FormControl>
+                                                <TextField
+                                                    required
+                                                    autoFocus
+                                                    type="email"
+                                                    label="Email"
+                                                    className="login-email-form"
+                                                    helperText="Enter Email Id"
+                                                    onChange={this.handleInputchange.bind(this, 'login', 'email')}
+                                                />
                                             </Grid>
                                         </Grid>
                                     </div>
@@ -209,19 +237,21 @@ class LoginSignup extends Component {
                                                 <PasswordIcon />
                                             </Grid>
                                             <Grid item>
-                                                <FormControl fullWidth className="login-password-form" aria-describedby="password-helper-text">
-                                                    <InputLabel htmlFor="password-helper">Password</InputLabel>
-                                                    <Input id="password-helper" type="password" onChange={this.handleInputchange.bind(this, 'login', 'password')} />
-                                                    <FormHelperText id="password-helper-text">Type Your Password</FormHelperText>
-                                                </FormControl>
+                                                <TextField
+                                                    required
+                                                    type="password"
+                                                    label="Password"
+                                                    className="login-password-form"
+                                                    helperText="Type Your Password"
+                                                    onChange={this.handleInputchange.bind(this, 'login', 'password')}
+                                                />
                                             </Grid>
                                         </Grid>
                                     </div>
                                 </CardContent>
                                 <DialogActions className="dialog-action">
-                                    <Button variant="contained" onClick={this.thirdPartyLogin.bind(this, 'google')}>google</Button>
-                                    <Button variant="contained" onClick={this.thirdPartyLogin.bind(this, 'facebook')}>facebook</Button>
-                                    <Button variant="contained" onClick={this.handleSubmit.bind(this, 'login')}>Login</Button>
+                                    <Button variant="fab" className='googleButton' onClick={this.thirdPartyLogin.bind(this, 'google')}><img src={googleIcon} /></Button>
+                                    <Button variant="contained" color='primary' type='submit' className='submit' onClick={this.handleSubmit.bind(this, 'login')}>Login</Button>
                                 </DialogActions>
                             </Card>
                             
@@ -233,11 +263,14 @@ class LoginSignup extends Component {
                                                 <LoginIcon />
                                             </Grid>
                                             <Grid item>
-                                                <FormControl fullWidth className="signup-name-form" aria-describedby="signup-name-helper-text">
-                                                    <InputLabel htmlFor="signup-name-helper">Name</InputLabel>
-                                                    <Input id="signup-name-helper" onChange={this.handleInputchange.bind(this, 'signup', 'name')} />
-                                                    <FormHelperText id="signup-name-helper-text">Enter name</FormHelperText>
-                                                </FormControl>
+                                                <TextField
+                                                    required
+                                                    autoFocus
+                                                    label="Name"
+                                                    className="signup-name-form"
+                                                    helperText="Enter name"
+                                                    onChange={this.handleInputchange.bind(this, 'signup', 'name')}
+                                                />
                                             </Grid>
                                         </Grid>
                                     </div>
@@ -247,11 +280,14 @@ class LoginSignup extends Component {
                                                 <EmailIcon />
                                             </Grid>
                                             <Grid item>
-                                                <FormControl fullWidth className="signup-email-form" aria-describedby="signup-email-helper-text">
-                                                    <InputLabel htmlFor="signup-email-helper">Email</InputLabel>
-                                                    <Input id="signup-email-helper" type="email" onChange={this.handleInputchange.bind(this, 'signup', 'email')} />
-                                                    <FormHelperText id="signup-email-helper-text">Enter Email Id</FormHelperText>
-                                                </FormControl>
+                                                <TextField
+                                                    required
+                                                    type="email"
+                                                    label="Email"
+                                                    className="signup-email-form"
+                                                    helperText="Enter Email Id"
+                                                    onChange={this.handleInputchange.bind(this, 'signup', 'email')}
+                                                />
                                             </Grid>
                                         </Grid>
                                     </div>
@@ -261,11 +297,14 @@ class LoginSignup extends Component {
                                                 <PasswordIcon />
                                             </Grid>
                                             <Grid item>
-                                                <FormControl fullWidth className="signup-password-form" aria-describedby="signup-password-helper-text">
-                                                    <InputLabel htmlFor="signup-password-helper">Password</InputLabel>
-                                                    <Input id="signup-password-helper" type="password" onChange={this.handleInputchange.bind(this, 'signup', 'password')} />
-                                                    <FormHelperText id="signup-password-helper-text">Type Your Password</FormHelperText>
-                                                </FormControl>
+                                                <TextField
+                                                    required
+                                                    type="password"
+                                                    label="Password"
+                                                    className="signup-password-form"
+                                                    helperText="Type Your Password"
+                                                    onChange={this.handleInputchange.bind(this, 'signup', 'password')}
+                                                />
                                             </Grid>
                                         </Grid>
                                     </div>
@@ -275,22 +314,37 @@ class LoginSignup extends Component {
                                                 <MobileIcon />
                                             </Grid>
                                             <Grid item>
-                                                <FormControl fullWidth className="signup-mobile-form" aria-describedby="signup-mobile-helper-text">
-                                                    <InputLabel htmlFor="signup-mobile-helper">Mobile</InputLabel>
-                                                    <Input id="signup-mobile-helper" onChange={this.handleInputchange.bind(this, 'signup', 'mobile')} />
-                                                    <FormHelperText id="signup-mobile-helper-text">Enter Mobile No.</FormHelperText>
-                                                </FormControl>
+                                                <TextField
+                                                    type="number"
+                                                    label="Mobile"
+                                                    className="signup-mobile-form"
+                                                    helperText="Enter Mobile No."
+                                                    onChange={this.handleInputchange.bind(this, 'signup', 'mobile')}
+                                                />
                                             </Grid>
                                         </Grid>
                                     </div>
                                 </CardContent>
                                 <DialogActions className="dialog-action">
-                                    <Button variant="contained" onClick={this.handleSubmit.bind(this, 'signup')}>Signup</Button>
+                                    <Button variant="contained" color='primary' type='submit' className='submit' onClick={this.handleSubmit.bind(this, 'signup')}>Signup</Button>
                                 </DialogActions>
                             </Card>
                         </SwipeableViews>
                     </Paper>
                 </Dialog>
+                <Snackbar
+                    open={this.state.snakeBar.open}
+                    onClose={() => {
+                        this.setState({ snakeBar: {open: false, message: ''} });
+                    }}
+                    TransitionComponent={(props) => {
+                        return <Slide {...props} direction="up" />;
+                    }}
+                    ContentProps={{
+                        'aria-describedby': 'message-id',
+                    }}
+                    message={<span id="message-id">{this.state.snakeBar.message}</span>}
+                />
             </div>
         );
     }

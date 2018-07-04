@@ -38,7 +38,7 @@ app.listen(config.hostingPort, function(){
     app.use(auth);
 
     //static directory
-    mongoose.connect(config.remoteDB)
+    mongoose.connect(config.localDB)
     .then(success => {
         console.log('DB is Connected');
         routes.setup(app);

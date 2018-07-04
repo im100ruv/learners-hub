@@ -29,8 +29,8 @@ import Menu from '@material-ui/core/Menu';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 
 class Header extends Component {
-    constructor() {
-        super();
+    constructor(props, context) {
+        super(props, context);
         this.afterLoginLogout = this.afterLoginLogout.bind(this);
     }
 
@@ -201,6 +201,9 @@ class Header extends Component {
         this.setState({
             logged: logged
         });
+        if(logged === true) {
+            document.location.reload();
+        }
     }
 
     logout = () => {
@@ -274,11 +277,11 @@ class Header extends Component {
         }
     }
 
-    componentWillReceiveProps(nextprops) {
-        let logged = loginAuth.isLoggedIn(nextprops.loggedUser);
+    componentWillReceiveProps(nextProps, nextState) {
+        let logged = loginAuth.isLoggedIn(nextProps.loggedUser);
         this.setState({
             logged: logged,
-            loggedUser: nextprops.loggedUser
+            loggedUser: nextProps.loggedUser
         });
     }
 

@@ -58,7 +58,7 @@ class App extends Component {
                   if(path === '/home' || path === '/home/' || path === '/dashboard' || path === '/dashboard/') {
                     return(<Header history ={props.history} />);
                   } else {
-                    return (<div><h1 style={{textAlign: 'center'}}>page not found</h1></div>);
+                    return (<div><h1 style={{textAlign: 'center'}}>Page not found</h1></div>);
                   }
                 }}/>
               </div>
