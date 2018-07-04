@@ -37,8 +37,10 @@ class QuizForm extends React.Component {
     optionsCount: 2
   }
 
-  handleChange = (optionKey) => event => {
+  handleChange = optionKey => event => {
     event.preventDefault();
+    console.log("option clicked");
+    
     let value = event.target.value.trim();
     this.setState({
       [optionKey]: value
@@ -56,7 +58,8 @@ class QuizForm extends React.Component {
       options.push(this.state[`option${i}`])
       i++
     }
-    this.props.saveQuiz(options)
+    console.log("save in quizform",options)
+    this.props.saveQuiz.bind(this,options)
   }
 
   componentWillReceiveProps() {
@@ -66,18 +69,21 @@ class QuizForm extends React.Component {
   }
 
   render() {
+    console.log(this.state)
     const { classes } = this.props;
     let options = []
     let i = 1
+    let scope = this
     while (i <= this.state.optionsCount) {
       options.push(
         <TextField
+          key={i}
           name="quiz_option"
           label={`option${i}`}
           required
           className={classes.textField}
           margin="normal"
-          onChange={this.handleChange.bind(this,`option${i}`)}
+          onChange={scope.handleChange.bind(scope,`option${i}`)}
         />
       )
       i++
@@ -98,7 +104,7 @@ class QuizForm extends React.Component {
           <Button
             color="primary"
             className={classes.button}
-            onClick={this.addOptions}
+            onClick={this.addOptions.bind(this)}
           >
             <Add />
             Add Options
@@ -116,7 +122,7 @@ class QuizForm extends React.Component {
           <Button
             color="primary"
             className={classes.button}
-            onClick={this.saveQuiz}
+            onClick={this.saveQuiz.bind(this)}
           >
             <Save />
             Save This Quiz

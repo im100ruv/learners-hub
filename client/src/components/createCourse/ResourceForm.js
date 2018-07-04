@@ -54,12 +54,13 @@ class ResourceForm extends React.Component {
     })
   }
 
-  saveQuiz = optionsArray => event => {
+  saveQuiz = optionsArray => {
     let tempQuiz = this.state.quiz
     tempQuiz.options = optionsArray
     this.setState({
       quiz: tempQuiz
     }, () => {
+      console.log("save in resourseForm",this.state.quiz)
       this.props.saveQuiz(this.state.quiz)
     })
   }
@@ -81,12 +82,15 @@ class ResourceForm extends React.Component {
   }
 
   render() {
+    console.log("quiz",this.state.quiz)
+
     const { classes } = this.props;
     let quizzes = []
     let i = 1
     while (i <= this.state.quizzesCount) {
       quizzes.push(
         <QuizForm
+          key={i}
           handleChange={this.handleChange}
           saveQuiz={this.saveQuiz}
         />
@@ -128,11 +132,10 @@ class ResourceForm extends React.Component {
           <TextField
             name="chapter_file_textField"
             label="Upload a file/video related to this chapter"
-            defaultValue={this.props.chapter.fileName}
             className={classes.textField}
             margin="normal"
             disabled
-            value={this.props.fileName ? this.props.fileName : ""}
+            value={this.props.chapter.fileName ? this.props.chapter.fileName : ""}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -149,7 +152,7 @@ class ResourceForm extends React.Component {
           <Button
             color="primary"
             className={classes.button}
-            onClick={this.addQuiz}
+            onClick={this.addQuiz.bind(this)}
           >
             <Add />
             Add Another Quiz

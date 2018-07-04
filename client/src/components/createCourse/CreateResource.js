@@ -158,6 +158,7 @@ class CreateResource extends React.Component {
   saveQuiz = quizObject => {
     let tempQuiz = this.state.quiz
     tempQuiz.push(quizObject)
+    console.log("save in createresourse",tempQuiz)
     this.setState({ quiz: tempQuiz })
   }
 
@@ -172,21 +173,21 @@ class CreateResource extends React.Component {
 
   render() {
     const { classes } = this.props;
-    console.log(this.state.resources)
+    
+    console.log("resource",this.state.resources)
 
     return (
       <React.Fragment>
         <div className={classes.container}>
           <ResourceForm
             handleChange={this.handleChange}
-            fileName={this.state.resources.fileName}
             chapter={this.state.chapter}
             saveQuiz={this.saveQuiz} />
           <div>
             <Button
               color="primary"
               className={classes.button}
-              onClick={this.addChapter}
+              onClick={this.addChapter.bind(this)}
             >
               <Add />
               Save &amp; Add Another Chapter
@@ -196,7 +197,7 @@ class CreateResource extends React.Component {
                 variant="contained"
                 color="secondary"
                 className={classes.button}
-                onClick={this.cancelUpload}
+                onClick={this.cancelUpload.bind(this)}
               >
                 Cancel
             <Delete />
@@ -205,7 +206,7 @@ class CreateResource extends React.Component {
                 variant="contained"
                 color="primary"
                 className={classes.button}
-                onClick={this.setData}
+                onClick={this.setData.bind(this)}
               >
                 Submit
             <Send />

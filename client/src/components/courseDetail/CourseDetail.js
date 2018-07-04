@@ -65,7 +65,7 @@ export default class CourseDetail extends React.Component {
           </div>
           <center><Button setMainComp={this.props.setMainComp} courseKey={this.state.key} buttonValue="Start Course" destination="course-resource" /></center>
           <div className="instructor-detail">
-            <div><Avatar /></div>
+            <div><Avatar image={this.state.instructors[0].image}/></div>
             <div>
               <b>Taught by: </b> {this.state.instructors[0].name}
               <p className="instructor-bio">{this.state.instructors[0].bio}</p>

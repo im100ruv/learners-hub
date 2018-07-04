@@ -24,7 +24,7 @@ function ImageAvatars(props) {
     <div className={classes.row}>
       <Avatar
         alt="Adelle Charles"
-        src="https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-instructor-photos.s3.amazonaws.com/a3/541870260c11e7b9e1a10ba53b5c8c/P16958_CSE_LEUNG-Wai-Ting_017.jpg"
+        src={props.image}
         className={classNames(classes.avatar, classes.bigAvatar)}
       />
     </div>
