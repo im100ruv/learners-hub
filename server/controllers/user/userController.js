@@ -18,15 +18,6 @@ function getUser(request, response) {
     });
 }
 
-function addUser(request, response) {
-    query.addUserToList(request.body)
-    .then(res => {
-        response.json(res);
-    }).catch(err => {
-        response.send(err);
-    });
-}
-
 function updateUser(request, response) {
     query.updateUserInList(request.params.id, request.body)
     .then(res => {
@@ -48,7 +39,6 @@ function deleteUser(request, response) {
 module.exports = {
     getUsersList: getUsersList,
     getUser: getUser,
-    addUser: addUser,
     updateUser: updateUser,
     deleteUser: deleteUser
 };
