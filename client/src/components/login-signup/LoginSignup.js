@@ -4,6 +4,9 @@ import firebase from 'firebase';
 import bcrypt from 'bcryptjs';
 import loginSignupService from '../../services/loginSignupService';
 
+import { connect } from 'react-redux'
+import loggedUserAction from '../../store/actions/loggedUser';
+
 //matarial component
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -21,15 +24,10 @@ import MobileIcon from '@material-ui/icons/PhoneIphone';
 import EmailIcon from '@material-ui/icons/Email';
 import PasswordIcon from '@material-ui/icons/Lock';
 import TextField from '@material-ui/core/TextField';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
 import googleIcon from '../../assets/images/googleIcon.svg';
-import Snackbar from '@material-ui/core/Snackbar';
-import Slide from '@material-ui/core/Slide';
-
+// import Snackbar from '@material-ui/core/Snackbar';
+import sweetAlert from 'sweetalert';
 class LoginSignup extends Component {
     state = {
         salt: "$2a$09$nrrCd85V7az4Vvu0CzeZ3e",
@@ -126,12 +124,13 @@ class LoginSignup extends Component {
                 loginSignupService.loginRequest(user)
                 .then(result => {
                     if(result.message) {
-                        scope.showSnakeBar(result.message)
+                        sweetAlert({ title: result.message, icon: 'info'});
                     } else {
+                        scope.props.addLoggedUser(result);
                         scope.props.afterLoginLogout(true);
                     }
                 }).catch(error => {
-                    scope.showSnakeBar(error.message);
+                    sweetAlert({ title: error.message, icon: 'error'});
                 });
             }
         });
@@ -141,18 +140,19 @@ class LoginSignup extends Component {
         let scope = this;
         bcrypt.hash(user.password, this.state.salt, function(err, hash) {
             if(err) {
-                scope.showSnakeBar('could not encrypted your password... Try Again.');
+                sweetAlert({ title: 'could not encrypted your password... Try Again.', icon: 'error'});
             } else {
                 user.password = hash;
                 loginSignupService.signupRequest(user)
                 .then(result => {
                     if(result.message) {
-                        scope.showSnakeBar(result.message)
+                        sweetAlert({ title: result.message, icon: 'info'});
                     } else {
+                        scope.props.addLoggedUser(result);
                         scope.props.afterLoginLogout(true);
                     }
                 }).catch(error => {
-                    scope.showSnakeBar(error.message)
+                    sweetAlert({ title: error.message, icon: 'error'});
                 });
             }
         });
@@ -167,13 +167,13 @@ class LoginSignup extends Component {
         let data = this.state[mode];
         if(mode === 'login') {
             if(data.email === "" || data.password === "") {
-                this.showSnakeBar('Required field empty');
+                sweetAlert({ title: 'Required field empty', icon: 'info'});
             } else {
                 this.login(data);
             }
         } else if(mode === 'signup') {
             if(data.name === "" || data.email === "" || data.password === "") {
-                this.showSnakeBar('Required field empty');
+                sweetAlert({ title: 'Required field empty', icon: 'info'});
             } else {
                 this.signup(data);
             }
@@ -265,7 +265,6 @@ class LoginSignup extends Component {
                                             <Grid item>
                                                 <TextField
                                                     required
-                                                    autoFocus
                                                     label="Name"
                                                     className="signup-name-form"
                                                     helperText="Enter name"
@@ -332,8 +331,8 @@ class LoginSignup extends Component {
                         </SwipeableViews>
                     </Paper>
                 </Dialog>
-                <Snackbar
-                    anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                {/* <Snackbar
+                    anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
                     open={this.state.snakeBar.open}
                     onClose={() => {
                         this.setState({ snakeBar: {open: false, message: ''} });
@@ -342,10 +341,12 @@ class LoginSignup extends Component {
                         'aria-describedby': 'message-id',
                     }}
                     message={<span id="message-id">{this.state.snakeBar.message}</span>}
-                />
+                /> */}
             </div>
         );
     }
 }
 
-export default LoginSignup;
+export default connect((state) => ({
+    loggedUser: state.loggedUser
+}), loggedUserAction)(LoginSignup);

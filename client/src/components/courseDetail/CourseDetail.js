@@ -9,7 +9,7 @@ import config from '../../config/config.json';
 export default class CourseDetail extends React.Component {
   state = {
     key: undefined,
-    faq: undefined
+    faq: []
   }
 
   fetchJsonData = async (query) => {
@@ -22,7 +22,6 @@ export default class CourseDetail extends React.Component {
       .then(course => {
         this.setState({
           key: course.key,
-          homepage: course.homepage,
           title: course.title,
           subtitle: course.subtitle,
           banner_image: course.banner_image,
@@ -32,12 +31,9 @@ export default class CourseDetail extends React.Component {
           expected_learning: course.expected_learning,
           required_knowledge: course.required_knowledge,
           new_release: course.new_release,
-          full_course_available: course.full_course_available,
           level: course.level,
-          expected_duration_unit: course.expected_duration_unit,
           expected_duration: course.expected_duration,
           syllabus: course.syllabus,
-          resources: course.resources,
           faq: course.faq
         })
       });
@@ -45,7 +41,7 @@ export default class CourseDetail extends React.Component {
 
   render() {
     let faqs;
-    if (this.state.faq) {
+    if (this.state.faq.length > 0) {
       faqs = this.state.faq.map((obj, i) => {
         return (
           <div key={i}>
@@ -55,8 +51,6 @@ export default class CourseDetail extends React.Component {
           </div>
         )
       })
-    } else {
-      faqs = []
     }
     return this.state.key ? (
       <React.Fragment>
@@ -64,12 +58,13 @@ export default class CourseDetail extends React.Component {
           title={this.state.title}
           subtitle={this.state.subtitle}
           new_release={this.state.new_release}
-        />
+        />    
+        <center><Button setMainComp={this.props.setMainComp} courseKey={this.state.key} buttonValue="Update Course" destination="update-course" /></center>
         <div className="course-body">
           <div className="about-course">
             <b> About this course: </b>{this.state.summary}
           </div>
-          <center><Button setMainComp={this.props.setMainComp} courseKey={this.state.key} buttonValue="Start Course" destination="course-resource"/></center>
+          <center><Button setMainComp={this.props.setMainComp} courseKey={this.state.key} buttonValue="Start Course" destination="course-resource" /></center>
           <div className="instructor-detail">
             <div><Avatar /></div>
             <div>
@@ -85,7 +80,7 @@ export default class CourseDetail extends React.Component {
             <div>{this.state.categories.join(", ")}</div>
 
             <div><b>Expected Duration</b></div>
-            <div>{this.state.expected_duration} {this.state.expected_duration_unit}</div>
+            <div>{this.state.expected_duration} months</div>
 
             <div><b>Required Knowledge</b></div>
             <div>{this.state.required_knowledge}</div>

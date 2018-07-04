@@ -4,9 +4,13 @@ import CircularProgress from '../materialUIComponents/CircularProgress';
 import config from '../../config/config.json';
 import BannerCard from '../courseDetail/BannerCard';
 import Button from '../materialUIComponents/Button';
+import Chapter from './Chapter';
+import Certificate from './Certificate';
 
-export default class CourseDetail extends React.Component {
+export default class CourseResource extends React.Component {
   state = {
+    index: 0,
+    answeredCorrect: false,
     key: undefined,
     resources: []
   }
@@ -16,36 +20,86 @@ export default class CourseDetail extends React.Component {
     return await api_call.json()
   }
 
+  sampleFunction = (direction, dummy) => {
+    if (direction === "next") {
+      this.setState({ index: this.state.index + 1, answeredCorrect: false })
+    } else if (direction === "prev") {
+      this.setState({ index: this.state.index - 1 })
+    }
+  }
+
+  setAnsweredCorrect = () => {
+    this.setState({ answeredCorrect: true })
+  }
+
   componentDidMount() {
     this.fetchJsonData(`/api/courses/${this.props.courseKey}`)
       .then(course => {
         this.setState({
           key: course.key,
-          homepage: course.homepage,
           title: course.title,
           subtitle: course.subtitle,
           banner_image: course.banner_image,
           new_release: course.new_release,
-          syllabus: course.syllabus,
-          resources: course.resources,
+          resources: [{
+            title: "Introduction",
+            description: "Java is a programming Language Java is a programming Language Java is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming Language....",
+            fileName: "",
+            fileURL: "",
+            assignment: {
+              question: "",
+              fileName: "",
+              evaluationMatchValue: ""
+            },
+            quiz: [{
+              objective: true,
+              question: "Java is a ..",
+              options: ["computer", "programming language", "nothing", "joke"],
+              answer: "programming language"
+            }]
+          }, {
+            title: "Installation",
+            description: "Installation procedure Installation procedure Installation procedure Installation procedureInstallation procedureInstallation procedureInstallation procedureInstallation procedureInstallation procedure....",
+            fileName: "UdacityCourseCatalogAPIDocumentation-v0.pdf",
+            fileURL: "https://firebasestorage.googleapis.com/v0/b/learnershub-mountblue.appspot.com/o/courses%2Fresources%2FCRF1530247671754%2FUdacityCourseCatalogAPIDocumentation-v0.pdf?alt=media&token=fa1e22c2-62cc-402b-b091-d7a3b9587cb3",
+            assignment: {
+              question: "",
+              fileName: "",
+              evaluationMatchValue: ""
+            },
+            quiz: [{
+              objective: true,
+              question: "Do you have java installed?",
+              options: ["yes", "no"],
+              answer: "yes"
+            },{
+              objective: true,
+              question: "Do you have all softwares installed?",
+              options: ["yes", "no"],
+              answer: "yes"
+            }]
+          }, {
+            title: "Final Summary",
+            description: "This is summary paragraph This is summary paragraph This is summary paragraph This is summary paragraph This is summary paragraphThis is summary paragraphThis is summary paragraphThis is summary paragraphThis is summary paragraphThis is summary paragraphThis is summary paragraph....",
+            fileName: "",
+            fileURL: "",
+            assignment: {
+              question: "",
+              fileName: "",
+              evaluationMatchValue: ""
+            },
+            quiz: [{
+              objective: true,
+              question: "Was the lesson useful?",
+              options: ["nice", "not good"],
+              answer: "nice"
+            }]
+          }],
         })
       });
   }
 
   render() {
-    let count = 0
-    let resourceList = this.state.resources.map((item, index) => {
-      return (
-        <div key={index} className="chapter-container">
-          {++count}.<a href={item.URL} target="blank">{item.name}</a>
-          <div className="object-container">
-            <object data={item.URL} type="" width="100%" height="100%">
-              This browser does not support the above file-type. Please download the file to view it: <a href={item.URL}>Download PDF</a>
-            </object>
-          </div>
-        </div>
-      )
-    })
     return this.state.key ? (
       <React.Fragment>
         <BannerCard
@@ -58,10 +112,27 @@ export default class CourseDetail extends React.Component {
             Course Materials
           </div>
           <div className="resource-list">
-            {resourceList}
+            {this.state.index < this.state.resources.length ? (
+              <Chapter
+                resource={this.state.resources[this.state.index]}
+                index={this.state.index}
+                setMainComp={this.sampleFunction}
+                courseKey={this.state.key}
+                setAnsweredCorrect={this.setAnsweredCorrect}
+              />
+            ) : (
+                <Certificate />
+              )}
           </div>
+          {this.state.index < this.state.resources.length ? (
+            <div>
+              <Button disabled={!this.state.answeredCorrect} setMainComp={this.sampleFunction} courseKey={this.state.key} buttonValue="Next" destination="next" />
+              {this.state.index === 0 ? "" : (
+                <Button setMainComp={this.sampleFunction} courseKey={this.state.key} buttonValue="Previous" destination="prev" />
+              )}
+            </div>
+          ) : ""}
         </div>
-        <center><Button setMainComp={this.props.setMainComp} courseKey={this.state.key} buttonValue="Quiz/Assignments" destination="course-quiz" /></center>
       </React.Fragment>
     ) : (<CircularProgress />)
   }

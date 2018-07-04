@@ -14,12 +14,16 @@ import loggedUserAction from './store/actions/loggedUser';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import LoginAuth from './services/loginAuth'
 
+import config from "./config/config.json"
+import io from "socket.io-client";
+
 class App extends Component {
   constructor(props) {
     super(props);
+    // this.socket = io(`${config.APIHostName}:${config.APIHostingPort}`);
     this.state = {
       logged: true
-    }
+    };
   }
 
   componentWillMount() {

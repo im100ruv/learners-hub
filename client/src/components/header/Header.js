@@ -201,9 +201,9 @@ class Header extends Component {
         this.setState({
             logged: logged
         });
-        if(logged === true) {
-            document.location.reload();
-        }
+        // if(logged === true) {
+        //     document.location.reload();
+        // }
     }
 
     logout = () => {
@@ -292,7 +292,7 @@ class Header extends Component {
                 <AppBar position="static" color="default">
                     <Toolbar>
                         <img src={logo} alt="Logo" width="80" height="80"/>
-                        <Typography variant="title" color="inherit">
+                        <Typography variant="title" color="inherit" style={{cursor: "pointer"}} onClick={this.goto.bind(this, '/home')}>
                             LEARNER'S HUB
                         </Typography>
                         <Tooltip id="tooltip-fab" title="Courses Category">
