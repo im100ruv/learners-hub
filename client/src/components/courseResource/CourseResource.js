@@ -41,60 +41,7 @@ export default class CourseResource extends React.Component {
           subtitle: course.subtitle,
           banner_image: course.banner_image,
           new_release: course.new_release,
-          resources: [{
-            title: "Introduction",
-            description: "Java is a programming Language Java is a programming Language Java is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming Language....",
-            fileName: "",
-            fileURL: "",
-            assignment: {
-              question: "",
-              fileName: "",
-              evaluationMatchValue: ""
-            },
-            quiz: [{
-              objective: true,
-              question: "Java is a ..",
-              options: ["computer", "programming language", "nothing", "joke"],
-              answer: "programming language"
-            }]
-          }, {
-            title: "Installation",
-            description: "Installation procedure Installation procedure Installation procedure Installation procedureInstallation procedureInstallation procedureInstallation procedureInstallation procedureInstallation procedure....",
-            fileName: "UdacityCourseCatalogAPIDocumentation-v0.pdf",
-            fileURL: "https://firebasestorage.googleapis.com/v0/b/learnershub-mountblue.appspot.com/o/courses%2Fresources%2FCRF1530247671754%2FUdacityCourseCatalogAPIDocumentation-v0.pdf?alt=media&token=fa1e22c2-62cc-402b-b091-d7a3b9587cb3",
-            assignment: {
-              question: "",
-              fileName: "",
-              evaluationMatchValue: ""
-            },
-            quiz: [{
-              objective: true,
-              question: "Do you have java installed?",
-              options: ["yes", "no"],
-              answer: "yes"
-            },{
-              objective: true,
-              question: "Do you have all softwares installed?",
-              options: ["yes", "no"],
-              answer: "yes"
-            }]
-          }, {
-            title: "Final Summary",
-            description: "This is summary paragraph This is summary paragraph This is summary paragraph This is summary paragraph This is summary paragraphThis is summary paragraphThis is summary paragraphThis is summary paragraphThis is summary paragraphThis is summary paragraphThis is summary paragraph....",
-            fileName: "",
-            fileURL: "",
-            assignment: {
-              question: "",
-              fileName: "",
-              evaluationMatchValue: ""
-            },
-            quiz: [{
-              objective: true,
-              question: "Was the lesson useful?",
-              options: ["nice", "not good"],
-              answer: "nice"
-            }]
-          }],
+          resources: course.resources,
         })
       });
   }
