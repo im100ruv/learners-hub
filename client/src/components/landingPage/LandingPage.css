@@ -13,6 +13,9 @@
     font-size: 1.1em;
     padding: 0.5em 0.5em;
 }
+.icon:hover{
+    cursor:default;
+}
 .top_icons{
     margin-left:auto;
     margin-right:auto;

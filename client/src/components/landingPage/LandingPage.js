@@ -24,7 +24,8 @@ class Landing extends Component {
     color: 'white',
     fontWeight:'bold',
     background:'Transparent',
-    textAlign:'center'
+    textAlign:'center',
+    cursor:'default'
   }
 
   render() {
