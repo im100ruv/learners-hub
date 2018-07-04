@@ -9,6 +9,7 @@ import config from "../../config/config.json";
 import "./CreateCourse.css";
 import firebase from "firebase";
 import ResourceForm from './ResourceForm';
+import sweetAlert from 'sweetalert';
 
 const styles = theme => ({
   container: {
@@ -38,28 +39,19 @@ const styles = theme => ({
 
 class CreateResource extends React.Component {
   state = {
-    key: this.props.courseKey,
     resourceFolderURL: "",
-    resources: [{
-      title: "",
-      // description: "Java is a programming Language Java is a programming Language Java is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming LanguageJava is a programming Language....",
-      fileName: "",
-      // fileURL: "",
-      // assignment: {
-      //   question: "",
-      //   fileName: "",
-      //   evaluationMatchValue: ""
-      // },
-      // quiz: [{
-      //   objective: true,
-      //   question: "Java is a ..",
-      //   options: ["computer", "programming language", "nothing", "joke"],
-      //   answer: "programming language"
-      // }]
-    }],
+    resources: [],
     chapter: {
       title: "",
+      description: "",
       fileName: "",
+      fielURL: "",
+      assignment: {
+        question: "",
+        fileName: "",
+        evaluationMatchValue: ""
+      },
+      quiz: [],
     }
   };
 
@@ -67,10 +59,10 @@ class CreateResource extends React.Component {
     event.preventDefault();
     if (event.target.id === "chapter_file" && event.target.files[0]) {
       let resourceName = event.target.files[0].name;
+      let tempChapter = this.state.chapter
+      tempChapter.fileName = resourceName
       this.setState({
-        chapter: {
-          fileName: resourceName
-        }
+        chapter: tempChapter
       });
 
       let storageRef = firebase.storage().refFromURL(this.state.resourceFolderURL);
@@ -87,28 +79,19 @@ class CreateResource extends React.Component {
       }, () => {
         // code after upload completion
         resourceRef.getDownloadURL().then(url => {
+          let temporaryChapter = this.state.chapter
+          temporaryChapter[stateName] = url
           this.setState({
-            chapter: {
-              [stateName]: url
-            }
+            chapter: temporaryChapter
           });
         });
       });
-    } else if (event.target.name === "quiz_question") {
-      let value = event.target.value.trim();
-      this.setState({
-        chapter: {
-          [stateName]: value
-        }
-      });
     } else {
-      let value = event.target.value.trim();
+      let value = event.target.value;
+      let tempChapter = this.state.chapter
+      tempChapter[stateName] = value
       this.setState({
-        chapter: {
-          quiz: [{
-            [stateName]: value
-          }],
-        }
+        chapter: tempChapter
       });
     }
   };
@@ -120,55 +103,62 @@ class CreateResource extends React.Component {
     deleteRef.delete().then(function () {
       scope.props.setMainComp("course-list", "")
     }).catch(function (error) {
-      console.log("error while deleting course resources..", error)
+      sweetAlert({ title: "Error while deleting..", icon: "error" })
     });
   }
 
   setData = () => {
-    // let scope = this;
-    // firebase
-    //   .storage()
-    //   .ref("courses/banners/")
-    //   .child("default.jpg")
-    //   .getDownloadURL()
-    //   .then(url => {
-    //     let bannerURL = this.state.banner_image;
-    //     if (this.state.banner_image === "") {
-    //       bannerURL = url;
-    //     }
-    //     this.setState(
-    //       {
-    //         key: `CK${Date.now()}`,
-    //         banner_image: bannerURL,
-    //         categories: this.state.categories.split(",").map(category => {
-    //           return category.trim();
-    //         })
-    //       },
-    //       () => {
-    //         fetch(
-    //           `${config.APIHostName}:${config.APIHostingPort}/api/courses`,
-    //           {
-    //             method: "post",
-    //             body: JSON.stringify(this.state),
-    //             headers: {
-    //               "Content-Type": "application/json"
-    //             }
-    //           }
-    //         )
-    //           .then(function (response) {
-    //             alert("Course uploaded successfully.");
-    //             scope.props.setMainComp("create-resource", "");
-    //           })
-    //           .catch(err => {
-    //             alert("Course not uploaded");
-    //           });
-    //       }
-    //     );
-    //   });
+    let scope = this
+    let tempResource = this.state.resources
+    if (this.state.chapter.title !== "") {
+      tempResource.push(this.state.chapter)
+    }
+    this.setState({
+      resources: tempResource
+    }, () => {
+      fetch(`${config.APIHostName}:${config.APIHostingPort}/api/courses/${this.props.courseKey}`, {
+        method: "put",
+        body: JSON.stringify(this.state),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+        .then(function (response) {
+          sweetAlert({ title: "Resource added successfully.", icon: "success" })
+          scope.props.setMainComp("course-list", "");
+        })
+        .catch(err => {
+          sweetAlert({ title: "Resource failed to add.", icon: "error" })
+        });
+    })
   };
 
   addChapter = () => {
-    //add the form agian
+    if (this.state.chapter.title !== "") {
+      let tempResource = this.state.resources
+      tempResource.push(this.state.chapter)
+      this.setState({
+        resources: tempResource,
+        chapter: {
+          title: "",
+          description: "",
+          fileName: "",
+          fielURL: "",
+          assignment: {
+            question: "",
+            fileName: "",
+            evaluationMatchValue: ""
+          },
+          quiz: [],
+        }
+      })
+    }
+  }
+
+  saveQuiz = quizObject => {
+    let tempQuiz = this.state.quiz
+    tempQuiz.push(quizObject)
+    this.setState({ quiz: tempQuiz })
   }
 
   componentDidMount() {
@@ -182,13 +172,16 @@ class CreateResource extends React.Component {
 
   render() {
     const { classes } = this.props;
-
     console.log(this.state.resources)
 
     return (
       <React.Fragment>
         <div className={classes.container}>
-          <ResourceForm handleChange={this.handleChange} fileName={this.state.resources.fileName} />
+          <ResourceForm
+            handleChange={this.handleChange}
+            fileName={this.state.resources.fileName}
+            chapter={this.state.chapter}
+            saveQuiz={this.saveQuiz} />
           <div>
             <Button
               color="primary"

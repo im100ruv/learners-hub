@@ -82,13 +82,11 @@ class CreateCourse extends React.Component {
 
   handleChange = stateName => event => {
     event.preventDefault();
-    if (event.target.id === "course-duration" && (event.target.value < 1 || event.target.value > 12)
-    ) {
+    if (event.target.id === "course-duration" && (event.target.value < 1 || event.target.value > 12)) {
       this.setState({
         [stateName]: 1
       });
-    } else if (event.target.id === "banner-image-file" && event.target.files[0]
-    ) {
+    } else if (event.target.id === "banner-image-file" && event.target.files[0]) {
       let bannerName = event.target.files[0].name;
       this.setState({
         bannerName: bannerName
@@ -130,7 +128,6 @@ class CreateCourse extends React.Component {
       var deleteRef = firebase.storage().refFromURL(this.state.banner_image)
 
       deleteRef.delete().then(function () {
-        // File deleted successfully
         scope.props.setMainComp("course-list", "")
       }).catch(function (error) {
         console.log("error while deleting banner image..", error)
@@ -207,39 +204,33 @@ class CreateCourse extends React.Component {
         if (this.state.banner_image === "") {
           bannerURL = url;
         }
-        this.setState(
-          {
-            key: `CK${Date.now()}`,
-            banner_image: bannerURL,
-            categories: this.state.categories.split(",").map(category => {
-              return category.trim();
-            })
-          },
-          () => {
-            key = this.state.key
-            fetch(
-              `${config.APIHostName}:${config.APIHostingPort}/api/courses`,
-              {
-                method: "post",
-                body: JSON.stringify(this.state),
-                headers: {
-                  "Content-Type": "application/json"
-                }
-              }
-            )
-              .then(function (response) {
-                swal({
-                  title: "Course Successfully Uploaded",
-                  text: "Please add contents to course.",
-                  icon:"success"
-                })
-                scope.props.setMainComp("create-resource", key);
+        this.setState({
+          key: `CK${Date.now()}`,
+          banner_image: bannerURL,
+          categories: this.state.categories.split(",").map(category => {
+            return category.trim();
+          })
+        }, () => {
+          key = this.state.key
+          fetch(`${config.APIHostName}:${config.APIHostingPort}/api/courses`, {
+            method: "post",
+            body: JSON.stringify(this.state),
+            headers: {
+              "Content-Type": "application/json"
+            }
+          })
+            .then(function (response) {
+              swal({
+                title: "Course Successfully Uploaded",
+                text: "Please add contents to course.",
+                icon: "success"
               })
-              .catch(err => {
-                swal("Course not uploaded");
-              });
-          }
-        );
+              scope.props.setMainComp("create-resource", key);
+            })
+            .catch(err => {
+              swal("Course not uploaded");
+            });
+        });
       });
   };
 
