@@ -50,7 +50,6 @@ class Child extends Component {
     style_subject = {
         padding: '10px 10px',
         margin: '13px 10px',
-        opacity: '0.9',
         borderRadius: '3px',
         display: 'flex'
     }
