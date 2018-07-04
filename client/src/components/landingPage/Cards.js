@@ -35,7 +35,7 @@ function MediaCard(props) {
                                 <Typography gutterBottom variant="headline" component="h2">
                                     {element.Name}
                                 </Typography>
-                                <Typography component="p">
+                                <Typography className="enroll" component="p">
                                     {element.About}
                                 </Typography>
                             </CardContent>
