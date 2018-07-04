@@ -14,7 +14,7 @@ function createToken() {
 
 function loginQuery(data) {
     return new Promise((resolve, reject) => {
-        user.find(data, {id : 1, name: 1, email: 1, user_type: 1}).exec((err, res) => {
+        user.find(data, {_id : 0, name: 1, email: 1, user_type: 1}).exec((err, res) => {
             if(err) {
                 reject(err);
             } else {
@@ -52,10 +52,15 @@ function signupQuery(data) {
                 reject(err1);
             } else {
                 if(res1.length > 0) {
-                    if(res1.length === 1 && res1[0].signup_type != 'emailAndPassword') {
-                        reject({message: 'look like you had looged in using ' + res1[0].signup_type + ' but not created password yet.'});
+                    if(res1.length === 1 && data.signup_type != 'emailAndPassword') {
+                        loginQuery({email: res1[0].email, password: res1[0].password})
+                        .then(result => {
+                            resolve(result);
+                        }).catch(error => {
+                            reject(error);
+                        });
                     } else {
-                        reject({message: 'A user Allready exist with same Email'});
+                        reject({message: 'A user Already registered with same Email.'});
                     }
                 } else {
                     let userObj = new user(data);
@@ -99,8 +104,31 @@ function logoutQuery(email, cookie) {
     });
 }
 
+function isLoggedQuery(token) {
+    token = '' + token;
+    let arr = token.split('=');
+    token = arr[1];
+    return new Promise((resolve, reject) => {
+        user.find(
+            {'tokens.c_token': token},
+            {_id: 0, name: 1, email: 1, user_type: 1}
+        ).exec((err, res) => {
+            if(err) {
+                reject(err);
+            } else {
+                if(res.length === 0) {
+                    resolve({ message: 'not logged in' });
+                } else {
+                    resolve(res[0]);
+                }
+            }
+        });
+    });
+}
+
 module.exports = {
     loginQuery: loginQuery,
     signupQuery : signupQuery,
-    logoutQuery: logoutQuery
+    logoutQuery: logoutQuery,
+    isLoggedQuery: isLoggedQuery
 };

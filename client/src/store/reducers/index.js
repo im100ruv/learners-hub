@@ -1,6 +1,8 @@
 import { combineReducers } from 'redux';
-//import all reducers
+//all reducers
+import loggedUser from '../reducers/loggedUser';
 
 export default combineReducers({
     // export all reducers
+    loggedUser: loggedUser
 });

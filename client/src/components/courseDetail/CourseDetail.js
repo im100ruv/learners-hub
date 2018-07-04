@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './CourseDetail.css'
 import CircularProgress from '../materialUIComponents/CircularProgress';
 import BannerCard from './BannerCard';
@@ -6,10 +6,17 @@ import Avatar from '../materialUIComponents/Avatar'
 import Button from '../materialUIComponents/Button'
 import config from '../../config/config.json';
 
-export default class CourseDetail extends React.Component {
-  state = {
-    key: undefined,
-    faq: []
+import { connect } from 'react-redux'
+import loggedUserAction from '../../store/actions/loggedUser';
+
+class CourseDetail extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      key: undefined,
+      faq: [],
+      loggedUser: null
+    };
   }
 
   fetchJsonData = async (query) => {
@@ -39,6 +46,15 @@ export default class CourseDetail extends React.Component {
       });
   }
 
+
+  componentWillReceiveProps(nextProps, nextState) {
+    if(nextProps.loggedUser.user_type) {
+      this.setState({
+          loggedUser: nextProps.loggedUser
+      });
+    }
+  }
+
   render() {
     let faqs;
     if (this.state.faq.length > 0) {
@@ -52,6 +68,11 @@ export default class CourseDetail extends React.Component {
         )
       })
     }
+
+    console.log(this.state, 'props', this.props);
+
+    // let userActionbutton = this.renderUserActionbutton.bind(this);
+
     return this.state.key ? (
       <React.Fragment>
         <BannerCard
@@ -59,11 +80,18 @@ export default class CourseDetail extends React.Component {
           subtitle={this.state.subtitle}
           new_release={this.state.new_release}
         />
+        { (this.props.loggedUser.user_type === 'Author')
+          ?  <center><Button setMainComp={this.props.setMainComp} courseKey={this.state.key} buttonValue="Update Course" destination="update-course" /></center>
+          : null
+        }
         <div className="course-body">
           <div className="about-course">
             <b> About this course: </b>{this.state.summary}
           </div>
-          <center><Button setMainComp={this.props.setMainComp} courseKey={this.state.key} buttonValue="Start Course" destination="course-resource" /></center>
+          { (this.props.loggedUser.user_type === 'Learner')
+            ?  <center><Button setMainComp={this.props.setMainComp} courseKey={this.state.key} buttonValue="Start Course" destination="course-resource" /></center>
+            : null
+          }
           <div className="instructor-detail">
             <div><Avatar image={this.state.instructors[0].image}/></div>
             <div>
@@ -99,9 +127,16 @@ export default class CourseDetail extends React.Component {
           <div className="section-faq">
             {faqs}
           </div>
-          <center><Button setMainComp={this.props.setMainComp} courseKey={this.state.key} buttonValue="Start Course" destination="course-resource" /></center>
-        </div>
+          { (this.props.loggedUser.user_type === 'Learner')
+            ?  <center><Button setMainComp={this.props.setMainComp} courseKey={this.state.key} buttonValue="Start Course" destination="course-resource" /></center>
+            : null
+          }
+          </div>
       </React.Fragment>
     ) : (<CircularProgress />)
   }
 }
+
+export default connect((state) => ({
+  loggedUser: state.loggedUser
+}), loggedUserAction)(CourseDetail);

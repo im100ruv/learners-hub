@@ -30,8 +30,23 @@ function logout(request, response) {
     });
 }
 
+function isLogged(request, response) {
+    query.isLoggedQuery(request.headers.cookie)
+    .then(res => {
+        if(res.message) {
+            response.clearCookie('c_token');
+            response.send(res);
+        } else {
+            response.send(res);
+        }
+    }).catch(err => {
+        response.send(err);
+    });
+}
+
 module.exports = {
     login: login,
     signup: signup,
-    logout: logout
+    logout: logout,
+    isLogged: isLogged
 };

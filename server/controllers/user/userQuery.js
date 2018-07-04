@@ -26,19 +26,6 @@ function getAUser(id) {
     });
 }
 
-function addUserToList(data) {
-    return new Promise((resolve, reject) => {
-        const userObj = new user(data);
-        userObj.save().exec((err, res) => {
-            if(err) {
-                reject(err);
-            } else {
-                resolve(res);
-            }
-        });
-    });
-}
-
 function updateUserInList(id, data) {
     return new Promise((resolve, reject) => {
         // const userObj = new user(data);
@@ -67,7 +54,6 @@ function deleteUserFromList(id) {
 module.exports = {
     getAllUsers : getAllUsers,
     getAUser: getAUser,
-    addUserToList : addUserToList,
     updateUserInList: updateUserInList,
     deleteUserFromList: deleteUserFromList
 };

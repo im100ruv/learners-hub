@@ -56,14 +56,14 @@ const diffLevel = [
 class UpdateCourse extends React.Component {
   
   componentWillMount() {
-    fetch(`${config.APIHostName}:${config.APIHostingPort}/api/courses/CK1530597258177`)
+    fetch(`${config.APIHostName}:${config.APIHostingPort}/api/courses/${this.props.courseKey}`)
       .then(res => {
         return res.json();
       })
       .then(result => {
         let categoriesString = "";
         result.categories.forEach((item, index) => {
-          if (index == 0) categoriesString += item;
+          if (index === 0) categoriesString += item;
           else categoriesString += "," + item;
         });
         this.setState({
@@ -211,6 +211,7 @@ class UpdateCourse extends React.Component {
   };
 
   DeleteCourse = () =>{
+    let scope = this;
     
     swal({
       title: "Are you sure?",
@@ -229,18 +230,20 @@ class UpdateCourse extends React.Component {
           icon: 'success'
         }).then(()=> {
            fetch(
-            `${config.APIHostName}:${config.APIHostingPort}/api/courses/CK1530597258177`,
+            `${config.APIHostName}:${config.APIHostingPort}/api/courses/${this.props.courseKey}`,
             {
               method: "delete",
               headers: {
                 "Content-Type": "application/json"
               }
             }
-          )
+          ).then(()=>{
+            scope.props.setMainComp("course-list", "");
+          })
           .catch(err => {
               swal("Course not Deleted");
             });
-        });
+        })
       } else {
         swal("Cancelled", "Your Course is safe", "error");
       }
@@ -248,22 +251,22 @@ class UpdateCourse extends React.Component {
   }
 
   updateData = () => {
-    // let scope = this;
-    if (this.state.title == false)  {
+    let scope = this;
+    if (this.state.title.trim()==="")  {
       swal({
         title: "Please enter the Course name",
         icon: "warning"
       });
       return;
     }
-    if (this.state.subtitle == false)  {
+    if (this.state.subtitle.trim()==="")  {
       swal({
         title: "Please add Subtitle for this course",
         icon: "warning"
       });
       return;
     }
-    if (this.state.syllabus == false) {
+    if (this.state.syllabus.trim()==="") {
       swal({
         title: "Please define Syllabus for this course",
         icon: "warning"
@@ -271,21 +274,21 @@ class UpdateCourse extends React.Component {
       return;
     }
 
-    if (this.state.required_knowledge == false) {
+    if (this.state.required_knowledge.trim()==="") {
       swal({
         title: "Please add Required Knowledge field for this course",
         icon: "warning"
       });
       return;
     }
-    if (this.state.expected_learning.length == false) {
+    if (this.state.expected_learning.trim()==="") {
      swal({
         title: "Please fill Expected Learning field for this course",
         icon: "warning"
       });
       return;
     }
-    if (this.state.categories == false) {
+    if (this.state.categories.trim()==="") {
       swal({
         title: "Please add Categories for this course",
         icon: "warning"
@@ -299,7 +302,7 @@ class UpdateCourse extends React.Component {
       });
       return;
     }
-    if (this.state.summary == false) {
+    if (this.state.summary.trim()==="") {
       swal({
         title: "Please give Summary of the course",
         icon: "warning"
@@ -323,7 +326,7 @@ class UpdateCourse extends React.Component {
           },
           () => {
             fetch(
-              `${config.APIHostName}:${config.APIHostingPort}/api/courses/CK1530597258177`,
+              `${config.APIHostName}:${config.APIHostingPort}/api/courses/${this.props.courseKey}`,
               {
                 method: "put",
                 body: JSON.stringify(this.state),
@@ -337,7 +340,8 @@ class UpdateCourse extends React.Component {
                   title: "The Course Has Been Successfully Updated",
                   icon:"success"
                 })
-                // scope.props.setMainComp("course-list", "");
+              }).then(()=>{
+                scope.props.setMainComp("course-detail", this.props.courseKey);
               })
               .catch(err => {
                 swal("Course not updated!!");
@@ -476,7 +480,7 @@ class UpdateCourse extends React.Component {
           {diffLevel.map(option => (
             <option
               key={option.value}
-              selected={this.state.level == option.label ? "selected" : ""}
+              selected={this.state.level === option.label ? "selected" : ""}
             >
               {option.label}
             </option>
@@ -498,6 +502,7 @@ class UpdateCourse extends React.Component {
           <Button
             variant="contained"
             className={classes.button}
+            onClick={this.props.setMainComp.bind(this, "course-detail", this.props.courseKey)}
           >
             Cancel</Button>
             <Button

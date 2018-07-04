@@ -8,10 +8,19 @@ const socket = require("socket.io");
 const app = express();
 
 let auth = (req, res, next) => {
-  // console.log(req);
-
-  next();
-};
+    let path = req.path;
+    if(path === '/api/login' || '/api/signup') {
+        // res.clearCookie('c_token');
+        next();
+    } else {
+        if(req.cookies.c_token) {
+            next();
+        } else {
+            // res.send({ message: 'Unauthorized Request' });
+            next();
+        }
+    }
+}
 
 let server = app
   .listen(config.hostingPort, function() {
@@ -25,7 +34,7 @@ let server = app
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(function(req, res, next) {
-      res.header("Access-Control-Allow-Origin", "http://localhost:3000"); //client address
+      res.header("Access-Control-Allow-Origin", `${config.clientHostName}:${config.clientHostingPort}`); //client address
       res.header(
         "Access-Control-Allow-Headers",
         "Origin, X-Requested-With, Content-Type, X-Custom-Header, Accept"
