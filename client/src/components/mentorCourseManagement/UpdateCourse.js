@@ -63,7 +63,7 @@ class UpdateCourse extends React.Component {
       .then(result => {
         let categoriesString = "";
         result.categories.forEach((item, index) => {
-          if (index == 0) categoriesString += item;
+          if (index === 0) categoriesString += item;
           else categoriesString += "," + item;
         });
         this.setState({
@@ -252,21 +252,21 @@ class UpdateCourse extends React.Component {
 
   updateData = () => {
     let scope = this;
-    if (this.state.title == false)  {
+    if (this.state.title.trim()==="")  {
       swal({
         title: "Please enter the Course name",
         icon: "warning"
       });
       return;
     }
-    if (this.state.subtitle == false)  {
+    if (this.state.subtitle.trim()==="")  {
       swal({
         title: "Please add Subtitle for this course",
         icon: "warning"
       });
       return;
     }
-    if (this.state.syllabus == false) {
+    if (this.state.syllabus.trim()==="") {
       swal({
         title: "Please define Syllabus for this course",
         icon: "warning"
@@ -274,21 +274,21 @@ class UpdateCourse extends React.Component {
       return;
     }
 
-    if (this.state.required_knowledge == false) {
+    if (this.state.required_knowledge.trim()==="") {
       swal({
         title: "Please add Required Knowledge field for this course",
         icon: "warning"
       });
       return;
     }
-    if (this.state.expected_learning.length == false) {
+    if (this.state.expected_learning.trim()==="") {
      swal({
         title: "Please fill Expected Learning field for this course",
         icon: "warning"
       });
       return;
     }
-    if (this.state.categories == false) {
+    if (this.state.categories.trim()==="") {
       swal({
         title: "Please add Categories for this course",
         icon: "warning"
@@ -302,7 +302,7 @@ class UpdateCourse extends React.Component {
       });
       return;
     }
-    if (this.state.summary == false) {
+    if (this.state.summary.trim()==="") {
       swal({
         title: "Please give Summary of the course",
         icon: "warning"
@@ -480,7 +480,7 @@ class UpdateCourse extends React.Component {
           {diffLevel.map(option => (
             <option
               key={option.value}
-              selected={this.state.level == option.label ? "selected" : ""}
+              selected={this.state.level === option.label ? "selected" : ""}
             >
               {option.label}
             </option>
