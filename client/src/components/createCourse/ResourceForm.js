@@ -51,7 +51,7 @@ class ResourceForm extends React.Component {
     tempQuiz[stateName] = value
     this.setState({
       quiz: tempQuiz
-    });
+    })
   }
 
   saveQuiz = optionsArray => event => {
@@ -66,6 +66,18 @@ class ResourceForm extends React.Component {
 
   addQuiz = () => {
     this.setState({ quizzesCount: (this.state.quizzesCount + 1) })
+  }
+
+  componentWillReceiveProps() {
+    this.setState = {
+      quizzesCount: 1,
+      quiz: {
+        objective: true,
+        question: "",
+        options: [],
+        answer: ""
+      }
+    }
   }
 
   render() {

@@ -59,6 +59,12 @@ class QuizForm extends React.Component {
     this.props.saveQuiz(options)
   }
 
+  componentWillReceiveProps() {
+    this.setState = {
+      optionsCount: 2
+    }
+  }
+
   render() {
     const { classes } = this.props;
     let options = []
@@ -71,7 +77,7 @@ class QuizForm extends React.Component {
           required
           className={classes.textField}
           margin="normal"
-          onChange={this.handleChange(`option${i}`)}
+          onChange={this.handleChange.bind(this,`option${i}`)}
         />
       )
       i++
@@ -85,7 +91,7 @@ class QuizForm extends React.Component {
             label="Question (Mandatory to add quiz)"
             className={classes.textField}
             margin="normal"
-            onChange={this.props.handleChange("question")}
+            onChange={this.props.handleChange.bind(this,"question")}
           />
 
           {options}
@@ -104,7 +110,7 @@ class QuizForm extends React.Component {
             required
             className={classes.textField}
             margin="normal"
-            onChange={this.props.handleChange("answer")}
+            onChange={this.props.handleChange.bind(this,"answer")}
           />
 
           <Button

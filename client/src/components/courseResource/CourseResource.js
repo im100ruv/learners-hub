@@ -47,6 +47,7 @@ export default class CourseResource extends React.Component {
   }
 
   render() {
+    console.log(this.state.resources)
     return this.state.key ? (
       <React.Fragment>
         <BannerCard
