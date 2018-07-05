@@ -74,13 +74,8 @@ class CreateCourse extends React.Component {
         bio:
           `As an avid programmer and learner, ${this.props.loggedUser.name} began teaching and found his passion. He enjoys the best of both worlds as he works as a Course Developer at Udacity. After earning a degree in computer science, he made the smart decision and moved into the world of HTML, CSS, and JavaScript. For over seven years he worked for an international nonprofit doing everything from frontend web development, to backend programming, to database and server management.`,
         image:
-<<<<<<< HEAD
-          "https://yt3.ggpht.com/a-/ACSszfHJCef_uTyAEgv2HjWg7zV8Vks0hLJ4KAx8NA=s900-mo-c-c0xffffffff-rj-k-no",
-        name: this.props.loggedUser.name
-=======
           "https://firebasestorage.googleapis.com/v0/b/learnershub-mountblue.appspot.com/o/courses%2FauthorAvatar.png?alt=media&token=3e050a92-e03a-4960-a563-75f88e8a3c86",
         name: "Himanshu Mukat"
->>>>>>> 308d36d8e204a4731cd9bddb4ecdae08c581b761
       }
     ]
   };
@@ -209,7 +204,6 @@ class CreateCourse extends React.Component {
         if (this.state.banner_image === "") {
           bannerURL = url;
         }
-<<<<<<< HEAD
         this.setState(
           {
             key: `CK${Date.now()}`,
@@ -247,28 +241,6 @@ class CreateCourse extends React.Component {
                 }).catch(errr => {
                   swal("Course uploaded but not added to my Course list");
                 });
-=======
-        this.setState({
-          key: `CK${Date.now()}`,
-          banner_image: bannerURL,
-          categories: this.state.categories.split(",").map(category => {
-            return category.trim();
-          })
-        }, () => {
-          key = this.state.key
-          fetch(`${config.APIHostName}:${config.APIHostingPort}/api/courses`, {
-            method: "post",
-            body: JSON.stringify(this.state),
-            headers: {
-              "Content-Type": "application/json"
-            }
-          })
-            .then(function (response) {
-              swal({
-                title: "Course Successfully Uploaded",
-                text: "Please add contents to course.",
-                icon: "success"
->>>>>>> 308d36d8e204a4731cd9bddb4ecdae08c581b761
               })
               scope.props.setMainComp("create-resource", key);
             })
@@ -276,7 +248,6 @@ class CreateCourse extends React.Component {
               swal("Course not uploaded");
             });
         });
-      });
   };
 
   render() {
