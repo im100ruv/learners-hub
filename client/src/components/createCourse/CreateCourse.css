@@ -1,3 +1,10 @@
+h4{
+    margin-top: 2.5em;
+    margin-bottom: 0;
+    color: #383737;
+    padding-left: 1em;   
+}
+
 .uploadCourse{
     text-align: center;
     width: 100%;
@@ -27,9 +34,4 @@
 }
 .add-icon{
     cursor: pointer;
-}
-
-.label-button {
-  cursor: pointer;
-  color: #010153;
 }

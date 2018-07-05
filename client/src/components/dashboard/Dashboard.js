@@ -178,7 +178,7 @@ class Dashboard extends Component {
             </List>
           </Drawer>
           <main style={this.theme.content}>
-            {mainRender}
+            {mainRender}	
           </main>
         </div>
       </div>

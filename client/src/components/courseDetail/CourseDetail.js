@@ -93,7 +93,7 @@ class CourseDetail extends Component {
             : null
           }
           <div className="instructor-detail">
-            <div><Avatar /></div>
+            <div><Avatar image={this.state.instructors[0].image}/></div>
             <div>
               <b>Taught by: </b> {this.state.instructors[0].name}
               <p className="instructor-bio">{this.state.instructors[0].bio}</p>

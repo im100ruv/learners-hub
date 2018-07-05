@@ -1,6 +1,9 @@
 import React from 'react';
 import './CourseResource.css';
 import Button from '../materialUIComponents/Button';
+import TextField from "@material-ui/core/TextField";
+import AddCircle from "@material-ui/icons/AddCircle";
+import InputAdornment from "@material-ui/core/InputAdornment";
 import RadioGroup from './RadioGroup';
 import sweetAlert from 'sweetalert';
 
@@ -47,6 +50,7 @@ export default class Chapter extends React.Component {
   }
 
   render() {
+    const { classes } = this.props;
     return (
       <React.Fragment>
         <h2>{this.props.index + 1}. {this.props.resource.title}</h2>
@@ -62,16 +66,57 @@ export default class Chapter extends React.Component {
             </div>
           </div>
         ) : ""}
-        <h3>Quiz</h3>
-        {this.props.resource.quiz.map((item, index) => {
-          return (
-            <div key={index}>
-              <h4>{index + 1}. {this.props.resource.quiz[index].question}</h4>
-              <RadioGroup options={this.props.resource.quiz[index].options} setChoosenValue={this.setChoosenValue} index={index} />
-            </div>
-          )
-        })}
-        <br/>
+
+        {this.props.resource.assignment.question !== "" ? (
+          <div>
+            <h3>Assignment</h3>
+            <h4>{this.props.resource.assignment.question}</h4>
+            <input
+              accept="*"
+              className={classes.input}
+              id="assignment_file"
+              type="file"
+              onChange={""}
+            />
+            <TextField
+              name="assignment_file_textField"
+              label="Upload your assignment file"
+              className={classes.textField}
+              margin="normal"
+              disabled
+              value={""}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <label htmlFor="assignment_file">
+                      <AddCircle className={"add-icon"} />
+                    </label>
+                  </InputAdornment>
+                )
+              }}
+            />
+          </div>
+        ) : ""}
+
+        {this.props.resource.quiz.length > 0 ? (
+          <div>
+            <h3>Quiz</h3>
+            {this.props.resource.quiz.map((item, index) => {
+              return (
+                <div key={index}>
+                  <h4>{index + 1}. {this.props.resource.quiz[index].question}</h4>
+                  {this.props.resource.quiz[index].objective === true ? (
+                    <RadioGroup options={this.props.resource.quiz[index].options} setChoosenValue={this.setChoosenValue} index={index} />
+                  ) : (
+                    // Textfield here
+                    ""
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        ) : ""}
+        <br />
         <p className="label-button" onClick={this.showAnswer}>Show Answer</p>
         <center><Button disabled={!this.state.userInputGiven} setMainComp={this.validateAnswer} courseKey={this.props.courseKey} buttonValue="Submit" destination="" /></center>
       </React.Fragment>
