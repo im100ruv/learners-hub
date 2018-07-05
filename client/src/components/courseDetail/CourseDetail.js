@@ -5,6 +5,7 @@ import BannerCard from './BannerCard';
 import Avatar from '../materialUIComponents/Avatar'
 import Button from '../materialUIComponents/Button'
 import config from '../../config/config.json';
+import swal from 'sweetalert';
 
 import { connect } from 'react-redux'
 import loggedUserAction from '../../store/actions/loggedUser';
@@ -46,6 +47,23 @@ class CourseDetail extends Component {
       });
   }
 
+  enrollCourse(email, key) {
+    fetch(`${config.APIHostName}:${config.APIHostingPort}/api/users/courses/enrolled`, {
+      method: "put",
+      body: JSON.stringify({email: email, course: {key: key}}),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }).then(res => {
+      swal({
+        title: "Enrolled to Course",
+        text: "Please proceed to course.",
+        icon:"success"
+      });
+    }).catch(errr => {
+      swal("Could not enrolled");
+    });
+  }
 
   componentWillReceiveProps(nextProps, nextState) {
     if(nextProps.loggedUser.user_type) {
@@ -69,8 +87,6 @@ class CourseDetail extends Component {
       })
     }
 
-    console.log(this.state, 'props', this.props);
-
     // let userActionbutton = this.renderUserActionbutton.bind(this);
 
     return this.state.key ? (
@@ -89,7 +105,7 @@ class CourseDetail extends Component {
             <b> About this course: </b>{this.state.summary}
           </div>
           { (this.props.loggedUser.user_type === 'Learner')
-            ?  <center><Button setMainComp={this.props.setMainComp} courseKey={this.state.key} buttonValue="Start Course" destination="course-resource" /></center>
+            ?  <center><Button setMainComp={this.props.setMainComp} courseKey={this.state.key} onClick={this.enrollCourse.bind(this, this.props.loggedUser.email, this.state.key)} buttonValue="Start Course" destination="course-resource" /></center>
             : null
           }
           <div className="instructor-detail">
@@ -128,7 +144,7 @@ class CourseDetail extends Component {
             {faqs}
           </div>
           { (this.props.loggedUser.user_type === 'Learner')
-            ?  <center><Button setMainComp={this.props.setMainComp} courseKey={this.state.key} buttonValue="Start Course" destination="course-resource" /></center>
+            ?  <center><Button setMainComp={this.props.setMainComp} courseKey={this.state.key} onClick={this.enrollCourse.bind(this, this.props.loggedUser.email, this.state.key)} buttonValue="Start Course" destination="course-resource" /></center>
             : null
           }
           </div>

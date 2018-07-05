@@ -12,6 +12,9 @@ function setup(app){
     app.get('/api/users/:id', userControllers.getUser);
     app.put('/api/users/:id', userControllers.updateUser);
     app.delete('/api/users/:id', userControllers.deleteUser);
+    
+    app.put('/api/users/courses/enrolled', userControllers.enrollCourse);
+    app.put('/api/users/courses/authored', userControllers.authoredCourse);
 
     // courses
     // use http://localhost:8000/api/courses to get all courses
@@ -22,6 +25,7 @@ function setup(app){
     app.post('/api/courses', courseControllers.addCourse);
     app.put('/api/courses/:key', courseControllers.updateCourse);
     app.delete('/api/courses/:key', courseControllers.deleteCourse);
+
 
     // login-signup
     app.post('/api/login', loginSignupController.login);

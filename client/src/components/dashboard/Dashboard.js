@@ -42,7 +42,8 @@ class Dashboard extends Component {
     },
     {
       name: 'Course Enrolled',
-      icon: CoursesIcon
+      icon: CoursesIcon,
+      value: 'enrolled-course-list'
     },
     {
       name: 'View All Courses',
@@ -60,6 +61,10 @@ class Dashboard extends Component {
       name: 'Add Course',
       icon: AddCourseIcon,
       value: "add-course"
+    },{
+      name: 'My Courses',
+      icon: AddCourseIcon,
+      value: "authored-course-list"
     },
     {
       name: 'View All Courses',
@@ -97,7 +102,7 @@ class Dashboard extends Component {
           <ListItemIcon>
             <ListIcon />
           </ListItemIcon>
-          <ListItemText primary={element.name} onClick={scope.setMainComp.bind(scope, element.value)} />
+          <ListItemText primary={element.name} onClick={scope.setMainComp.bind(scope, element.value, '')} />
         </ListItem>
       );
     });
@@ -139,14 +144,18 @@ class Dashboard extends Component {
 
     // let listRender = this.menuList(this.state.menuArr);
     let mainRender;
-    if (this.state.mainComp === "course-list") {
+    if (this.state.mainComp === "enrolled-course-list") {
+      mainRender = <CourseList setMainComp={this.setMainComp} courseListToRender={this.props.loggedUser.enrolled_courses} />
+    } else if (this.state.mainComp === "authored-course-list") {
+      mainRender = <CourseList setMainComp={this.setMainComp} courseListToRender={this.props.loggedUser.authored_courses}/>
+    } else if (this.state.mainComp === "course-list") {
       mainRender = <CourseList setMainComp={this.setMainComp} />
     } else if (this.state.mainComp === "course-detail") {
-      mainRender = <CourseDetail courseKey={this.state.courseKey} setMainComp={this.setMainComp} />
+      mainRender = <CourseDetail courseKey={this.state.courseKey} loggedUser={this.props.loggedUser} setMainComp={this.setMainComp} />
     } else if (this.state.mainComp === "course-resource") {
       mainRender = <CourseResource courseKey={this.state.courseKey} />
     } else if (this.state.mainComp === "add-course") {
-      mainRender = <CreateCourse setMainComp={this.setMainComp}/>
+      mainRender = <CreateCourse setMainComp={this.setMainComp} loggedUser={this.props.loggedUser}/>
     } else if (this.state.mainComp === "update-course") {
       mainRender = <UpdateCourse courseKey={this.state.courseKey} setMainComp={this.setMainComp}/>
     } else if (this.state.mainComp === "create-resource") {
