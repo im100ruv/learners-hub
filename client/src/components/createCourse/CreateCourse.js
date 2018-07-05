@@ -55,7 +55,7 @@ const diffLevel = [
 
 class CreateCourse extends React.Component {
   state = {
-    key: "LC",
+    key: "",
     title: "",
     subtitle: "",
     banner_image: "",
@@ -74,7 +74,7 @@ class CreateCourse extends React.Component {
         bio:
           "As an avid programmer and learner, Himanshu mukat began teaching and found his passion. He enjoys the best of both worlds as he works as a Course Developer at Udacity. After earning a degree in computer science, he made the smart decision and moved into the world of HTML, CSS, and JavaScript. For over seven years he worked for an international nonprofit doing everything from frontend web development, to backend programming, to database and server management.",
         image:
-          "https://yt3.ggpht.com/a-/ACSszfHJCef_uTyAEgv2HjWg7zV8Vks0hLJ4KAx8NA=s900-mo-c-c0xffffffff-rj-k-no",
+          "https://firebasestorage.googleapis.com/v0/b/learnershub-mountblue.appspot.com/o/courses%2FauthorAvatar.png?alt=media&token=3e050a92-e03a-4960-a563-75f88e8a3c86",
         name: "Himanshu Mukat"
       }
     ]
