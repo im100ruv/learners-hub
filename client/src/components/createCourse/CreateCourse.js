@@ -72,10 +72,10 @@ class CreateCourse extends React.Component {
     instructors: [
       {
         bio:
-          "As an avid programmer and learner, Himanshu mukat began teaching and found his passion. He enjoys the best of both worlds as he works as a Course Developer at Udacity. After earning a degree in computer science, he made the smart decision and moved into the world of HTML, CSS, and JavaScript. For over seven years he worked for an international nonprofit doing everything from frontend web development, to backend programming, to database and server management.",
+          `As an avid programmer and learner, ${this.props.loggedUser.name} began teaching and found his passion. He enjoys the best of both worlds as he works as a Course Developer at Udacity. After earning a degree in computer science, he made the smart decision and moved into the world of HTML, CSS, and JavaScript. For over seven years he worked for an international nonprofit doing everything from frontend web development, to backend programming, to database and server management.`,
         image:
           "https://yt3.ggpht.com/a-/ACSszfHJCef_uTyAEgv2HjWg7zV8Vks0hLJ4KAx8NA=s900-mo-c-c0xffffffff-rj-k-no",
-        name: "Himanshu Mukat"
+        name: this.props.loggedUser.name
       }
     ]
   };
@@ -232,12 +232,22 @@ class CreateCourse extends React.Component {
               }
             )
               .then(function (response) {
-                swal({
-                  title: "Course Successfully Uploaded",
-                  text: "Please add contents to course.",
-                  icon:"success"
-                })
-                scope.props.setMainComp("create-resource", key);
+                fetch(`${config.APIHostName}:${config.APIHostingPort}/api/users/courses/authored`, {
+                  method: "put",
+                  body: JSON.stringify({email: this.props.loggedUser.email, course: {key: key}}),
+                  headers: {
+                    "Content-Type": "application/json"
+                  }
+                }).then(res => {
+                  swal({
+                    title: "Course Successfully Uploaded",
+                    text: "Please add contents to course.",
+                    icon:"success"
+                  })
+                  scope.props.setMainComp("create-resource", key);
+                }).catch(errr => {
+                  swal("Course uploaded but not added to my Course list");
+                });
               })
               .catch(err => {
                 swal("Course not uploaded");

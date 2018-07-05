@@ -70,7 +70,7 @@ class App extends Component {
                 <Switch>
                   <Route exact path="/" render={() => <Redirect to="/home" />} />
                   <Route exact path="/home" component={Home}/>
-                  <LoginAuth.PrivateRoute path="/dashboard" condition={this.state.logged} component={Dashboard} />
+                  <LoginAuth.PrivateRoute exact path="/dashboard" condition={this.state.logged} component={Dashboard} />
                 </Switch>
               </div>
           </div>

@@ -7,6 +7,12 @@ const schema = new mongoose.Schema({
     mobile: String,
     user_type: String,
     signup_type: String,
+    enrolled_courses: [{
+        key: String
+    }],
+    authored_courses: [{
+        key: String
+    }],
     tokens: [{
         c_token: String,
         exp_date: Number

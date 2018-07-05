@@ -51,9 +51,52 @@ function deleteUserFromList(id) {
     });
 }
 
+function enrollCourseQuery(email, course) {
+    return new Promise((resolve, reject) => {
+        user.update(
+            { email: email },
+            {
+                $push: {
+                    enrolled_courses: course
+                }
+            },
+            (notUpdated, updated) => {
+                if(notUpdated) {
+                    reject({message: 'course could not be enrolled'});
+                } else {
+                    resolve({message: 'course enrolled'});
+                }
+            }
+        );
+    });
+}
+
+function authoredCourseQuery(email, course) {
+    return new Promise((resolve, reject) => {
+        user.update(
+            { email: email },
+            {
+                $push: {
+                    Authored_courses: course
+                }
+            },
+            (notUpdated, updated) => {
+                if(notUpdated) {
+                    reject({message: 'course could not added'});
+                } else {
+                    resolve({message: 'course Added'});
+                }
+            }
+        );
+    });
+}
+
 module.exports = {
     getAllUsers : getAllUsers,
     getAUser: getAUser,
     updateUserInList: updateUserInList,
-    deleteUserFromList: deleteUserFromList
+    deleteUserFromList: deleteUserFromList,
+
+    enrollCourseQuery: enrollCourseQuery,
+    authoredCourseQuery: authoredCourseQuery
 };

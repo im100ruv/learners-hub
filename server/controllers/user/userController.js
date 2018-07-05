@@ -36,9 +36,30 @@ function deleteUser(request, response) {
     });
 }
 
+function enrollCourse(request, response) {
+    query.enrollCourseQuery(request.body.email, request.body.course)
+    .then(res => {
+        response.send(res);
+    }).catch(err => {
+        response.send(err);
+    });
+}
+
+function authoredCourse(request, response) {
+    query.authoredCourseQuery(request.body.email, request.body.course)
+    .then(res => {
+        response.send(res);
+    }).catch(err => {
+        response.send(err);
+    });
+}
+
 module.exports = {
     getUsersList: getUsersList,
     getUser: getUser,
     updateUser: updateUser,
-    deleteUser: deleteUser
+    deleteUser: deleteUser,
+
+    enrollCourse: enrollCourse,
+    authoredCourse: authoredCourse
 };

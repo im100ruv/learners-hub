@@ -31,14 +31,28 @@ class CourseList extends Component {
   };
 
   componentDidMount() {
+    let scope = this;
     fetch(`${config.APIHostName}:${config.APIHostingPort}/api/courses`)
       .then(res => {
         return res.json();
       })
       .then(result => {
-        this.setState({
-          array_course: result
-        });
+        console.log(this.props);
+        if(this.props.courseListToRender) {
+          let courseListToRender = this.props.courseListToRender;
+          let filteredArray = courseListToRender.length>0 ? result.filter(function(result_el){
+            return courseListToRender.filter(function(courseListToRender_el){
+               return courseListToRender_el.key !== result_el.key;
+            }).length === 0
+          }) : [];
+          this.setState({
+            array_course: filteredArray
+          });
+        } else {
+          this.setState({
+            array_course: result
+          });
+        }
       });
   }
 

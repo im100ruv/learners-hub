@@ -14,7 +14,7 @@ function createToken() {
 
 function loginQuery(data) {
     return new Promise((resolve, reject) => {
-        user.find(data, {_id : 0, name: 1, email: 1, user_type: 1}).exec((err, res) => {
+        user.find(data, {_id : 0, password: 0, tokens: 0}).exec((err, res) => {
             if(err) {
                 reject(err);
             } else {
@@ -111,7 +111,7 @@ function isLoggedQuery(token) {
     return new Promise((resolve, reject) => {
         user.find(
             {'tokens.c_token': token},
-            {_id: 0, name: 1, email: 1, user_type: 1}
+            {_id : 0, password: 0, tokens: 0}
         ).exec((err, res) => {
             if(err) {
                 reject(err);
