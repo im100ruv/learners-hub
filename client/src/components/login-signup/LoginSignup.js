@@ -58,7 +58,7 @@ class LoginSignup extends Component {
             width: 450,
             left: 0
         },
-        selectedvalue: ''
+        selectedvalue: 'Learner'
     };
 
     handleClickDialogOpen = () => {
@@ -177,13 +177,30 @@ class LoginSignup extends Component {
         let data = this.state[mode];
         if(mode === 'login') {
             if(data.email === "" || data.password === "") {
-                sweetAlert({ title: 'Required field empty', icon: 'info'});
+                sweetAlert({ title: 'No or Wrong Data entered', icon: 'info'});
             } else {
                 this.login(data);
             }
         } else if(mode === 'signup') {
-            if(data.name === "" || data.email === "" || data.password === "") {
-                sweetAlert({ title: 'Required field empty', icon: 'info'});
+            if(data.name.trim() === ""){
+                sweetAlert({ title: 'Name field Empty', icon: 'info'});
+                return;
+            }
+            else if(data.email.trim() === ""){
+                sweetAlert({ title: 'Email field Empty', icon: 'info'});
+                return;
+            }
+            else if( !data.email.includes("@") || !data.email.includes(".com") ){
+                sweetAlert({ title: 'Enter Vaild Email ID', icon: 'info',text:"eg: Example@google.com"});
+                return;
+            }
+            else if( data.password.trim() === ""  ) {
+                sweetAlert({ title: 'Enter password', icon: 'info'});
+                return;
+            }
+            else if(!(data.mobile.length===10)){
+                sweetAlert({ title: 'Enter 10 digits in mobile number field', icon: 'info'});
+                return;
             } else {
                 this.signup(data);
             }
@@ -192,6 +209,8 @@ class LoginSignup extends Component {
         }
         this.handleDialogClose();
     }
+
+    
 
     render() {
         return (
