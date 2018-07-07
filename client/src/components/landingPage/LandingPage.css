@@ -1,9 +1,9 @@
-.background{
+.background{ 
     background-image: url('../../assets/images/landing.jpg');
     background-size: cover;
-    background-attachment: inherit;
+    background-attachment: fixed;
     position: absolute;
-    height:190vh;
+    height:180vh;
     left:0;
     right:0;
     filter:blur(4px);
