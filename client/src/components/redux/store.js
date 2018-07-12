@@ -3,9 +3,9 @@ import {createStore} from 'redux';
 import {counter} from './reducer';
 import {counterTwo} from './reducerTwo';
 
-let ABC =  combineReducers({
-    tasks: counter,
-    newtasks: counterTwo
+let the_combined_reducer =  combineReducers({
+    firstReducer : counter,
+    secondReducer : counterTwo
 });
 
-export const store = createStore(ABC);
+export const store = createStore(the_combined_reducer);

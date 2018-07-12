@@ -1,19 +1,15 @@
-import { increment } from './types';
-import { changeMe } from './types';
+import { Age } from './types';
 
-const initialState = { name:"default_name", id:0, sameValue:"unchnaged" };
+const initialState = { Age: 1 };
 
 //this is reducer
 export let counterTwo = (state = initialState, action) => {
     switch(action.type)
     {
-        case changeMe:
-            return {...state,
-                    name:action.newname
-                };
-        case increment:
-            return { ...state,
-                    id:state.id+1
+        case Age:
+            return {
+                    ...state,
+                    Age: state.Age + 1  
                 };
         default: 
             return state;

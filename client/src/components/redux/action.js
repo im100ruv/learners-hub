@@ -20,4 +20,5 @@ store.dispatch(inc);
 store.dispatch(inc);
 change("PerMan");
 change("HooMan");
+store.dispatch({type:'Age'});
 
