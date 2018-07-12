@@ -17,6 +17,8 @@ import LoginAuth from './services/loginAuth'
 import config from "./config/config.json"
 import io from "socket.io-client";
 
+import './components/redux/store';
+
 class App extends Component {
   constructor(props) {
     super(props);
